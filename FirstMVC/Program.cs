@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-//using FirstMVC.Data;
+using FirstMVC.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Add DbContext
-builder.Services.AddDbContext<FirstMVC.Data.ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register Identity (uses Identity UI)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -25,10 +35,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // <-- must be before UseAuthorization
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages(); // <-- Identity UI pages
 
 app.Run();
