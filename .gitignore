@@ -59,3 +59,6 @@ ScaffoldingReadMe.txt
 
 ## FirstMVC database file
 .FirstMVC.db
+FirstMVC/FirstMVC.db-wal
+FirstMVC/FirstMVC.dbmdl
+FirstMVC/FirstMVC.db-shm
