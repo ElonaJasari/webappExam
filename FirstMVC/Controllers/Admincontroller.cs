@@ -72,12 +72,4 @@ public class AdminController : Controller
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    // GET: /Admin/Choice
-    public async Task<IActionResult> Choice()
-    {
-    var choices = await _context.Choices.ToListAsync();
-    return View(choices); 
-    }
-
 }
