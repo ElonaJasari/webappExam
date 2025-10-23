@@ -4,7 +4,8 @@ namespace FirstMVC.Models
 {
     public class StoryAct {
         [Key]
-    public int StoryActId { get; set; }
+        public int StoryActId { get; set; }
+    [Required]
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public string? Description { get; set; }
