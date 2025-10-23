@@ -1,0 +1,153 @@
+@model IEnumerable<FirstMVC.Models.StoryAct>
+
+@{
+    ViewData["Title"] = "Story Management";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-3">
+        <div class="col">
+            <h2 class="display-4">Story Management</h2>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group me-2" role="group">
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Create New Story Act
+                    </a>
+                </div>
+                <div class="btn-group me-2" role="group">
+                    <a asp-action="Characters" class="btn btn-secondary">
+                        <i class="bi bi-people"></i> Manage Characters
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Story Acts</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model != null && Model.Any())
+                    {
+                        <partial name="~/Views/Admin/_Grid.cshtml" model="Model" />
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-info-circle"></i> No story acts found. Click "Create New Story Act" to get started.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Quick Stats</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stats-item text-center">
+                                <h3>@Model?.Count()</h3>
+                                <p>Total Story Acts</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-item text-center">
+                                <h3>@Model?.Count(s => s.Character != null)</h3>
+                                <p>Acts with Characters</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-item text-center">
+                                <h3>@Model?.Sum(s => s.Choices?.Count ?? 0)</h3>
+                                <p>Total Choices</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-item text-center">
+                                <h3>@Model?.Count(s => !s.Choices?.Any() ?? true)</h3>
+                                <p>Acts Needing Choices</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats-item {
+        padding: 1rem;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        margin-bottom: 1rem;
+    }
+
+    .stats-item h3 {
+        color: #0d6efd;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-item p {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+
+    .btn-toolbar {
+        margin-bottom: 1rem;
+    }
+
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+    .card-header {
+        background-color: #0d6efd;
+    }
+
+    .card-header h5 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+
+            // Add animation to stats numbers
+            $('.stats-item h3').each(function () {
+                $(this).prop('Counter', 0).animate({
+                    Counter: $(this).text()
+                }, {
+                    duration: 1000,
+                    easing: 'swing',
+                    step: function (now) {
+                        $(this).text(Math.ceil(now));
+                    }
+                });
+            });
+        });
+    </script>
+}
