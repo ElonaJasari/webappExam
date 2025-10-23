@@ -7,7 +7,7 @@ namespace FirstMVC.Data{
     {
         return new List<DictionaryWord>
 {
-    // Adjektiv
+    // Adjectives
     new DictionaryWord { Text = "ráhkis", Type = "Adjektiv", StoryActId = 1, Description = "viktig" },
     new DictionaryWord { Text = "čáppa", Type = "Adjektiv", StoryActId = 1, Description = "fin" },
     new DictionaryWord { Text = "láhka", Type = "Adjektiv", StoryActId = 1, Description = "bra" },
@@ -59,7 +59,7 @@ namespace FirstMVC.Data{
     new DictionaryWord { Text = "njálmmiheapmi", Type = "Adjektiv", StoryActId = 1, Description = "vakker" },
     new DictionaryWord { Text = "sárgguheapmi", Type = "Adjektiv", StoryActId = 1, Description = "rolig" },
 
-// Substantiv
+// Substantives
     new DictionaryWord { Text = "mánnu", Type = "Substantiv", StoryActId = 1, Description = "mann" },
     new DictionaryWord { Text = "gávpi", Type = "Substantiv", StoryActId = 1, Description = "hytte" },
     new DictionaryWord { Text = "goahti", Type = "Substantiv", StoryActId = 1, Description = "telt" },
@@ -156,7 +156,7 @@ namespace FirstMVC.Data{
     new DictionaryWord { Text = "čuovgga", Type = "Substantiv", StoryActId = 1, Description = "ulv" },
     new DictionaryWord { Text = "njálmmi", Type = "Substantiv", StoryActId = 1, Description = "hest" },
 
-    // Verb
+    // Verbs
 
     new DictionaryWord { Text = "bása", Type = "Verb", StoryActId = 1, Description = "snakke" },
     new DictionaryWord { Text = "sárggu", Type = "Verb", StoryActId = 1, Description = "sove" },
