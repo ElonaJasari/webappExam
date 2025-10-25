@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using Microsoft.AspNetCore.Identity;
+using FirstMVC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddControllersWithViews();
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register Repository Pattern (Data Access Layer)
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 
 // Register Identity (uses Identity UI)
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
