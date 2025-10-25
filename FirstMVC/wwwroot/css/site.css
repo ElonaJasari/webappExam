@@ -14,7 +14,7 @@ body {
     padding: 0 100px;
 }
 
-/* Venstre del (reinsdyr) */
+/* left side (raindeer) */
 .landing-left {
     flex: 1;
     display: flex;
@@ -29,7 +29,7 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
-/* Høyre del (tekst + knapper) */
+/* right side (texst + buttons) */
 .landing-right {
     flex: 1;
     display: flex;
@@ -47,7 +47,7 @@ body {
     max-width: 420px;
 }
 
-/* Knapper */
+/* buttons */
 .landing-buttons {
     display: flex;
     flex-direction: column;
@@ -89,7 +89,7 @@ body {
     color: #2a6fff;
 }
 
-/* Flytende animasjon */
+/* hover animations */
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }

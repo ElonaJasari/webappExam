@@ -25,7 +25,7 @@ a {
     border-color: #1861ac;
 }
 
-/* Ikke bruk full bredde top-border på footer */
+/* Do not use a full-width top border on the footer */
 .border-top {
     border-top: 1px solid #e5e5e5;
 }
@@ -42,19 +42,19 @@ button.accept-policy {
     line-height: inherit;
 }
 
-/* Språk-dropdown på hover */
+/* Language dropdown on hover */
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
 }
 
-/* Footer stil: kort linje i midten og sentrert innhold */
+/* Footer style: short line in the middle and centered content */
 .footer {
-    position: fixed; /* eller absolute hvis du foretrekker */
+    position: fixed; /* or absolute if you prefer (will discuss in group and come to a conclution)*/
     bottom: 0;
     width: 100%;
     line-height: 1.4;
     padding: 12px 0;
-    background: #fff; /* valgfritt, matcher header */
+    background: #fff; /* optional, matches header (explore creative color combinations and matches)*/
 }
 
 .footer .container {
@@ -63,8 +63,9 @@ button.accept-policy {
     align-items: center;
 }
 
+/* adjust the length of the line */
 .footer .footer-line {
-    width: 250px; /* juster lengde på streken */
+    width: 250px;
     height: 2px;
     background: #e5e5e5;
     margin-bottom: 8px;

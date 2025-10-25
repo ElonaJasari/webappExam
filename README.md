@@ -9,4 +9,4 @@ you are free to explore other types of games. Good design (including the branche
 
 
 REMEMBER TO DO:
-Which version of Node.js is built with, and how to start the app, should be stated in the comment/readme. If this is not given, it may cause that the grader cannot run the project and affect the grades
+Which version of Node.js is built with, and how to start the app, should be stated in the comment/readme. If this is not given, it may cause that the grader cannot run the project and affect the grades.
