@@ -20,11 +20,15 @@ namespace FirstMVC.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, 
+            UserManager<IdentityUser> userManager,
+            ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -115,7 +119,15 @@ namespace FirstMVC.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    
+                    // Check if user is admin
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return LocalRedirect("/Admin");
+                    }
+                    
+                    return LocalRedirect("/Home");
                 }
                 if (result.RequiresTwoFactor)
                 {

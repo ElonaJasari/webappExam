@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FirstMVC.Models;
 using FirstMVC.Data;
+using Microsoft.AspNetCore.Authorization;
 
+[Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -12,11 +14,11 @@ public class AdminController : Controller
         _context = context;
     }
 
-    // LIST ALL STORY ACTS
-    public async Task<IActionResult> Index()
+
+    // Show admin dashboard
+    public IActionResult Index()
     {
-        var storyActs = await _context.StoryActs.Include(s => s.Choices).ToListAsync();
-        return View(storyActs);
+        return View();
     }
 
     // CREATE NEW STORY ACT - GET
