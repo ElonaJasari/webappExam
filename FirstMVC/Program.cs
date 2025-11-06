@@ -53,14 +53,14 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-    // Create Admin role if it doesn't exist
+    // Create Admin role
     if (!await roleManager.RoleExistsAsync("Admin"))
     {
         await roleManager.CreateAsync(new IdentityRole("Admin"));
     }
 
-    // Create Admin user if it doesn't exist
-    var adminEmail = "admin@example.com";
+    // Create Admin user
+    var adminEmail = "admin@test.com";
     if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
         var adminUser = new IdentityUser
@@ -70,7 +70,7 @@ using (var scope = app.Services.CreateScope())
             EmailConfirmed = true
         };
 
-        var result = await userManager.CreateAsync(adminUser, "Admin123!");
+        var result = await userManager.CreateAsync(adminUser, "Admin.123");
         if (result.Succeeded)
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
