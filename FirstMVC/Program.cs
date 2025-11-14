@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using Microsoft.AspNetCore.Identity;
 using FirstMVC.Repositories;
+using FirstMVC.Models; // Add this using statement
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,11 +48,12 @@ app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Create admin role and user
+// Create admin role and user, and mock character
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
     // Create Admin role
     if (!await roleManager.RoleExistsAsync("Admin"))
@@ -75,6 +77,22 @@ using (var scope = app.Services.CreateScope())
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
+    }
+
+    // Create mock/placeholder character if none exists
+    if (!await dbContext.Characters.AnyAsync())
+    {
+        var mockCharacter = new Characters
+        {
+            Name = "Sample Character",
+            Role = "Protagonist",
+            Description = "This is a placeholder character. Edit the name and image URL to customize it.",
+            Dialog = "Hello! I am a sample character.",
+            ImageUrl = "https://via.placeholder.com/300",
+            Translate = "Sample translation"
+        };
+        dbContext.Characters.Add(mockCharacter);
+        await dbContext.SaveChangesAsync();
     }
 }
 
