@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose your character!</title>
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="choose-character-page">
+<div class="container">
+    <div class="header">
+        <h1 class="title">Choose your character!</h1>
+        <p class="subtitle">Select a character to begin your game</p>
+    </div>
+
+    <div class="characters-grid" id="charactersGrid">
+
+    </div>
+
+    <div class="selected-charactersInfo" id="selectedInfo" style="display: none;">
+        <div class="info-card">
+            <img id="selectedImage" src="" alt="Selected Character" class="selected-image">
+            <div class="info-content">
+                <h2 id="selectedName"></h2>
+                <p class="role" id="selectedRole"></p>
+                <p class="description" id="selectedDescription"></p>
+                <p class="dialog" id="selecteddialog"></p>
+                <button class="play-button" id="playButton">Play as this character</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popup-window" id="characterPopup" style="display: none;">
+    <div class="popup-content">
+        <div class="popup-header">
+            <h2>Choose your character name</h2>
+            <button class="popup-close" id="closePopup">&times;</button> <!-- adds X for the popup window -->
+        </div>
+        <div class="popup-body">
+            <div class="selected-character">
+                <img id="popupCharacterImage" src="" alt="Character" class="popup-character-image">
+                <div class="popup-character-info">
+                    <h3 id="popupCharacterName"></h3>
+                    <p id="popupCharacter"></p>
+                 </div>
+            </div>
+                 <div class="name-input-section">
+                    <label for="characterNameInput">Enter your character's name:</label>
+                    <input type="text" id="characterNameInput" class="character-name-input" placeholder="Enter name..." maxlength="30">
+                 </div>
+            </div>
+            <div class="popup-footer">
+                <button class="btn-cancel" id="cancelButton">Cancel</button>
+                <button class="btn-save" id="saveButton">Save choice</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="site.js"></script>
+</body>
+</html>
+
