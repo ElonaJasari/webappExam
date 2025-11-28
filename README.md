@@ -1,5 +1,8 @@
 # webappExam
 
+admin user: admin@test.com 
+addmin pwd: Admin.123
+
 Task 3:
 A web-based interactive game for Sámi language learning (you could also choose other topics, the choice does not affect grading)
 one example is story-based game with two modes:
