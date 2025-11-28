@@ -9,8 +9,14 @@
 <p>Since we are a small startup, our dictionary does not yet contain all the words. You, as an admin, can help improve the game by adding new words that are not already in the dictionary.</p>
 <p>Use the buttons below to manage the words:</p>
 
+<div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+    <a class="btn btn-primary" href="@Url.Action("Create", "Admin")">Create Story Act</a>
+    <a class="btn btn-warning" href="@Url.Action("Edit", "Admin")">Update Story Act</a>
+    <a class="btn btn-danger" href="@Url.Action("Delete", "Admin")">Delete Story Act</a>
+</div>
+
+<h3 style="margin-top: 30px;">Manage Characters</h3>
+<p>Manage characters used in your story:</p>
 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-    <a class="btn btn-primary" href="@Url.Action("Create", "Admin")">Create</a>
-    <a class="btn btn-warning" href="@Url.Action("Edit", "Admin")">Update</a>
-    <a class="btn btn-danger" href="@Url.Action("Delete", "Admin")">Delete</a>
+    <a class="btn btn-primary" href="@Url.Action("Index", "Character")">Manage Characters</a>
 </div>

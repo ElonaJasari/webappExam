@@ -7,6 +7,7 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-controller="Character" asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="CharacterID" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -18,20 +19,20 @@
 
             <div class="mb-3">
                 <label asp-for="Role" class="form-label"></label>
-                <input asp-for="Role" class="form-control" />
-                <span asp-validation-for="Role" class="text-danger"></span>
+                <input asp-for="Role" class="form-control" readonly />
+                <small class="text-muted">This field cannot be changed</small>
             </div>
 
             <div class="mb-3">
                 <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <textarea asp-for="Description" class="form-control" readonly></textarea>
+                <small class="text-muted">This field cannot be changed</small>
             </div>
 
             <div class="mb-3">
                 <label asp-for="Dialog" class="form-label"></label>
-                <textarea asp-for="Dialog" class="form-control"></textarea>
-                <span asp-validation-for="Dialog" class="text-danger"></span>
+                <textarea asp-for="Dialog" class="form-control" readonly></textarea>
+                <small class="text-muted">This field cannot be changed</small>
             </div>
 
             <div class="mb-3">
@@ -42,12 +43,19 @@
 
             <div class="mb-3">
                 <label asp-for="Translate" class="form-label"></label>
-                <input asp-for="Translate" class="form-control" />
-                <span asp-validation-for="Translate" class="text-danger"></span>
+                <input asp-for="Translate" class="form-control" readonly />
+                <small class="text-muted">This field cannot be changed</small>
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a asp-controller="Character" asp-action="Index" class="btn btn-secondary">Back to list</a>
+            <input type="hidden" asp-for="Role" />
+            <input type="hidden" asp-for="Description" />
+            <input type="hidden" asp-for="Dialog" />
+            <input type="hidden" asp-for="Translate" />
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-controller="Character" asp-action="Index" class="btn btn-secondary">Back to list</a>
+            </div>
         </form>
     </div>
 </div>
