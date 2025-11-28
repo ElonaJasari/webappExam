@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using FirstMVC.Models;
 using FirstMVC.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirstMVC.Controllers
 {
@@ -10,6 +11,7 @@ namespace FirstMVC.Controllers
     /// Controller for Character CRUD operations
     /// Implements Repository pattern for data access and comprehensive error handling
     /// </summary>
+    [Authorize(Roles = "Admin")]
     public class CharacterController : Controller
     {
         private readonly ICharacterRepository _characterRepository;
