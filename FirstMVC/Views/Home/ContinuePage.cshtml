@@ -1,19 +1,44 @@
 @{
-    Layout = "_Layout";
+    Layout = null;
     ViewData["Title"] = "Welcome back!";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/ContinuePage.css" />
+</head>
+<body>
+    <!-- Back to home button -->
+    <a href="@Url.Action("Index", "Home")" class="back-home">← Back to Home</a>
 
-<div class="choose-character-page">
-    <div class="container">
-        <div class="header">
-            <h1 class="title">Welcome back!</h1>
-            <p class="subtitle">Continue by picking or confirming your character.</p>
-        </div>
-
-        <div class="mt-4">
-            <a asp-controller="Home" asp-action="Character" class="btn btn-primary">Choose your character</a>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ms-2">Back to landing</a>
+    <!-- Main content -->
+    <div class="page-container">
+        <h1>Welcome back!</h1>
+        
+        <div class="button-container">
+            <button id="continueBtn" class="action-btn continue-btn image-btn">
+                <img src="~/images/classroom.png" alt="Continue Story" />
+            </button>
+            <button id="newStoryBtn" class="action-btn new-story-btn">New Story</button>
         </div>
     </div>
-</div>
+
+    <!-- Popup modal -->
+    <div id="popup" class="popup-overlay" style="display: none;">
+        <div class="popup-box">
+            <h2>Start New Story?</h2>
+            <p>Your current save data will be deleted. This cannot be undone.</p>
+            <div class="popup-buttons">
+                <button id="cancelBtn" class="popup-btn cancel-btn">Cancel</button>
+                <button id="confirmBtn" class="popup-btn confirm-btn">Delete & Start New</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/continuepage.js"></script>
+</body>
+</html>
 
