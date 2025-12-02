@@ -45,7 +45,7 @@ namespace FirstMVC.Migrations
 
                     b.HasKey("CharacterID");
 
-                    b.ToTable("Characters");
+                    b.ToTable("Characters", (string)null);
                 });
 
             modelBuilder.Entity("FirstMVC.Models.Choice", b =>
@@ -71,7 +71,7 @@ namespace FirstMVC.Migrations
 
                     b.HasIndex("StoryActId");
 
-                    b.ToTable("Choice");
+                    b.ToTable("Choice", (string)null);
                 });
 
             modelBuilder.Entity("FirstMVC.Models.StoryAct", b =>
@@ -101,7 +101,7 @@ namespace FirstMVC.Migrations
 
                     b.HasIndex("CharacterId");
 
-                    b.ToTable("StoryActs");
+                    b.ToTable("StoryActs", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -316,7 +316,7 @@ namespace FirstMVC.Migrations
 
                     b.HasIndex("CurrentStoryActId");
 
-                    b.ToTable("UserProgress");
+                    b.ToTable("UserProgress", (string)null);
                 });
 
             modelBuilder.Entity("FirstMVC.Models.Choice", b =>
