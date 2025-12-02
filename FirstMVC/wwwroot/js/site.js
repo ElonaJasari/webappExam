@@ -68,3 +68,50 @@ function chooseCharacter() {
     grid.appendChild(card);
   });
 }
+
+function handleCharacterClick(character, cardElement) {
+  document.querySelectorAll('.character-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+cardElement.classList.add('selected'); 
+selectedCharacter = character; // store the selected character
+
+showPopup(character);
+}
+
+function showPopup(character) {
+  const popup = document.getElementById('characterPopup');
+  const popupImage = document.getElementById('popupCharacterimage');
+  const popupName = document.getElementById('popupCharacterName');
+  const popupDescription = document.getElementById('popupCharacter');
+  const nameInput = document.getElementById('characterNameInput');
+
+  if(!popup) {
+    console.error('There is an error');
+    return;
+  }
+
+  if (popupImage) {
+    popupImage.src = character.imageurl || '';
+    popupImage.alt = character.name;
+  }
+
+  if (popupName) {
+    popupName.textContent = character.name;
+  }
+
+  if (popupDescription) {
+    popupDescription.textContent = character.description || '';
+  }
+
+  if (nameInput) {
+    nameInput.value = '';
+    nameInput.focus();
+  }
+
+  popup.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+
+
+}
