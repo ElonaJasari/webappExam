@@ -79,7 +79,7 @@ public class AdminController : Controller
     public async Task<IActionResult> Choice()
     {
     var choices = await _context.Choices.ToListAsync();
-    return View(choices); 
+    return View(); 
     }
 
 }

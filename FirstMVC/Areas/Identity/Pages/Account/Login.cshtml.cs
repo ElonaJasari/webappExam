@@ -118,7 +118,7 @@ namespace FirstMVC.Areas.Identity.Pages.Account
                     var user = await _userManager.FindByEmailAsync(Input.Email) ?? await _userManager.FindByNameAsync(Input.Email);
 
                     if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
-                        return LocalRedirect("~/Admin/Choice"); // admin → admin page
+                        return LocalRedirect("~/Admin"); // admin → admin page
 
                     return LocalRedirect("~/Home/Character");   // normal user → Character
                 }
