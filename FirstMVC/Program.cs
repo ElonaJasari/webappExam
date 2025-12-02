@@ -79,49 +79,70 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Create the 4 core characters if none exist
-    if (!await dbContext.Characters.AnyAsync())
+    // Ensure the 4 core characters exist
+    var coreCharacterRoles = new[] { "ID_FRIEND1", "ID_FRIEND2", "ID_PARENT", "ID_PRINCIPAL" };
+    var existingRoles = await dbContext.Characters
+        .Where(c => coreCharacterRoles.Contains(c.Role))
+        .Select(c => c.Role)
+        .ToListAsync();
+
+    var charactersToAdd = new List<Characters>();
+
+    if (!existingRoles.Contains("ID_FRIEND1"))
     {
-        var coreCharacters = new[]
+        charactersToAdd.Add(new Characters
         {
-            new Characters
-            {
-                Name = "Friend 1",
-                Role = "ID_FRIEND1",
-                Description = "Your first friend in the story",
-                Dialog = "",
-                ImageUrl = "",
-                Translate = ""
-            },
-            new Characters
-            {
-                Name = "Friend 2",
-                Role = "ID_FRIEND2",
-                Description = "Your second friend in the story",
-                Dialog = "",
-                ImageUrl = "",
-                Translate = ""
-            },
-            new Characters
-            {
-                Name = "Parent",
-                Role = "ID_PARENT",
-                Description = "The parent character",
-                Dialog = "",
-                ImageUrl = "",
-                Translate = ""
-            },
-            new Characters
-            {
-                Name = "Principal",
-                Role = "ID_PRINCIPAL",
-                Description = "The school principal",
-                Dialog = "",
-                ImageUrl = "",
-                Translate = ""
-            }
-        };
-        dbContext.Characters.AddRange(coreCharacters);
+            Name = "Friend 1",
+            Role = "ID_FRIEND1",
+            Description = "Your first friend in the story",
+            Dialog = "",
+            ImageUrl = "",
+            Translate = ""
+        });
+    }
+
+    if (!existingRoles.Contains("ID_FRIEND2"))
+    {
+        charactersToAdd.Add(new Characters
+        {
+            Name = "Friend 2",
+            Role = "ID_FRIEND2",
+            Description = "Your second friend in the story",
+            Dialog = "",
+            ImageUrl = "",
+            Translate = ""
+        });
+    }
+
+    if (!existingRoles.Contains("ID_PARENT"))
+    {
+        charactersToAdd.Add(new Characters
+        {
+            Name = "Parent",
+            Role = "ID_PARENT",
+            Description = "The parent character",
+            Dialog = "",
+            ImageUrl = "",
+            Translate = ""
+        });
+    }
+
+    if (!existingRoles.Contains("ID_PRINCIPAL"))
+    {
+        charactersToAdd.Add(new Characters
+        {
+            Name = "Principal",
+            Role = "ID_PRINCIPAL",
+            Description = "The school principal",
+            Dialog = "",
+            ImageUrl = "",
+            Translate = ""
+        });
+    }
+
+    if (charactersToAdd.Any())
+    {
+        dbContext.Characters.AddRange(charactersToAdd);
         await dbContext.SaveChangesAsync();
     }
 }
