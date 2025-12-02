@@ -84,7 +84,7 @@ function showPopup(character) {
   const popupImage = document.getElementById('popupCharacterImage');
   const popupName = document.getElementById('popupCharacterName');
   const popupDescription = document.getElementById('popupCharacter');
-  const nameInput = document.getElementById('nameInput');
+  const nameInput = document.getElementById('characterNameInput');
 
   if(!popup) {
     console.error('There is an error');

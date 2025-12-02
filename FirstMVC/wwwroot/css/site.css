@@ -454,7 +454,7 @@ body {
   font-weight: 500;
 }
 
-.name-input {
+.character-name-input {
   width: 100%;
   padding: 12px 15px;
   background: rgba(40, 4, 65, 0.5);
@@ -466,13 +466,13 @@ body {
   box-sizing: border-box;
 }
 
-.name-input:focus {
+.character-name-input:focus {
   outline: none;
   border-color: #b794f6;
   box-shadow: 0 0 10px rgba(183, 148, 246, 0.3);
 }
 
-.name-input::placeholder {
+.character-name-input::placeholder {
   color: #a78bfa;
 }
 
