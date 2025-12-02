@@ -81,7 +81,7 @@ showPopup(character);
 
 function showPopup(character) {
   const popup = document.getElementById('characterPopup');
-  const popupImage = document.getElementById('popupCharacterimage');
+  const popupImage = document.getElementById('popupCharacterImage');
   const popupName = document.getElementById('popupCharacterName');
   const popupDescription = document.getElementById('popupCharacter');
   const nameInput = document.getElementById('characterNameInput');
@@ -92,7 +92,7 @@ function showPopup(character) {
   }
 
   if (popupImage) {
-    popupImage.src = character.imageurl || '';
+    popupImage.src = character.imageUrl || '';
     popupImage.alt = character.name;
   }
 
@@ -111,7 +111,5 @@ function showPopup(character) {
 
   popup.style.display = 'flex';
   document.body.style.overflow = 'hidden';
-
-
 
 }
