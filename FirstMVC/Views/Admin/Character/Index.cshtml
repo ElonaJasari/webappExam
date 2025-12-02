@@ -26,8 +26,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Role</th>
             <th>Name</th>
+            <th>Role</th>
             <th></th>
         </tr>
     </thead>
@@ -35,14 +35,14 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.Role</td>
             <td>@item.Name</td>
+            <td>@item.Role</td>
             <td class="text-end">
                 <a asp-controller="Character" asp-action="Edit" asp-route-id="@item.CharacterID" class="btn btn-sm btn-warning">Edit</a>
-                @if (!string.Equals(item.Role, "ID_FRIEND1", System.StringComparison.OrdinalIgnoreCase) &&
-                     !string.Equals(item.Role, "ID_FRIEND2", System.StringComparison.OrdinalIgnoreCase) &&
-                     !string.Equals(item.Role, "ID_PARENT", System.StringComparison.OrdinalIgnoreCase) &&
-                     !string.Equals(item.Role, "ID_PRINCIPAL", System.StringComparison.OrdinalIgnoreCase))
+                @if (!string.Equals(item.CharacterCode, "ID_FRIEND1", System.StringComparison.OrdinalIgnoreCase) &&
+                     !string.Equals(item.CharacterCode, "ID_FRIEND2", System.StringComparison.OrdinalIgnoreCase) &&
+                     !string.Equals(item.CharacterCode, "ID_PARENT", System.StringComparison.OrdinalIgnoreCase) &&
+                     !string.Equals(item.CharacterCode, "ID_PRINCIPAL", System.StringComparison.OrdinalIgnoreCase))
                 {
                     <a asp-controller="Character" asp-action="Delete" asp-route-id="@item.CharacterID" class="btn btn-sm btn-danger">Delete</a>
                 }

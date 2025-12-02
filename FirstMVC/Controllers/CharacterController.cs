@@ -266,8 +266,8 @@ namespace FirstMVC.Controllers
 
         private static bool IsCoreCharacter(Characters character)
         {
-            return !string.IsNullOrWhiteSpace(character.Role) &&
-                   CoreCharacterRoles.Contains(character.Role);
+            return !string.IsNullOrWhiteSpace(character.CharacterCode) &&
+                   CoreCharacterRoles.Contains(character.CharacterCode);
         }
     }
 }
