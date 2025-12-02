@@ -42,7 +42,8 @@
                 @if (!string.Equals(item.CharacterCode, "ID_FRIEND1", System.StringComparison.OrdinalIgnoreCase) &&
                      !string.Equals(item.CharacterCode, "ID_FRIEND2", System.StringComparison.OrdinalIgnoreCase) &&
                      !string.Equals(item.CharacterCode, "ID_PARENT", System.StringComparison.OrdinalIgnoreCase) &&
-                     !string.Equals(item.CharacterCode, "ID_PRINCIPAL", System.StringComparison.OrdinalIgnoreCase))
+                     !string.Equals(item.CharacterCode, "ID_PRINCIPAL", System.StringComparison.OrdinalIgnoreCase)&&
+                     !string.Equals(item.CharacterCode, "ID_TEACHER", System.StringComparison.OrdinalIgnoreCase))
                 {
                     <a asp-controller="Character" asp-action="Delete" asp-route-id="@item.CharacterID" class="btn btn-sm btn-danger">Delete</a>
                 }

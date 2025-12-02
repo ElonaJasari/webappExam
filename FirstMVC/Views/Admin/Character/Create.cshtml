@@ -23,6 +23,12 @@
             </div>
 
             <div class="mb-3">
+                <label asp-for="CharacterCode" class="form-label">Character Code (ID_TEACHER, etc.)</label>
+                <input asp-for="CharacterCode" class="form-control" />
+                <span asp-validation-for="CharacterCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
                 <label asp-for="Description" class="form-label"></label>
                 <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>

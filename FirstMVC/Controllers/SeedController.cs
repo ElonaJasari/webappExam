@@ -58,7 +58,7 @@ namespace FirstMVC.Controllers
                     Dialog = "",
                     ImageUrl = "",
                     Translate = ""
-                }
+                },
                 new Characters
                 {
                     Name = "Teach",
@@ -74,7 +74,7 @@ namespace FirstMVC.Controllers
             _context.Characters.AddRange(charactersToAdd);
             await _context.SaveChangesAsync();
             
-            return Content($"Added 4 characters: Friend 1, Friend 2, Parent, Principal. Go to /Character to manage them.");
+            return Content($"Added 5 characters: Friend 1, Friend 2, Parent, Principal, Teach. Go to /Character to manage them.");
         }
     }
 }

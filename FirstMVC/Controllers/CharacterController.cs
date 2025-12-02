@@ -20,7 +20,8 @@ namespace FirstMVC.Controllers
             "ID_FRIEND1",
             "ID_FRIEND2",
             "ID_PARENT",
-            "ID_PRINCIPAL"
+            "ID_PRINCIPAL",
+            "ID_TEACHER"
         };
 
         private readonly ICharacterRepository _characterRepository;

@@ -79,8 +79,8 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Ensure the 4 core characters exist
-    var coreCharacterCodes = new[] { "ID_FRIEND1", "ID_FRIEND2", "ID_PARENT", "ID_PRINCIPAL" };
+    // Ensure the 5 core characters exist
+    var coreCharacterCodes = new[] { "ID_FRIEND1", "ID_FRIEND2", "ID_PARENT", "ID_PRINCIPAL", "ID_TEACHER" };
     var existingCodes = await dbContext.Characters
         .Where(c => coreCharacterCodes.Contains(c.CharacterCode))
         .Select(c => c.CharacterCode)
@@ -138,6 +138,20 @@ using (var scope = app.Services.CreateScope())
             Role = "Principal",
             CharacterCode = "ID_PRINCIPAL",
             Description = "The school principal",
+            Dialog = "",
+            ImageUrl = "",
+            Translate = ""
+        });
+    }
+
+    if (!existingCodes.Contains("ID_TEACHER"))
+    {
+        charactersToAdd.Add(new Characters
+        {
+            Name = "Teach",
+            Role = "Teacher",
+            CharacterCode = "ID_TEACHER",
+            Description = "The school teacher",
             Dialog = "",
             ImageUrl = "",
             Translate = ""
