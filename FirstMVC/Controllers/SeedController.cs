@@ -59,6 +59,16 @@ namespace FirstMVC.Controllers
                     ImageUrl = "",
                     Translate = ""
                 }
+                new Characters
+                {
+                    Name = "Teach",
+                    Role = "Teacher",
+                    CharacterCode = "ID_TEACHER",
+                    Description = "The school teacher",
+                    Dialog = "",
+                    ImageUrl = "",
+                    Translate = "" 
+                }
             };
 
             _context.Characters.AddRange(charactersToAdd);
