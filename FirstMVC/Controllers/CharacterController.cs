@@ -190,6 +190,13 @@ namespace FirstMVC.Controllers
                 return NotFound();
             }
 
+            // Prevent deletion of core characters
+            if (id >= 1 && id <= 4)
+            {
+                TempData["Error"] = "Cannot delete core characters (Friend 1, Friend 2, Parent, Principal). These are protected system characters.";
+                return RedirectToAction(nameof(Index));
+            }
+
             try
             {
                 var character = await _characterRepository.GetByIdAsync(id.Value);
@@ -215,6 +222,13 @@ namespace FirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            // Prevent deletion of core characters
+            if (id >= 1 && id <= 4)
+            {
+                TempData["Error"] = "Cannot delete core characters (Friend 1, Friend 2, Parent, Principal). These are protected system characters.";
+                return RedirectToAction(nameof(Index));
+            }
+
             try
             {
                 var success = await _characterRepository.DeleteAsync(id);

@@ -26,10 +26,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
             <th>Role</th>
-            <th>Description</th>
+            <th>Name</th>
             <th></th>
         </tr>
     </thead>
@@ -37,14 +35,14 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.CharacterID</td>
-            <td>@item.Name</td>
             <td>@item.Role</td>
-            <td>@item.Description</td>
+            <td>@item.Name</td>
             <td class="text-end">
-                <a asp-controller="Character" asp-action="Details" asp-route-id="@item.CharacterID" class="btn btn-sm btn-secondary">Details</a>
                 <a asp-controller="Character" asp-action="Edit" asp-route-id="@item.CharacterID" class="btn btn-sm btn-warning">Edit</a>
-                <a asp-controller="Character" asp-action="Delete" asp-route-id="@item.CharacterID" class="btn btn-sm btn-danger">Delete</a>
+                @if (item.CharacterID > 4)
+                {
+                    <a asp-controller="Character" asp-action="Delete" asp-route-id="@item.CharacterID" class="btn btn-sm btn-danger">Delete</a>
+                }
             </td>
         </tr>
     }

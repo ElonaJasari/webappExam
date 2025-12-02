@@ -12,41 +12,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="mb-3">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
                 <label asp-for="Role" class="form-label"></label>
                 <input asp-for="Role" class="form-control" readonly />
                 <small class="text-muted">This field cannot be changed</small>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" readonly></textarea>
-                <small class="text-muted">This field cannot be changed</small>
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Dialog" class="form-label"></label>
-                <textarea asp-for="Dialog" class="form-control" readonly></textarea>
-                <small class="text-muted">This field cannot be changed</small>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="ImageUrl" class="form-label"></label>
+                <label asp-for="ImageUrl" class="form-label">Character Picture (URL)</label>
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <small class="text-muted">Enter the URL of the character's image</small>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Translate" class="form-label"></label>
-                <input asp-for="Translate" class="form-control" readonly />
-                <small class="text-muted">This field cannot be changed</small>
-            </div>
-
+            <input type="hidden" asp-for="Description" />
+            <input type="hidden" asp-for="Dialog" />
+            <input type="hidden" asp-for="Translate" />
             <input type="hidden" asp-for="Role" />
             <input type="hidden" asp-for="Description" />
             <input type="hidden" asp-for="Dialog" />
