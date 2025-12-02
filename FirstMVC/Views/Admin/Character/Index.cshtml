@@ -20,16 +20,15 @@
     </div>
 }
 
-<p>
-    <a asp-controller="Character" asp-action="Create" class="btn btn-primary">Create New</a>
+<p class="text-muted">
+    The character list below is read-only. Core story characters (Friend 1, Friend 2, Parent, Principal, Teacher)
+    are fixed and cannot be changed from the admin interface.
 </p>
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
             <th>Role</th>
-            <th>Description</th>
+            <th>Name</th>
             <th></th>
         </tr>
     </thead>
@@ -37,14 +36,10 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.CharacterID</td>
-            <td>@item.Name</td>
             <td>@item.Role</td>
-            <td>@item.Description</td>
+            <td>@item.Name</td>
             <td class="text-end">
-                <a asp-controller="Character" asp-action="Details" asp-route-id="@item.CharacterID" class="btn btn-sm btn-secondary">Details</a>
-                <a asp-controller="Character" asp-action="Edit" asp-route-id="@item.CharacterID" class="btn btn-sm btn-warning">Edit</a>
-                <a asp-controller="Character" asp-action="Delete" asp-route-id="@item.CharacterID" class="btn btn-sm btn-danger">Delete</a>
+                <a asp-controller="Character" asp-action="Details" asp-route-id="@item.CharacterID" class="btn btn-sm btn-secondary">View</a>
             </td>
         </tr>
     }

@@ -1,0 +1,55 @@
+@model FirstMVC.Models.TaskDB
+@{
+    ViewData["Title"] = "Create Test Task";
+}
+
+<h1>Create Test Task</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="Task" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Text" class="form-label"></label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+                <small class="text-muted">For example: word, sentence, verb, noun, etc.</small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StoryActId" class="form-label"></label>
+                <input asp-for="StoryActId" class="form-control" />
+                <span asp-validation-for="StoryActId" class="text-danger"></span>
+                <small class="text-muted">
+                    Optional link to the story act where this task belongs.
+                </small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-controller="Task" asp-action="Index" class="btn btn-secondary">Back to list</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

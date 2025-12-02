@@ -1,0 +1,60 @@
+@model IEnumerable<FirstMVC.Models.DictionaryWord>
+@{
+    ViewData["Title"] = "Test Dictionary";
+}
+
+<h1>Test Dictionary</h1>
+
+@* Display success/error messages reused from admin character views *@
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<p class="text-muted">
+    Here the teacher can add Northern Sami words or sentences and their Norwegian translations.
+    These entries can later be used to generate end-of-game tests.
+</p>
+
+<p>
+    <a asp-controller="DictionaryWord" asp-action="Create" class="btn btn-primary">Add word / sentence</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Story Act</th>
+            <th>Text (Northern Sami)</th>
+            <th>Type</th>
+            <th>Translation / description (Norwegian)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.StoryActId</td>
+            <td>@item.Text</td>
+            <td>@item.Type</td>
+            <td>@item.Description</td>
+            <td class="text-end">
+                <a asp-controller="DictionaryWord" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                <a asp-controller="DictionaryWord" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

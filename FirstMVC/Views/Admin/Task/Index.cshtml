@@ -1,0 +1,108 @@
+@model IEnumerable<FirstMVC.Models.TaskDB>
+@{
+    ViewData["Title"] = "Test Tasks - Quick Add";
+}
+
+<h1>Test Tasks Management</h1>
+
+@* Display success/error messages *@
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<p class="text-muted">
+    Quickly add words and sentences that students will be tested on. Enter the Northern Sami text and Norwegian translation.
+</p>
+
+<!-- Quick Add Form -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Quick Add New Task</h5>
+    </div>
+    <div class="card-body">
+        <form asp-controller="Task" asp-action="Create" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div class="col-md-4">
+                <label for="Text" class="form-label">Northern Sami Text</label>
+                <input type="text" class="form-control" id="Text" name="Text" required />
+            </div>
+            <div class="col-md-3">
+                <label for="Type" class="form-label">Type</label>
+                <select class="form-select" id="Type" name="Type" required>
+                    <option value="word">Word</option>
+                    <option value="sentence">Sentence</option>
+                    <option value="verb">Verb</option>
+                    <option value="noun">Noun</option>
+                    <option value="phrase">Phrase</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="Description" class="form-label">Norwegian Translation</label>
+                <input type="text" class="form-control" id="Description" name="Description" required />
+            </div>
+            <div class="col-md-1">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary w-100">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tasks List -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Current Test Tasks (@Model.Count() items)</h5>
+    </div>
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <p class="text-muted">No tasks yet. Add your first task above!</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Northern Sami</th>
+                            <th style="width: 15%">Type</th>
+                            <th style="width: 35%">Norwegian Translation</th>
+                            <th style="width: 20%" class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.Text</strong></td>
+                            <td><span class="badge bg-info">@item.Type</span></td>
+                            <td>@item.Description</td>
+                            <td class="text-end">
+                                <a asp-controller="Task" asp-action="Edit" asp-route-id="@item.TaskId" class="btn btn-sm btn-outline-warning">Edit</a>
+                                <a asp-controller="Task" asp-action="Delete" asp-route-id="@item.TaskId" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Back to Admin Dashboard</a>
+</div>
+
+

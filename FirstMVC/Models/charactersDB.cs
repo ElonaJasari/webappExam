@@ -25,6 +25,10 @@ namespace FirstMVC.Models
         [Display(Name = "Character Role")]
         public string Role { get; set; } = string.Empty;
         
+        // Hidden field - internal identifier for code logic (ID_FRIEND1, ID_TEACHER, etc.)
+        [StringLength(50)]
+        public string? CharacterCode { get; set; }
+        
         // Didnt do Errormessage fsince the dialog amount is unknown
         public string? Dialog { get; set; }
         
