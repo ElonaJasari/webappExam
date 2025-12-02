@@ -106,6 +106,7 @@ function showPopup(character) {
 
   if (nameInput) {
     nameInput.value = '';
+    nameInput.placeholder = character.name;
     nameInput.focus();
   }
 
@@ -113,3 +114,13 @@ function showPopup(character) {
   document.body.style.overflow = 'hidden';
 
 }
+
+function closePopup() {
+  const popup = document.getElementById('characterPopup');
+  if (popup) {
+    popup.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+closePopup();
