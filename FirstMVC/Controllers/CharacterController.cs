@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FirstMVC.Models;
+using FirstMVC.Data;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FirstMVC.Controllers
