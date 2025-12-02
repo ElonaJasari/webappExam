@@ -22,7 +22,8 @@ namespace FirstMVC.Controllers
                 new Characters
                 {
                     Name = "Friend 1",
-                    Role = "ID_FRIEND1",
+                    Role = "Female Friend",
+                    CharacterCode = "ID_FRIEND1",
                     Description = "Your first friend in the story",
                     Dialog = "",
                     ImageUrl = "",
@@ -31,7 +32,8 @@ namespace FirstMVC.Controllers
                 new Characters
                 {
                     Name = "Friend 2",
-                    Role = "ID_FRIEND2",
+                    Role = "Male Friend",
+                    CharacterCode = "ID_FRIEND2",
                     Description = "Your second friend in the story",
                     Dialog = "",
                     ImageUrl = "",
@@ -40,7 +42,8 @@ namespace FirstMVC.Controllers
                 new Characters
                 {
                     Name = "Parent",
-                    Role = "ID_PARENT",
+                    Role = "Parent",
+                    CharacterCode = "ID_PARENT",
                     Description = "The parent character",
                     Dialog = "",
                     ImageUrl = "",
@@ -49,7 +52,8 @@ namespace FirstMVC.Controllers
                 new Characters
                 {
                     Name = "Principal",
-                    Role = "ID_PRINCIPAL",
+                    Role = "Principal",
+                    CharacterCode = "ID_PRINCIPAL",
                     Description = "The school principal",
                     Dialog = "",
                     ImageUrl = "",
