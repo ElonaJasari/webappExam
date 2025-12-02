@@ -23,17 +23,17 @@ const characters = [
   },
   {
     id: 4,
-    name: "Character 4",
-    description: "....",
+    name: "Aurora Borealis",
+    description: "caring, fearless, strong",
     dialog: "....",
-    imageUrl: "",
+    imageUrl: "/images/awsome_girl.png",
   },
   {
     id: 5,
-    name: "Character 5",
-    description: "....",
+    name: "Chloe Kelly",
+    description: "Pressure? What pressure?",
     dialog: "....",
-    imageUrl: "",
+    imageUrl: "/images/chloekelly.png",
   },
 ];
 
