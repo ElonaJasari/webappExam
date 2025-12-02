@@ -80,20 +80,21 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Ensure the 4 core characters exist
-    var coreCharacterRoles = new[] { "ID_FRIEND1", "ID_FRIEND2", "ID_PARENT", "ID_PRINCIPAL" };
-    var existingRoles = await dbContext.Characters
-        .Where(c => coreCharacterRoles.Contains(c.Role))
-        .Select(c => c.Role)
+    var coreCharacterCodes = new[] { "ID_FRIEND1", "ID_FRIEND2", "ID_PARENT", "ID_PRINCIPAL" };
+    var existingCodes = await dbContext.Characters
+        .Where(c => coreCharacterCodes.Contains(c.CharacterCode))
+        .Select(c => c.CharacterCode)
         .ToListAsync();
 
     var charactersToAdd = new List<Characters>();
 
-    if (!existingRoles.Contains("ID_FRIEND1"))
+    if (!existingCodes.Contains("ID_FRIEND1"))
     {
         charactersToAdd.Add(new Characters
         {
             Name = "Friend 1",
-            Role = "ID_FRIEND1",
+            Role = "Female Friend",
+            CharacterCode = "ID_FRIEND1",
             Description = "Your first friend in the story",
             Dialog = "",
             ImageUrl = "",
@@ -101,12 +102,13 @@ using (var scope = app.Services.CreateScope())
         });
     }
 
-    if (!existingRoles.Contains("ID_FRIEND2"))
+    if (!existingCodes.Contains("ID_FRIEND2"))
     {
         charactersToAdd.Add(new Characters
         {
             Name = "Friend 2",
-            Role = "ID_FRIEND2",
+            Role = "Female Friend",
+            CharacterCode = "ID_FRIEND2",
             Description = "Your second friend in the story",
             Dialog = "",
             ImageUrl = "",
@@ -114,12 +116,13 @@ using (var scope = app.Services.CreateScope())
         });
     }
 
-    if (!existingRoles.Contains("ID_PARENT"))
+    if (!existingCodes.Contains("ID_PARENT"))
     {
         charactersToAdd.Add(new Characters
         {
             Name = "Parent",
-            Role = "ID_PARENT",
+            Role = "Parent",
+            CharacterCode = "ID_PARENT",
             Description = "The parent character",
             Dialog = "",
             ImageUrl = "",
@@ -127,12 +130,13 @@ using (var scope = app.Services.CreateScope())
         });
     }
 
-    if (!existingRoles.Contains("ID_PRINCIPAL"))
+    if (!existingCodes.Contains("ID_PRINCIPAL"))
     {
         charactersToAdd.Add(new Characters
         {
             Name = "Principal",
-            Role = "ID_PRINCIPAL",
+            Role = "Principal",
+            CharacterCode = "ID_PRINCIPAL",
             Description = "The school principal",
             Dialog = "",
             ImageUrl = "",
