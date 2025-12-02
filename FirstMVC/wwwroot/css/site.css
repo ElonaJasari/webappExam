@@ -442,7 +442,7 @@ body {
   font-size: 1rem;
 }
 
-.name-input-section {
+.name-input {
   margin-top: 20px;
 }
 
@@ -454,7 +454,7 @@ body {
   font-weight: 500;
 }
 
-.character-name-input {
+.name-input {
   width: 100%;
   padding: 12px 15px;
   background: rgba(40, 4, 65, 0.5);
@@ -466,13 +466,13 @@ body {
   box-sizing: border-box;
 }
 
-.character-name-input:focus {
+.name-input:focus {
   outline: none;
   border-color: #b794f6;
   box-shadow: 0 0 10px rgba(183, 148, 246, 0.3);
 }
 
-.character-name-input::placeholder {
+.name-input::placeholder {
   color: #a78bfa;
 }
 
