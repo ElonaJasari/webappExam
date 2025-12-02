@@ -23,8 +23,7 @@ namespace FirstMVC.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
-            UserManager<IdentityUser> userManager,
+        public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
             ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
@@ -105,7 +104,7 @@ namespace FirstMVC.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -113,21 +112,15 @@ namespace FirstMVC.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    
-                    // Check if user is admin
-                    var user = await _userManager.FindByEmailAsync(Input.Email);
-                    if (await _userManager.IsInRoleAsync(user, "Admin"))
-                    {
-                        return LocalRedirect("/Admin");
-                    }
-                    
-                    return LocalRedirect("/Home");
+                    var user = await _userManager.FindByEmailAsync(Input.Email) ?? await _userManager.FindByNameAsync(Input.Email);
+
+                    if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
+                        return LocalRedirect("~/Admin/Choice"); // admin → admin page
+
+                    return LocalRedirect("~/Home/Character");   // normal user → Character
                 }
                 if (result.RequiresTwoFactor)
                 {

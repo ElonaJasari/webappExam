@@ -1,0 +1,30 @@
+@{
+    Layout = null; // Disable shared layout for this page
+    ViewData["Title"] = "Choose your character!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bures!</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="choose-character-page">
+        <div class="container">
+            <div class="header">
+                <h1 class="title">Choose your character!</h1>
+                <p class="subtitle">Select a character to begin your game</p>
+            </div>
+
+            <div class="characters-grid" id="charactersGrid"></div>
+        </div>
+
+        <div class="popup-window" id="characterPopup" style="display:none;"></div>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+

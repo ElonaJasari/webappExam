@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FirstMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirstMVC.Controllers;
 // Controller for general site pages
@@ -27,5 +28,14 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [Authorize]
+    public IActionResult Character()
+    {
+        if (User.IsInRole("Admin"))
+            return RedirectToAction("Index", "Choice", new { area = "Admin" });
+
+        return View(); // Views/Home/Character.cshtml
     }
 }
