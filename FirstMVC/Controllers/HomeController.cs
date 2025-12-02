@@ -38,4 +38,19 @@ public class HomeController : Controller
 
         return View(); // Views/Home/Character.cshtml
     }
+
+    [Authorize]
+    public IActionResult NewUserPage()
+    {
+        // If admin, keep them on admin area
+        if (User.IsInRole("Admin")) return RedirectToAction("Index", "Home", new { area = "Admin" });
+        return View();
+    }
+
+    [Authorize]
+    public IActionResult ContinuePage()
+    {
+        if (User.IsInRole("Admin")) return RedirectToAction("Index", "Home", new { area = "Admin" });
+        return View();
+    }
 }
