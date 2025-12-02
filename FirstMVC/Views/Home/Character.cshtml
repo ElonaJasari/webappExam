@@ -24,6 +24,30 @@
         <div class="popup-window" id="characterPopup" style="display:none;"></div>
     </div>
 
+    <div class="popup-window" id="characterPopup" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>Choose your character name</h2>
+                <button class="popup-close" id="closePopup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="selected-character">
+                    <img id="popupCharacterImage" src="" alt="Character" class="popup-character-image">
+                        <div class="popup-character-info">
+                        <h3 id="popupCharacterName"></h3>
+                        <p id="popupCharacter"></p>
+                    </div>
+                </div>
+                <div class="popup-footer">
+                    <button class="btn-cancel" id="cancelButton">Cancel</button>
+                    <button class="btn-save" id="saveButton">Start playing</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
