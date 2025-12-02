@@ -120,7 +120,7 @@ namespace FirstMVC.Areas.Identity.Pages.Account
                     if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
                         return LocalRedirect("~/Admin"); // admin → admin page
 
-                    return LocalRedirect("~/Home/Character");   // normal user → Character
+                    return LocalRedirect("~/Home/Continuepage");   // normal user → Continue page
                 }
                 if (result.RequiresTwoFactor)
                 {

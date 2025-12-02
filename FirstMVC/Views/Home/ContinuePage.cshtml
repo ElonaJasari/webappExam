@@ -1,0 +1,19 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Welcome back!";
+}
+
+<div class="choose-character-page">
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Welcome back!</h1>
+            <p class="subtitle">Continue by picking or confirming your character.</p>
+        </div>
+
+        <div class="mt-4">
+            <a asp-controller="Home" asp-action="Character" class="btn btn-primary">Choose your character</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ms-2">Back to landing</a>
+        </div>
+    </div>
+</div>
+
