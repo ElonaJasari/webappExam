@@ -1,69 +1,70 @@
 ﻿// javascript code
-const characters = [ // fix db later
-    {
+const characters = [
+  {
     id: 1,
-    name: "Character 1",
-    description: "....",
+    name: "Eiven Nordflamme",
+    description: "Calm, grounded, quiet clumsy",
     dialog: "....",
-    imageUrl: ""
-},
-{
+    imageUrl: "/images/cool_dude.png", // fix path
+  },
+  {
     id: 2,
-    name: "Character 2",
-    description: "....",
-    dialog: "....",
-    imageUrl: ""
-},
-{
+    name: "Vargár Ravdna",
+    description: "<i>HIMOTHY</i>",
+    dialog: "...",
+    imageUrl: "/images/confident_dude.png",
+  },
+  {
     id: 3,
-    name: "Character 3",
-    description: "....",
+    name: "TUNG TUNG SAMUR",
+    description: "TUNG TUNG THE GREAT",
     dialog: "....",
-    imageUrl: ""
-},
-{
+    imageUrl: "/images/tung_tung.png",
+  },
+  {
     id: 4,
     name: "Character 4",
     description: "....",
     dialog: "....",
-    imageUrl: ""
-},
-{
+    imageUrl: "",
+  },
+  {
     id: 5,
     name: "Character 5",
     description: "....",
     dialog: "....",
-    imageUrl: ""
-}
+    imageUrl: "",
+  },
 ];
 
 let selectedCharacter = null;
 let savedCharacterName = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-    chooseCharacter();
-})
+document.addEventListener("DOMContentLoaded", () => {
+  chooseCharacter();
+});
 
 // doing an innerHTML to generate the cards dynamically, so we dont need to write/repeat it five times
-function chooseCharacter(){
-    const grid = document.getElementById('charactersGrid');
+function chooseCharacter() {
+  const grid = document.getElementById("charactersGrid");
+  if (!grid) return;
 
-    characters.forEach(character => {
-        const card = document.createElement('div');
-        card.className = 'character-card';
+  grid.innerHTML = ""; // clear before re-render
 
-        card.innerHTML = `
-            <div class="character-image-container">
-                <img class="character-image" src="${character.imageUrl}" alt="${character.name}">
-                </div>
-            <div class="character-info">
-                <h3 class="character-name">${character.name}</h3>
-                <p class="character-description">${character.description}</p>
-            </div> `;
-
-            card.addEventListener('click', () => handleCharacterClick(character, card));
-            grid.appendChild(card);
-
-    });
-
+  characters.forEach((character) => {
+    const card = document.createElement("div");
+    card.className = "character-card";
+    card.innerHTML = `
+      <div class="character-image-container">
+        <img class="character-image" src="${character.imageUrl}" alt="${character.name}">
+      </div>
+      <div class="character-info">
+        <h3 class="character-name">${character.name}</h3>
+        <p class="character-description">${character.description}</p>
+      </div>`;
+    card.addEventListener("click", () =>
+      handleCharacterClick?.(character, card)
+    );
+    grid.appendChild(card);
+  });
 }
