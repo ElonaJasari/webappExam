@@ -81,7 +81,7 @@ showPopup(character);
 
 function showPopup(character) {
   const popup = document.getElementById('characterPopup');
-  const popupImage = document.getElementById('popupCharacterimage');
+  const popupImage = document.getElementById('popupCharacterImage');
   const popupName = document.getElementById('popupCharacterName');
   const popupDescription = document.getElementById('popupCharacter');
   const nameInput = document.getElementById('characterNameInput');
@@ -92,7 +92,7 @@ function showPopup(character) {
   }
 
   if (popupImage) {
-    popupImage.src = character.imageurl || '';
+    popupImage.src = character.imageUrl || '';
     popupImage.alt = character.name;
   }
 
@@ -106,12 +106,21 @@ function showPopup(character) {
 
   if (nameInput) {
     nameInput.value = '';
+    nameInput.placeholder = character.name;
     nameInput.focus();
   }
 
   popup.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 
-
-
 }
+
+function closePopup() {
+  const popup = document.getElementById('characterPopup');
+  if (popup) {
+    popup.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+closePopup();

@@ -21,9 +21,6 @@
             <div class="characters-grid" id="charactersGrid"></div>
         </div>
 
-        <div class="popup-window" id="characterPopup" style="display:none;"></div>
-    </div>
-
     <div class="popup-window" id="characterPopup" style="display: none;">
         <div class="popup-content">
             <div class="popup-header">
@@ -38,6 +35,10 @@
                         <p id="popupCharacter"></p>
                     </div>
                 </div>
+                <div class="name-input">
+                    <label for="characterNameInput">Enter your character name:</label>
+                    <input type="text" id="characterNameInput" placeholder="" maxlength="30">
+                </div>
                 <div class="popup-footer">
                     <button class="btn-cancel" id="cancelButton">Cancel</button>
                     <button class="btn-save" id="saveButton">Start playing</button>
@@ -45,8 +46,6 @@
             </div>
         </div>
     </div>
-
-
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
