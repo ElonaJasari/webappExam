@@ -25,54 +25,5 @@ namespace FirstMVC.Data
 
         // DbSet for choices
         public DbSet<Choice> Choices { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Seed Characters data
-            modelBuilder.Entity<Characters>().HasData(
-                new Characters
-                {
-                    CharacterID = 1,
-                    Name = "Friend 1",
-                    Role = "ID_FRIEND1",
-                    Description = "Your first friend in the story",
-                    Dialog = "",
-                    ImageUrl = "",
-                    Translate = ""
-                },
-                new Characters
-                {
-                    CharacterID = 2,
-                    Name = "Friend 2",
-                    Role = "ID_FRIEND2",
-                    Description = "Your second friend in the story",
-                    Dialog = "",
-                    ImageUrl = "",
-                    Translate = ""
-                },
-                new Characters
-                {
-                    CharacterID = 3,
-                    Name = "Parent",
-                    Role = "ID_PARENT",
-                    Description = "The parent character",
-                    Dialog = "",
-                    ImageUrl = "",
-                    Translate = ""
-                },
-                new Characters
-                {
-                    CharacterID = 4,
-                    Name = "Principal",
-                    Role = "ID_PRINCIPAL",
-                    Description = "The school principal",
-                    Dialog = "",
-                    ImageUrl = "",
-                    Translate = ""
-                }
-            );
-        }
     }
 }

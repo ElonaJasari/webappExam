@@ -48,7 +48,7 @@ app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Create admin role and user, and mock character
+    // Create admin role and user, and ensure core characters exist
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -79,19 +79,49 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Create mock/placeholder character if none exists
+    // Create the 4 core characters if none exist
     if (!await dbContext.Characters.AnyAsync())
     {
-        var mockCharacter = new Characters
+        var coreCharacters = new[]
         {
-            Name = "Sample Character",
-            Role = "Protagonist",
-            Description = "This is a placeholder character. Edit the name and image URL to customize it.",
-            Dialog = "Hello! I am a sample character.",
-            ImageUrl = "https://via.placeholder.com/300",
-            Translate = "Sample translation"
+            new Characters
+            {
+                Name = "Friend 1",
+                Role = "ID_FRIEND1",
+                Description = "Your first friend in the story",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            },
+            new Characters
+            {
+                Name = "Friend 2",
+                Role = "ID_FRIEND2",
+                Description = "Your second friend in the story",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            },
+            new Characters
+            {
+                Name = "Parent",
+                Role = "ID_PARENT",
+                Description = "The parent character",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            },
+            new Characters
+            {
+                Name = "Principal",
+                Role = "ID_PRINCIPAL",
+                Description = "The school principal",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            }
         };
-        dbContext.Characters.Add(mockCharacter);
+        dbContext.Characters.AddRange(coreCharacters);
         await dbContext.SaveChangesAsync();
     }
 }

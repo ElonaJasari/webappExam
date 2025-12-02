@@ -1,6 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FirstMVC.Data;
 using FirstMVC.Models;
 using FirstMVC.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,14 @@ namespace FirstMVC.Controllers
     [Authorize(Roles = "Admin")]
     public class CharacterController : Controller
     {
+        private static readonly HashSet<string> CoreCharacterRoles = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "ID_FRIEND1",
+            "ID_FRIEND2",
+            "ID_PARENT",
+            "ID_PRINCIPAL"
+        };
+
         private readonly ICharacterRepository _characterRepository;
         private readonly ILogger<CharacterController> _logger;
 
@@ -190,13 +199,6 @@ namespace FirstMVC.Controllers
                 return NotFound();
             }
 
-            // Prevent deletion of core characters
-            if (id >= 1 && id <= 4)
-            {
-                TempData["Error"] = "Cannot delete core characters (Friend 1, Friend 2, Parent, Principal). These are protected system characters.";
-                return RedirectToAction(nameof(Index));
-            }
-
             try
             {
                 var character = await _characterRepository.GetByIdAsync(id.Value);
@@ -205,6 +207,13 @@ namespace FirstMVC.Controllers
                     _logger.LogWarning("Character with ID {CharacterId} not found for deletion", id);
                     return NotFound();
                 }
+
+                if (IsCoreCharacter(character))
+                {
+                    TempData["Error"] = "Cannot delete core characters (Friend 1, Friend 2, Parent, Principal). These are protected system characters.";
+                    return RedirectToAction(nameof(Index));
+                }
+
                 return View("~/Views/Admin/Character/Delete.cshtml", character);
             }
             catch (Exception ex)
@@ -222,15 +231,21 @@ namespace FirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // Prevent deletion of core characters
-            if (id >= 1 && id <= 4)
-            {
-                TempData["Error"] = "Cannot delete core characters (Friend 1, Friend 2, Parent, Principal). These are protected system characters.";
-                return RedirectToAction(nameof(Index));
-            }
-
             try
             {
+                var character = await _characterRepository.GetByIdAsync(id);
+                if (character == null)
+                {
+                    TempData["Error"] = "Character not found.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                if (IsCoreCharacter(character))
+                {
+                    TempData["Error"] = "Cannot delete core characters (Friend 1, Friend 2, Parent, Principal). These are protected system characters.";
+                    return RedirectToAction(nameof(Index));
+                }
+
                 var success = await _characterRepository.DeleteAsync(id);
                 if (!success)
                 {
@@ -247,6 +262,12 @@ namespace FirstMVC.Controllers
                 TempData["Error"] = "Unable to delete character. Please try again.";
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        private static bool IsCoreCharacter(Characters character)
+        {
+            return !string.IsNullOrWhiteSpace(character.Role) &&
+                   CoreCharacterRoles.Contains(character.Role);
         }
     }
 }

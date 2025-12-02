@@ -39,7 +39,10 @@
             <td>@item.Name</td>
             <td class="text-end">
                 <a asp-controller="Character" asp-action="Edit" asp-route-id="@item.CharacterID" class="btn btn-sm btn-warning">Edit</a>
-                @if (item.CharacterID > 4)
+                @if (!string.Equals(item.Role, "ID_FRIEND1", System.StringComparison.OrdinalIgnoreCase) &&
+                     !string.Equals(item.Role, "ID_FRIEND2", System.StringComparison.OrdinalIgnoreCase) &&
+                     !string.Equals(item.Role, "ID_PARENT", System.StringComparison.OrdinalIgnoreCase) &&
+                     !string.Equals(item.Role, "ID_PRINCIPAL", System.StringComparison.OrdinalIgnoreCase))
                 {
                     <a asp-controller="Character" asp-action="Delete" asp-route-id="@item.CharacterID" class="btn btn-sm btn-danger">Delete</a>
                 }
