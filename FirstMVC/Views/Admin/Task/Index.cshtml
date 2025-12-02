@@ -1,0 +1,61 @@
+@model IEnumerable<FirstMVC.Models.TaskDB>
+@{
+    ViewData["Title"] = "TaskDB - Test Tasks";
+}
+
+<h1>TaskDB - Test Tasks</h1>
+
+@* Display success/error messages (same style as Character/Admin views) *@
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<p class="text-muted">
+    Here the teacher (Admin) can choose which words and sentences will be used to test the students.
+    Each entry in TaskDB is one test item (Northern Sami text + Norwegian translation).
+    Only Admin users can access this page.
+</p>
+
+<p>
+    <a asp-controller="Task" asp-action="Create" class="btn btn-primary">Add new test task</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Story Act</th>
+            <th>Text (Northern Sami)</th>
+            <th>Type</th>
+            <th>Translation / Description (Norwegian)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.StoryActId</td>
+            <td>@item.Text</td>
+            <td>@item.Type</td>
+            <td>@item.Description</td>
+            <td class="text-end">
+                <a asp-controller="Task" asp-action="Edit" asp-route-id="@item.TaskId" class="btn btn-sm btn-warning">Edit</a>
+                <a asp-controller="Task" asp-action="Delete" asp-route-id="@item.TaskId" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

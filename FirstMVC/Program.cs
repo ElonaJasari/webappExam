@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using Microsoft.AspNetCore.Identity;
-using FirstMVC.Repositories;
 using FirstMVC.Models; // Add this using statement
+using FirstMVC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +13,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Register Repository Pattern (Data Access Layer)
-builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+// Register Repository Pattern (Data Access Layer) for TaskDB
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 // Register Identity (uses Identity UI)
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -48,7 +48,7 @@ app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-    // Create admin role and user, and ensure core characters exist
+// Create admin role and user, and mock character
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -79,88 +79,49 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Ensure the 5 core characters exist
-    var coreCharacterCodes = new[] { "ID_FRIEND1", "ID_FRIEND2", "ID_PARENT", "ID_PRINCIPAL", "ID_TEACHER" };
-    var existingCodes = await dbContext.Characters
-        .Where(c => coreCharacterCodes.Contains(c.CharacterCode))
-        .Select(c => c.CharacterCode)
-        .ToListAsync();
-
-    var charactersToAdd = new List<Characters>();
-
-    if (!existingCodes.Contains("ID_FRIEND1"))
+    // Create the 4 core characters if none exist
+    if (!await dbContext.Characters.AnyAsync())
     {
-        charactersToAdd.Add(new Characters
+        var coreCharacters = new[]
         {
-            Name = "Friend 1",
-            Role = "Female Friend",
-            CharacterCode = "ID_FRIEND1",
-            Description = "Your first friend in the story",
-            Dialog = "",
-            ImageUrl = "",
-            Translate = ""
-        });
-    }
-
-    if (!existingCodes.Contains("ID_FRIEND2"))
-    {
-        charactersToAdd.Add(new Characters
-        {
-            Name = "Friend 2",
-            Role = "Female Friend",
-            CharacterCode = "ID_FRIEND2",
-            Description = "Your second friend in the story",
-            Dialog = "",
-            ImageUrl = "",
-            Translate = ""
-        });
-    }
-
-    if (!existingCodes.Contains("ID_PARENT"))
-    {
-        charactersToAdd.Add(new Characters
-        {
-            Name = "Parent",
-            Role = "Parent",
-            CharacterCode = "ID_PARENT",
-            Description = "The parent character",
-            Dialog = "",
-            ImageUrl = "",
-            Translate = ""
-        });
-    }
-
-    if (!existingCodes.Contains("ID_PRINCIPAL"))
-    {
-        charactersToAdd.Add(new Characters
-        {
-            Name = "Principal",
-            Role = "Principal",
-            CharacterCode = "ID_PRINCIPAL",
-            Description = "The school principal",
-            Dialog = "",
-            ImageUrl = "",
-            Translate = ""
-        });
-    }
-
-    if (!existingCodes.Contains("ID_TEACHER"))
-    {
-        charactersToAdd.Add(new Characters
-        {
-            Name = "Teach",
-            Role = "Teacher",
-            CharacterCode = "ID_TEACHER",
-            Description = "The school teacher",
-            Dialog = "",
-            ImageUrl = "",
-            Translate = ""
-        });
-    }
-
-    if (charactersToAdd.Any())
-    {
-        dbContext.Characters.AddRange(charactersToAdd);
+            new Characters
+            {
+                Name = "Friend 1",
+                Role = "ID_FRIEND1",
+                Description = "Your first friend in the story",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            },
+            new Characters
+            {
+                Name = "Friend 2",
+                Role = "ID_FRIEND2",
+                Description = "Your second friend in the story",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            },
+            new Characters
+            {
+                Name = "Parent",
+                Role = "ID_PARENT",
+                Description = "The parent character",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            },
+            new Characters
+            {
+                Name = "Principal",
+                Role = "ID_PRINCIPAL",
+                Description = "The school principal",
+                Dialog = "",
+                ImageUrl = "",
+                Translate = ""
+            }
+        };
+        dbContext.Characters.AddRange(coreCharacters);
         await dbContext.SaveChangesAsync();
     }
 }

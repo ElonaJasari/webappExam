@@ -25,5 +25,9 @@ namespace FirstMVC.Data
 
         // DbSet for choices
         public DbSet<Choice> Choices { get; set; }
+
+        // DbSet for test tasks (words / sentences) that the teacher chooses for quizzes.
+        // This is the TaskDB table that powers the end-of-game language tests.
+        public DbSet<TaskDB> Tasks { get; set; }
     }
 }

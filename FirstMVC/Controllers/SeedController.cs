@@ -76,5 +76,20 @@ namespace FirstMVC.Controllers
             
             return Content($"Added 5 characters: Friend 1, Friend 2, Parent, Principal, Teach. Go to /Character to manage them.");
         }
+
+        // Navigate to /Seed/UpdateTeacherName to run this
+        public async Task<IActionResult> UpdateTeacherName()
+        {
+            var teacher = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == "ID_TEACHER");
+            
+            if (teacher != null)
+            {
+                teacher.Name = "Teach";
+                await _context.SaveChangesAsync();
+                return Content("Updated Teacher name to 'Teach'. Go to /Character to verify.");
+            }
+            
+            return Content("Teacher character not found.");
+        }
     }
 }

@@ -1,0 +1,25 @@
+@model FirstMVC.Models.DictionaryWord
+@{
+    ViewData["Title"] = "Delete Test Word";
+}
+
+<h1>Delete Test Word / Sentence</h1>
+<hr />
+
+<h3>Are you sure you want to delete this entry?</h3>
+
+<dl class="row">
+    <dt class="col-sm-2">Text (Northern Sami)</dt>
+    <dd class="col-sm-10">@Model.Text</dd>
+
+    <dt class="col-sm-2">Translation (Norwegian)</dt>
+    <dd class="col-sm-10">@Model.Description</dd>
+</dl>
+
+<form asp-controller="DictionaryWord" asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-controller="DictionaryWord" asp-action="Index" class="btn btn-secondary">Back to list</a>
+</form>
+
+

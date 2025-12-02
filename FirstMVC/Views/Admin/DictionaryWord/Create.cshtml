@@ -1,0 +1,54 @@
+@model FirstMVC.Models.DictionaryWord
+@{
+    ViewData["Title"] = "Add Test Word";
+}
+
+<h1>Add Test Word / Sentence</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="DictionaryWord" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Text" class="form-label">Text (Northern Sami)</label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label">Type (word / sentence / verb / noun ...)</label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StoryActId" class="form-label">Story Act Id</label>
+                <input asp-for="StoryActId" class="form-control" />
+                <span asp-validation-for="StoryActId" class="text-danger"></span>
+                <small class="text-muted">
+                    Optional link to a story act, so you can test words from a specific part of the story.
+                </small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Translation / Description (Norwegian)</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-controller="DictionaryWord" asp-action="Index" class="btn btn-secondary">Back to list</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
