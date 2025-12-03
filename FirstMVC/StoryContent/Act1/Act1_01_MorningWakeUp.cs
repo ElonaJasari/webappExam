@@ -99,8 +99,13 @@ public static class Act1_01_MorningWakeUp
                 SceneId = 5,
                 ActCategory = 1,
                 Title = "Breakfast", 
+<<<<<<< HEAD
+                CharacterCode = "null",
+                ImageUrl = (string?)"/images/classroom.png",
+=======
                 CharacterCode = (string?)null,
                 ImageUrl = (string?)"/images/kitchen.png",
+>>>>>>> 071a654856170452cc5cbf1481b2c9b3ac0bc1b7
                 Content = "You head down to the kitchen and see your parents sitting at the table eating breakfast. They look up and smile as you enter.",
                 Choices = new[] {
                     new { 
