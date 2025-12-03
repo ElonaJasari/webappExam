@@ -101,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupPopupHandlers() {
-    const popup = document.getElementById('characterPopup');
-    const closeBtn = document.getElementById('closePopup');
+    const popup = document.getElementById('characterBtn');
+    const closeBtn = document.getElementById('closeBtn');
     const cancelBtn = document.getElementById('cancelButton');
     const saveBtn = document.getElementById('saveButton');
 
