@@ -268,6 +268,13 @@ public class StoryController : Controller
         return RedirectToAction(nameof(Play));
     }
 
+    // Guard: prevent accidental GET navigation to /Story/Choose
+    [HttpGet]
+    public IActionResult Choose()
+    {
+        return RedirectToAction(nameof(Play));
+    }
+
     // Chooses ending based on trust value
     private static string CalculateEnding(int trust)
     {
