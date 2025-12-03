@@ -1,0 +1,45 @@
+@model FirstMVC.ViewModels.QuizResultViewModel
+<style>
+  .result-container { max-width: 800px; margin: 40px auto; padding: 24px; background: rgba(255,255,255,0.95); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+  .result-header { display:flex; justify-content: space-between; align-items:center; margin-bottom: 16px; }
+  .pass { color:#27ae60; font-weight:800; }
+  .fail { color:#e74c3c; font-weight:800; }
+  .details { margin-top: 10px; }
+  .btn-row { display:flex; gap:10px; margin-top: 16px; }
+  .btn { background:#2c3e50; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; }
+  .btn-primary { background:#3498db; }
+</style>
+
+<div class="result-container">
+  <div class="result-header">
+    <h2>Quiz Results — Act @Model.Act</h2>
+    <div class="@(Model.Passed ? "pass" : "fail")">@(Model.Passed ? "Passed" : "Failed")</div>
+  </div>
+  <div>
+    Correct: @Model.CorrectCount / @Model.TotalCount
+  </div>
+  <div class="details">
+    @if (Model.Passed)
+    {
+      <p>Great work! You can proceed to the next act.</p>
+    }
+    else
+    {
+      <p>You need more correct answers. Try the act again.</p>
+    }
+  </div>
+  <div class="btn-row">
+    @if (Model.Passed)
+    {
+      <form method="get" asp-controller="Story" asp-action="Play">
+        <button type="submit" class="btn btn-primary">Continue Story</button>
+      </form>
+    }
+    else
+    {
+      <form method="get" asp-controller="Story" asp-action="Play">
+        <button type="submit" class="btn">Retry Act</button>
+      </form>
+    }
+  </div>
+</div>

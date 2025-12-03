@@ -1,0 +1,56 @@
+@model List<FirstMVC.Models.TaskDB>
+@{
+    var act = (int)(ViewData["Act"] ?? 0);
+}
+<style>
+  .quiz-container { max-width: 900px; margin: 40px auto; padding: 20px; background: rgba(255,255,255,0.95); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+  .quiz-header { display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px; }
+  .quiz-grid { display:grid; grid-template-columns: 1fr; gap: 16px; }
+  .task-card { background: #111; color: #fff; border-left: 6px solid #e74c3c; padding: 16px; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+  .task-title { font-weight: 800; font-size: 1.1em; margin-bottom: 10px; }
+  .options { display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .option-btn { background: #2c3e50; color:#fff; border:none; padding:12px; border-radius:8px; cursor:pointer; text-align:left; position:relative; overflow:hidden; }
+  .option-btn:hover { background: #c0392b; transform: translateX(6px) scale(1.02); }
+  .submit-bar { margin-top: 20px; display:flex; justify-content:flex-end; }
+  .submit-btn { background:#3498db; color:#fff; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; font-weight:700; }
+</style>
+
+<div class="quiz-container">
+  <div class="quiz-header">
+    <h2>Act @act Quiz</h2>
+    <span>@(Model?.Count ?? 0) questions</span>
+  </div>
+
+  @if (Model == null || Model.Count == 0)
+  {
+    <div>No quiz tasks available. Ask an admin to add tasks for this act.</div>
+  }
+  else
+  {
+    <form method="post" asp-action="Submit" asp-controller="Quiz">
+      @Html.AntiForgeryToken()
+      <input type="hidden" name="Act" value="@act" />
+
+      <div class="quiz-grid">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+          var t = Model[i];
+          <div class="task-card">
+            <div class="task-title">@t.Title</div>
+            <input type="hidden" name="TaskIds" value="@t.TaskID" />
+            <div class="options">
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="0">@t.OptionA</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="1">@t.OptionB</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="2">@t.OptionC</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="3">@t.OptionD</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="submit-bar">
+        <button type="submit" class="submit-btn">Submit All</button>
+      </div>
+    </form>
+  }
+</div>
