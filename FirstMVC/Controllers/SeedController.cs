@@ -105,7 +105,7 @@ namespace FirstMVC.Controllers
                     Role = "Parent NPC",
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
-                    ImageUrl = "/images/mother.png",
+                    ImageUrl = "/images/mom_character.png",
                 },
                 new Characters
                 {
