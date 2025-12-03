@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       saveBtn.addEventListener("click", async function () {
         const nameInput = document.getElementById("characterNameInput");
         const characterName =
-          nameInput?.value.trim() || nameInput?.placeholder || ""; // pacalceholder if name is not set
+          nameInput?.value.trim() || nameInput?.placeholder || ""; // placeholder if name is not set
 
         if (!characterName || characterName.length < 2) {
           alert("Please enter at least 2 characters!");
