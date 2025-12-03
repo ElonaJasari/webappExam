@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using FirstMVC.Models;
 using FirstMVC.StoryContent.Act1;
-using FirstMVC.StoryContent.Act2;
 using FirstMVC.StoryContent.Act3;
 
 namespace FirstMVC.Controllers
@@ -63,9 +62,7 @@ namespace FirstMVC.Controllers
                     Role = "Playable Character",
                     CharacterCode = "ID_COOL_DUDE",
                     Description = "Calm, grounded, quiet clumsy",
-                    Dialog = "",
                     ImageUrl = "/images/cool_dude.png",
-                    Translate = ""
                 },
                 new Characters
                 {
@@ -73,9 +70,7 @@ namespace FirstMVC.Controllers
                     Role = "Playable Character",
                     CharacterCode = "ID_CONFIDENT_DUDE",
                     Description = "HIMOTHY",
-                    Dialog = "",
                     ImageUrl = "/images/confident_dude.png",
-                    Translate = ""
                 },
                 new Characters
                 {
@@ -83,9 +78,7 @@ namespace FirstMVC.Controllers
                     Role = "Playable Character",
                     CharacterCode = "ID_TUNG_TUNG",
                     Description = "TUNG TUNG THE GREAT",
-                    Dialog = "",
                     ImageUrl = "/images/tung_tung.png",
-                    Translate = ""
                 },
                 new Characters
                 {
@@ -93,9 +86,7 @@ namespace FirstMVC.Controllers
                     Role = "Playable Character",
                     CharacterCode = "ID_AURORA",
                     Description = "caring, fearless, strong",
-                    Dialog = "",
                     ImageUrl = "/images/awsome_girl.png",
-                    Translate = ""
                 },
                 new Characters
                 {
@@ -103,31 +94,25 @@ namespace FirstMVC.Controllers
                     Role = "Playable Character",
                     CharacterCode = "ID_CHLOEKELLY",
                     Description = "Pressure? What pressure?",
-                    Dialog = "",
                     ImageUrl = "/images/chloekelly.png",
-                    Translate = ""
                 },
                 
                 // ===== Story NPCs (appear in scenes) =====
                 new Characters
                 {
-                    Name = "Parent",
+                    Name = "Mother",
                     Role = "Parent NPC",
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
-                    Dialog = "",
-                    ImageUrl = "/images/polar-bear.png",
-                    Translate = ""
+                    ImageUrl = "/images/mother.png",
                 },
                 new Characters
                 {
-                    Name = "Teacher",
+                    Name = "Teach",
                     Role = "Teacher NPC",
                     CharacterCode = "ID_TEACHER",
                     Description = "The school teacher",
-                    Dialog = "",
-                    ImageUrl = "",
-                    Translate = ""
+                    ImageUrl = "/images/teacher.png",
                 }
                 ,
                 new Characters
@@ -136,16 +121,22 @@ namespace FirstMVC.Controllers
                     Role = "Friend NPC",
                     CharacterCode = "ID_FRIEND1",
                     Description = "Helpful classmate who encourages the player",
-                    Dialog = "",
                     ImageUrl = "/images/friend1.png",
-                    Translate = ""
+                },
+                new Characters
+                {
+                    Name = "Áila",
+                    Role = "Friend NPC",
+                    CharacterCode = "ID_FRIEND1",
+                    Description = "Helpful classmate who encourages the player",
+                    ImageUrl = "/images/Friend_2.png",
                 }
             };
 
             _context.Characters.AddRange(charactersToAdd);
             await _context.SaveChangesAsync();
             
-            return Content($"Seeded characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + NPCs (Parent, Teacher, Friend1). Go to /Character to manage them.");
+            return Content($"Seeded characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + 4 NPCs (Mother, Teach, Áila and Áilu). Go to /Character to manage them.");
         }
 
         // Diagnostic: Check what's in the database

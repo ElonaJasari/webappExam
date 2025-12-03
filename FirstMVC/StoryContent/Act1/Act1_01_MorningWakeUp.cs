@@ -101,7 +101,6 @@ public static class Act1_01_MorningWakeUp
                 Title = "Breakfast", 
                 CharacterCode = (string?)null,
                 ImageUrl = (string?)"/images/kitchen.png",
-
                 Content = "You head down to the kitchen and see your parents sitting at the table eating breakfast. They look up and smile as you enter.",
                 Choices = new[] {
                     new { 
