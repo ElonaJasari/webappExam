@@ -189,17 +189,13 @@ public class StoryController : Controller
             progress.CurrentStoryAct = nextAct;
         }
 
-        // Set ending when reaching any scene in Act 3 (check Act category from Description)
-        var currentAct = await _context.StoryActs
-            .FirstOrDefaultAsync(a => a.StoryActId == progress.CurrentStoryActId);
-        
-        if (currentAct != null && currentAct.Description == "Act 3" && string.IsNullOrEmpty(progress.EndingType))
+        // Decide ending only when transitioning out of Act3_04 (entering endings block)
+        // Act3_04 expected to end at SceneId 61; endings begin at 62-64.
+        if (choice.NextActId >= 62 && choice.NextActId <= 64)
         {
-            // Calculate ending type and route to appropriate ending scene
             var endingType = CalculateEnding(progress.Trust);
             progress.EndingType = endingType;
-            
-            // Route to the corresponding ending scene (62=Bad, 63=Good, 64=True)
+
             var endingSceneId = CalculateEndingSceneId(endingType);
             var endingScene = await _context.StoryActs
                 .Include(a => a.Choices)
