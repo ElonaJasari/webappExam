@@ -34,5 +34,8 @@ namespace FirstMVC.Data
         public DbSet<DictionaryWord> DictionaryWords { get; set; }
 
        public DbSet<UserCharacterSelection> UserCharacterSelection { get; set;} 
+
+       // Records of user quiz submissions and correctness
+       public DbSet<UserTaskResult> UserTaskResults { get; set; }
     }
 }
