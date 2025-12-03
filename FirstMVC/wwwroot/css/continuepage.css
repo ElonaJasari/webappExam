@@ -1,0 +1,182 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #be3cf6 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Back button */
+.back-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.back-home:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Main container */
+.page-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.page-container h1 {
+  font-size: 3rem;
+  margin-bottom: 60px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Mascots container */
+.mascots-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mascot-group {
+  display: flex;
+  align-items: center;
+  gap: 0px; /* Closer to mascots (was 20px) */
+}
+
+.mascot-img {
+  width: 325px; /* Mindre maskotter */
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+/* Speech bubble buttons */
+.bubble-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+  top: -25px; /* Move 25px higher to head level */
+}
+
+.bubble-btn img {
+  width: 320px; /* A bit bigger (was 300px) */
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.bubble-btn:hover {
+  transform: translateY(-5px);
+}
+
+.bubble-btn:hover img {
+  filter: invert(1) drop-shadow(0 8px 15px rgba(0, 0, 0, 0.4)); /* Inverterer farger på hover */
+}
+
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: white;
+  color: #333;
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.popup-box h2 {
+  margin-bottom: 20px;
+  color: #f5576c;
+}
+
+.popup-box p {
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.popup-btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn {
+  background: #95a5a6;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #7f8c8d;
+}
+
+.confirm-btn {
+  background: #f5576c;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background: #e74c3c;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .mascots-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .mascot-group {
+    flex-direction: column;
+  }
+
+  .mascot-img {
+    width: 120px;
+  }
+
+  .bubble-btn img {
+    width: 200px;
+  }
+}

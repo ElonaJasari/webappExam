@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Ending";
+    var endingType = (string?)ViewData["EndingType"] ?? "Unknown";
+    var trust = (int?)ViewData["Trust"] ?? 0;
+}
+
+<div class="story-ending">
+    <h1>@endingType Ending</h1>
+    <p>Your final trust value was <strong>@trust</strong>.</p>
+
+    @if (endingType == "Bad")
+    {
+        <p>This path led to a difficult conclusion. Maybe different choices could build more trust next time.</p>
+    }
+    else if (endingType == "Good")
+    {
+        <p>You reached a hopeful ending. With even more trust, there might be an even deeper connection waiting.</p>
+    }
+    else if (endingType == "True")
+    {
+        <p>You unlocked the true ending. Your choices built maximum trust and revealed the full story.</p>
+    }
+   
+
+    <div class="mt-4">
+        <a asp-action="ResetAndStart" asp-controller="Story" class="btn btn-primary">Replay from Act 1</a>
+        <a asp-action="ContinuePage" asp-controller="Home" class="btn btn-secondary ms-2">Back to Menu</a>
+    </div>
+</div>
+
+

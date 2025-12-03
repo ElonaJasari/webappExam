@@ -1,19 +1,55 @@
 @{
-    Layout = "_Layout";
+    Layout = null;
     ViewData["Title"] = "Welcome back!";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/ContinuePage.css" />
+</head>
+<body>
+    <!-- Back to home button -->
+    <a href="@Url.Action("Index", "Home")" class="back-home">← Back to Home</a>
 
-<div class="choose-character-page">
-    <div class="container">
-        <div class="header">
-            <h1 class="title">Welcome back!</h1>
-            <p class="subtitle">Continue by picking or confirming your character.</p>
-        </div>
+    <!-- Main content -->
+    <div class="page-container">
+        <h1>Welcome back!</h1>
+        
+        <div class="mascots-container">
+            <!-- Left side: Reindeer + Continue bubble -->
+            <div class="mascot-group">
+                <img src="~/images/raindeer.stance.png" alt="Reindeer" class="mascot-img" />
+                <button id="continueBtn" class="bubble-btn continue-bubble">
+                    <img src="~/images/bubble1_v2.png" alt="Continue Story" />
+                </button>
+            </div>
 
-        <div class="mt-4">
-            <a asp-controller="Home" asp-action="Character" class="btn btn-primary">Choose your character</a>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ms-2">Back to landing</a>
+            <!-- Right side: Polar bear + New story bubble -->
+            <div class="mascot-group">
+                <button id="newStoryBtn" class="bubble-btn new-bubble">
+                    <img src="~/images/bubble2_v2.png" alt="New Story" />
+                </button>
+                <img src="~/images/polar-bear.png" alt="Polar Bear" class="mascot-img" />
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- Popup modal -->
+    <div id="popup" class="popup-overlay" style="display: none;">
+        <div class="popup-box">
+            <h2>Start New Story?</h2>
+            <p>Your current save data will be deleted. This cannot be undone.</p>
+            <div class="popup-buttons">
+                <button id="cancelBtn" class="popup-btn cancel-btn">Cancel</button>
+                <button id="confirmBtn" class="popup-btn confirm-btn">Delete & Start New</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/continuepage.js"></script>
+</body>
+</html>
 
