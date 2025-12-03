@@ -25,7 +25,7 @@ namespace FirstMVC.Controllers
         {
             // Expect TaskDB to have Act field; if not present, we load all for now
             var tasks = await _context.Tasks
-                .OrderBy(t => t.TaskID)
+                .OrderBy(t => t.TaskId)
                 .ToListAsync();
 
             if (tasks.Count == 0)
@@ -57,11 +57,11 @@ namespace FirstMVC.Controllers
             {
                 var taskId = dto.TaskIds[i];
                 var selected = dto.SelectedOptionIndexes[i];
-                var task = await _context.Tasks.FirstOrDefaultAsync(t => t.TaskID == taskId);
+                var task = await _context.Tasks.FirstOrDefaultAsync(t => t.TaskId == taskId);
                 if (task == null) continue;
 
-                // Assuming TaskDB has CorrectOptionIndex (0-based) and Options serialized or fixed fields
-                bool isCorrect = task.CorrectOptionIndex == selected;
+                // TODO: When TaskDB gains a correct answer field, compute isCorrect properly.
+                bool isCorrect = false;
                 if (isCorrect) correct++;
 
                 _context.UserTaskResults.Add(new UserTaskResult
@@ -86,11 +86,14 @@ namespace FirstMVC.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            ViewData["Act"] = dto.Act;
-            ViewData["Correct"] = correct;
-            ViewData["Total"] = total;
-            ViewData["Passed"] = passed;
-            return View("Result");
+            var vm = new FirstMVC.ViewModels.QuizResultViewModel
+            {
+                Act = dto.Act,
+                CorrectCount = correct,
+                TotalCount = total,
+                Passed = passed
+            };
+            return View("Result", vm);
         }
     }
 }

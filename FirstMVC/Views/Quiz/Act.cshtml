@@ -1,6 +1,6 @@
 @model List<FirstMVC.Models.TaskDB>
 @{
-    var act = (int)(ViewData["Act"] ?? 0);
+  var act = (int)(ViewData["Act"] ?? 0);
 }
 <style>
   .quiz-container { max-width: 900px; margin: 40px auto; padding: 20px; background: rgba(255,255,255,0.95); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
@@ -36,13 +36,14 @@
         {
           var t = Model[i];
           <div class="task-card">
-            <div class="task-title">@t.Title</div>
-            <input type="hidden" name="TaskIds" value="@t.TaskID" />
+            <div class="task-title">@t.Text</div>
+            <div style="color:#bbb; margin-bottom:8px;">@t.Description</div>
+            <input type="hidden" name="TaskIds" value="@t.TaskId" />
             <div class="options">
-              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="0">@t.OptionA</button>
-              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="1">@t.OptionB</button>
-              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="2">@t.OptionC</button>
-              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="3">@t.OptionD</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="0">Option A</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="1">Option B</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="2">Option C</button>
+              <button type="submit" class="option-btn" name="SelectedOptionIndexes" value="3">Option D</button>
             </div>
           </div>
         }
