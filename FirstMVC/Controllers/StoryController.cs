@@ -63,7 +63,7 @@ public class StoryController : Controller
             if (characterSelection == null)
             {
                 _logger.LogError("No character selected for user");
-                return RedirectToAction("NewUserPage", "Home");
+                return RedirectToAction("Character", "Home");
             }
 
             progress = new UserProgressDB
@@ -97,7 +97,16 @@ public class StoryController : Controller
             return RedirectToAction(nameof(Ending));
         }
 
+        // Load player's selected character
+        Characters? playerCharacter = null;
+        if (progress.SelectedCharacterId.HasValue)
+        {
+            playerCharacter = await _context.Characters
+                .FirstOrDefaultAsync(c => c.CharacterID == progress.SelectedCharacterId.Value);
+        }
+
         var vm = StoryPlayViewModel.FromUserProgress(progress);
+        vm.PlayerCharacter = playerCharacter;
         vm.Trust = progress.Trust;
         vm.ErrorMessage = error;
         return View(vm);
