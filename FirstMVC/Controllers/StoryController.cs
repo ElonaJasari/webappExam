@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using FirstMVC.Data;
 using FirstMVC.Models;
@@ -16,10 +17,13 @@ public class StoryController : Controller
     private readonly ApplicationDbContext _context;
     private readonly ILogger<StoryController> _logger;
 
-    // Narrative act IDs – your three big beats
+    // Starting scene ID (Scene 1, which belongs to Act 1 category)
     private const int ACT1_ID = 1;
+    // Note: ACT2_ID and ACT3_ID are kept for compatibility, but Act categories are now tracked via Description field
     private const int ACT2_ID = 2;
     private const int ACT3_ID = 3;
+    private const int MIN_TRUST = 0;
+    private const int MAX_TRUST = 100;
 
     public StoryController(ApplicationDbContext context, ILogger<StoryController> logger)
     {
@@ -112,10 +116,14 @@ public class StoryController : Controller
         var choice = await _context.Choices
             .FirstOrDefaultAsync(c => c.Id == model.SelectedChoiceId.Value);
 
-        
-        // Only allow moving to same act or next act (no skipping or going backwards)
+        if (choice == null)
+        {
+            return await Play(error: "That choice is no longer available.");
+        }
+
+        // Only allow moving forward (no going backwards)
         int nextActId = choice.NextActId;
-        if (nextActId < progress.CurrentStoryActId || nextActId > progress.CurrentStoryActId + 1)
+        if (nextActId < progress.CurrentStoryActId)
         {
             return await Play(error: "Invalid story progression.");
         }
@@ -141,8 +149,11 @@ public class StoryController : Controller
             progress.CurrentStoryAct = nextAct;
         }
 
-        // Set ending when reaching Act 3
-        if (progress.CurrentStoryActId == ACT3_ID && string.IsNullOrEmpty(progress.EndingType))
+        // Set ending when reaching any scene in Act 3 (check Act category from Description)
+        var currentAct = await _context.StoryActs
+            .FirstOrDefaultAsync(a => a.StoryActId == progress.CurrentStoryActId);
+        
+        if (currentAct != null && currentAct.Description == "Act 3" && string.IsNullOrEmpty(progress.EndingType))
         {
             progress.EndingType = CalculateEnding(progress.Trust);
         }
