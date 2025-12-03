@@ -127,9 +127,10 @@ namespace FirstMVC.Controllers
 
                 var choiceCount = 0;
                 // Create choices if provided
-                if (story.Choices != null && story.Choices.Any())
+                dynamic choices = story.Choices;
+                if (choices != null && choices.Length > 0)
                 {
-                    foreach (var choiceData in story.Choices)
+                    foreach (var choiceData in choices)
                     {
                         var choice = new Choice
                         {

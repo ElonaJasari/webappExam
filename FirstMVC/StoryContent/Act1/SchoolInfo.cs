@@ -8,7 +8,7 @@ public static class SchoolIntro
         {
             // Scene 5 - At School (continues from MorningWakeUp)
             new { 
-                SceneId = 5,
+                SceneId = 10,
                 ActCategory = 1,
                 Title = "At School", 
                 CharacterCode = "ID_TEACHER", 
@@ -16,21 +16,21 @@ public static class SchoolIntro
                 Choices = new[] {
                     new { 
                         Text = "I'm ready to learn!", 
-                        NextSceneId = 6,
+                        NextSceneId = 11,
                         TrustChange = +5, 
                         IsCorrect = true,
                         ResponseDialog = "Great enthusiasm!"
                     },
                     new { 
                         Text = "This is boring...", 
-                        NextSceneId = 7,
+                        NextSceneId = 12,
                         TrustChange = -5, 
                         IsCorrect = false,
                         ResponseDialog = "Try to stay focused, please."
                     },
                     new { 
                         Text = "Can we skip this?", 
-                        NextSceneId = 8,
+                        NextSceneId = 13,
                         TrustChange = -10, 
                         IsCorrect = false,
                         ResponseDialog = "No, we need to cover this material."
@@ -40,7 +40,7 @@ public static class SchoolIntro
             
             // Scene 6 - Response to "I'm ready to learn!"
             new { 
-                SceneId = 6,
+                SceneId = 11,
                 ActCategory = 1,
                 Title = "Teacher's Response", 
                 CharacterCode = "ID_TEACHER", 
@@ -52,7 +52,7 @@ public static class SchoolIntro
             
             // Scene 7 - Response to "This is boring..."
             new { 
-                SceneId = 7,
+                SceneId = 12,
                 ActCategory = 1,
                 Title = "Teacher's Response", 
                 CharacterCode = "ID_TEACHER", 
@@ -64,7 +64,7 @@ public static class SchoolIntro
             
             // Scene 8 - Response to "Can we skip this?"
             new { 
-                SceneId = 8,
+                SceneId = 13,
                 ActCategory = 1,
                 Title = "Teacher's Response", 
                 CharacterCode = "ID_TEACHER", 
