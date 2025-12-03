@@ -21,5 +21,8 @@ public class UserProgressDB
     public StoryAct? CurrentStoryAct { get; set; }
 
     public DateTime LastUpdated { get; set; }
+
+    public int? SelectedCharacterId { get; set; }
+    public string SelectedCharacterName { get; set;}
     
 }

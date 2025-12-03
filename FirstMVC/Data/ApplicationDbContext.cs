@@ -32,5 +32,7 @@ namespace FirstMVC.Data
 
         // DbSet for dictionary words
         public DbSet<DictionaryWord> DictionaryWords { get; set; }
+
+       public DbSet<UserCharacterSelection> UserCharacterSelection { get; set;} 
     }
 }

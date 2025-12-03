@@ -6,7 +6,7 @@
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #be3cf6 0%, #764ba2 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -44,46 +44,52 @@ body {
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Buttons */
-.button-container {
+/* Mascots container */
+.mascots-container {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: center;
   align-items: center;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.action-btn {
-  width: 300px;
-  padding: 20px 40px;
-  font-size: 1.2rem;
-  font-weight: 600;
+.mascot-group {
+  display: flex;
+  align-items: center;
+  gap: 0px; /* Closer to mascots (was 20px) */
+}
+
+.mascot-img {
+  width: 325px; /* Mindre maskotter */
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+/* Speech bubble buttons */
+.bubble-btn {
+  background: transparent;
   border: none;
-  border-radius: 12px;
+  padding: 0;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  position: relative;
+  top: -25px; /* Move 25px higher to head level */
 }
 
-.continue-btn {
-  background: linear-gradient(135deg, #805ad5, #9770e7);
-  color: white;
+.bubble-btn img {
+  width: 320px; /* A bit bigger (was 300px) */
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
 
-.continue-btn:hover {
-  background: linear-gradient(135deg, #b795f6, #9770e7);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(140, 45, 225, 0.55);
+.bubble-btn:hover {
+  transform: translateY(-5px);
 }
 
-.new-story-btn {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-}
-
-.new-story-btn:hover {
-  background: linear-gradient(135deg, #f8aab4, #f5576c);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.bubble-btn:hover img {
+  filter: invert(1) drop-shadow(0 8px 15px rgba(0, 0, 0, 0.4)); /* Inverterer farger på hover */
 }
 
 /* Popup overlay */
@@ -155,24 +161,22 @@ body {
   background: #e74c3c;
 }
 
-/* Image button */
-.image-btn {
-  padding: 0; /* Let the image define size */
-  background: transparent; /* Remove gradient so image shows */
-  box-shadow: none;
-}
+/* Responsive */
+@media (max-width: 900px) {
+  .mascots-container {
+    flex-direction: column;
+    gap: 40px;
+  }
 
-.image-btn img {
-  display: block;
-  width: 300px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-}
+  .mascot-group {
+    flex-direction: column;
+  }
 
-.image-btn:hover img {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  filter: invert(1); /* invert only on hover */
+  .mascot-img {
+    width: 120px;
+  }
+
+  .bubble-btn img {
+    width: 200px;
+  }
 }
