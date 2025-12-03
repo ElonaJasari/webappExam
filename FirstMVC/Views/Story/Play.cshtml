@@ -264,12 +264,37 @@
             </div>
         </div>
 
-        @* NPC Character Sprite *@
-        @if (Model.CurrentAct.Character != null && !string.IsNullOrEmpty(Model.CurrentAct.Character.ImageUrl))
+        @* NPC Character Sprite with fallback *@
+        @if (Model.CurrentAct.Character != null)
         {
-            <div class="character-display">
-                <img src="@Model.CurrentAct.Character.ImageUrl" alt="@Model.CurrentAct.Character.Name" />
-            </div>
+            var npcImage = Model.CurrentAct.Character.ImageUrl;
+            if (string.IsNullOrEmpty(npcImage))
+            {
+                // Fallbacks by known character names
+                var name = Model.CurrentAct.Character.Name ?? string.Empty;
+                if (name.Contains("Teach", StringComparison.OrdinalIgnoreCase))
+                {
+                    npcImage = "/images/teacher.png";
+                }
+                else if (name.Contains("Mother", StringComparison.OrdinalIgnoreCase) || name.Contains("Parent", StringComparison.OrdinalIgnoreCase))
+                {
+                    npcImage = "/images/mom_character.png";
+                }
+                else if (name.Contains("Áilu", StringComparison.OrdinalIgnoreCase))
+                {
+                    npcImage = "/images/Friend_1.png";
+                }
+                else if (name.Contains("Áila", StringComparison.OrdinalIgnoreCase))
+                {
+                    npcImage = "/images/Friend_2.png";
+                }
+            }
+            if (!string.IsNullOrEmpty(npcImage))
+            {
+                <div class="character-display">
+                    <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" />
+                </div>
+            }
         }
 
         @* Player Character Sprite *@
