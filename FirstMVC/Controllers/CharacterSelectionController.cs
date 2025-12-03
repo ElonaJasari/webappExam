@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace FirstMVC.Controllers
 {
     [ApiController]
@@ -40,7 +41,7 @@ namespace FirstMVC.Controllers
                 CustomName = dto.CustomName
             };
 
-            _context.UserCharacterSelections.Add(selection);
+            _context.UserCharacterSelection.Add(selection);
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -52,7 +53,7 @@ namespace FirstMVC.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
 
-            var selection = await _context.UserCharacterSelections
+            var selection = await _context.UserCharacterSelection
                 .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.CreatedAt)
                 .FirstOrDefaultAsync();

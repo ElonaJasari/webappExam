@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace FirstMVC.models{
+namespace FirstMVC.Models{
 
 public class UserCharacterSelection {
     public int Id { get; set; }
 
-    public String UserID { get; set; } = default;
+    public String UserId { get; set; } = default;
     public int CharacterId { get; set; }
 
     public string CustomName { get; set; } = default!;
