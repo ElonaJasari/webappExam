@@ -195,7 +195,30 @@ public class StoryController : Controller
         
         if (currentAct != null && currentAct.Description == "Act 3" && string.IsNullOrEmpty(progress.EndingType))
         {
-            progress.EndingType = CalculateEnding(progress.Trust);
+            // Calculate ending type and route to appropriate ending scene
+            var endingType = CalculateEnding(progress.Trust);
+            progress.EndingType = endingType;
+            
+            // Route to the corresponding ending scene (62=Bad, 63=Good, 64=True)
+            var endingSceneId = CalculateEndingSceneId(endingType);
+            var endingScene = await _context.StoryActs
+                .Include(a => a.Choices)
+                .Include(a => a.Character)
+                .FirstOrDefaultAsync(a => a.StoryActId == endingSceneId);
+
+            if (endingScene != null)
+            {
+                progress.CurrentStoryActId = endingScene.StoryActId;
+                progress.CurrentStoryAct = endingScene;
+            }
+        }
+
+        // If we just clicked a choice on an ending scene (SceneId 62, 63, or 64), go to final ending screen
+        if (choice.NextActId == 65)
+        {
+            progress.LastUpdated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Ending));
         }
 
         progress.LastUpdated = DateTime.UtcNow;
@@ -210,11 +233,6 @@ public class StoryController : Controller
             return await Play(error: "Your choice could not be saved. Please try again.");
         }
 
-        if (!string.IsNullOrEmpty(progress.EndingType))
-        {
-            return RedirectToAction(nameof(Ending));
-        }
-
         return RedirectToAction(nameof(Play));
     }
 
@@ -224,6 +242,18 @@ public class StoryController : Controller
         if (trust < 50) return "Bad";           // 0-49 = Bad ending
         if (trust < 100) return "Good";         // 50-99 = Good ending
         return "True";                          // 100+ = True ending
+    }
+
+    // Maps ending type to scene ID
+    private static int CalculateEndingSceneId(string endingType)
+    {
+        return endingType switch
+        {
+            "Bad" => 62,
+            "Good" => 63,
+            "True" => 64,
+            _ => 62 // Default to bad ending if unknown
+        };
     }
 
     //

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using FirstMVC.Models;
 using FirstMVC.StoryContent.Act1;
-using FirstMVC.StoryContent.Act2;
 using FirstMVC.StoryContent.Act3;
 
 namespace FirstMVC.Controllers
