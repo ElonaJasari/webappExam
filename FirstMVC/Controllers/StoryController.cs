@@ -268,6 +268,13 @@ public class StoryController : Controller
         return RedirectToAction(nameof(Play));
     }
 
+    // Guard: prevent accidental GET navigation to /Story/Choose
+    [HttpGet]
+    public IActionResult Choose()
+    {
+        return RedirectToAction(nameof(Play));
+    }
+
     // Chooses ending based on trust value
     private static string CalculateEnding(int trust)
     {
@@ -292,6 +299,54 @@ public class StoryController : Controller
         ViewData["EndingType"] = progress.EndingType;
         ViewData["Trust"] = progress.Trust;
         return View();
+    }
+
+    // Jump to the first scene of the user's current act category (Act 1/2/3)
+    [Authorize]
+    public async Task<IActionResult> StartOfAct()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return Unauthorized();
+
+        var progress = await _context.UserProgress
+            .Include(p => p.CurrentStoryAct)
+            .FirstOrDefaultAsync(p => p.UserID == userId);
+
+        if (progress == null)
+        {
+            // No progress yet; just start normally
+            return RedirectToAction(nameof(Play));
+        }
+
+        // Ensure current act loaded
+        if (progress.CurrentStoryAct == null)
+        {
+            progress.CurrentStoryAct = await _context.StoryActs
+                .FirstOrDefaultAsync(a => a.StoryActId == progress.CurrentStoryActId);
+        }
+
+        // Determine the act category using the Description (e.g., "Act 2")
+        var actDescription = progress.CurrentStoryAct?.Description;
+        if (string.IsNullOrWhiteSpace(actDescription))
+        {
+            return RedirectToAction(nameof(Play));
+        }
+
+        // Find the first scene (lowest StoryActId) within the same act description
+        var firstSceneInAct = await _context.StoryActs
+            .Where(a => a.Description == actDescription)
+            .OrderBy(a => a.StoryActId)
+            .FirstOrDefaultAsync();
+
+        if (firstSceneInAct != null && progress.CurrentStoryActId != firstSceneInAct.StoryActId)
+        {
+            progress.CurrentStoryActId = firstSceneInAct.StoryActId;
+            progress.CurrentStoryAct = null; // will be reloaded by Play
+            progress.LastUpdated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Play));
     }
 
     // Reset game back to character selection screen, trust = 0, act = 1

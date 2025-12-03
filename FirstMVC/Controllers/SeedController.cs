@@ -26,7 +26,7 @@ namespace FirstMVC.Controllers
                 // Temporarily disable FK enforcement for cleanup (SQLite-specific)
                 await _context.Database.ExecuteSqlRawAsync("PRAGMA foreign_keys = OFF;");
 
-                // First delete foreign key references
+                // First delete foreign key references related to character selection
                 var userCharacterSelections = await _context.UserCharacterSelection.ToListAsync();
                 _context.UserCharacterSelection.RemoveRange(userCharacterSelections);
                 
@@ -36,12 +36,6 @@ namespace FirstMVC.Controllers
                     progress.SelectedCharacterId = null;
                     // Keep NOT NULL constraint happy by using empty string
                     progress.SelectedCharacterName = string.Empty;
-                }
-                
-                var storyActs = await _context.StoryActs.ToListAsync();
-                foreach (var act in storyActs)
-                {
-                    act.CharacterId = null;
                 }
                 
                 await _context.SaveChangesAsync();
@@ -105,7 +99,7 @@ namespace FirstMVC.Controllers
                     Role = "Parent NPC",
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
-                    ImageUrl = "/images/mother.png",
+                    ImageUrl = "/images/mom_character.png",
                 },
                 new Characters
                 {
@@ -122,7 +116,7 @@ namespace FirstMVC.Controllers
                     Role = "Friend NPC",
                     CharacterCode = "ID_FRIEND1",
                     Description = "Helpful classmate who encourages the player",
-                    ImageUrl = "/images/friend1.png",
+                    ImageUrl = "/images/Friend_1.png",
                 },
                 new Characters
                 {
@@ -262,6 +256,70 @@ namespace FirstMVC.Controllers
             result += "Go to /Story/Play to see it!";
 
             return Content(result);
+        }
+
+        // Repair CharacterId foreign keys in StoryActs without wiping story or progress.
+        // Recomputes CharacterId from CharacterCode defined in StoryContent for each SceneId.
+        public async Task<IActionResult> RepairStoryCharacters()
+        {
+            var scenes = GetAllScenesInOrder().ToList();
+            if (!scenes.Any())
+            {
+                return Content("No scenes discovered from StoryContent.");
+            }
+
+            // Build map: SceneId -> CharacterCode (may be null/empty)
+            var sceneToCode = new Dictionary<int, string?>(scenes.Count);
+            foreach (var s in scenes)
+            {
+                int id = (int)s.SceneId;
+                string? code = null;
+                try
+                {
+                    code = (string?)s.CharacterCode;
+                }
+                catch { /* ignore casting issues */ }
+                sceneToCode[id] = string.IsNullOrWhiteSpace(code) ? null : code;
+            }
+
+            var storyActs = await _context.StoryActs.ToListAsync();
+            int updated = 0, missing = 0;
+            foreach (var act in storyActs)
+            {
+                if (!sceneToCode.TryGetValue(act.StoryActId, out var code))
+                {
+                    missing++;
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    if (act.CharacterId.HasValue)
+                    {
+                        act.CharacterId = null;
+                        updated++;
+                    }
+                    continue;
+                }
+
+                var character = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == code);
+                if (character != null)
+                {
+                    if (act.CharacterId != character.CharacterID)
+                    {
+                        act.CharacterId = character.CharacterID;
+                        updated++;
+                    }
+                }
+                else
+                {
+                    missing++;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Content($"Repair complete. Updated CharacterId on {updated} scenes. Missing mappings: {missing}.");
         }
 
         // Helper method to load all scenes in the correct order
