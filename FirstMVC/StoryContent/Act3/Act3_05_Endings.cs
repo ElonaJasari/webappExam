@@ -2,13 +2,12 @@ namespace FirstMVC.StoryContent.Act3;
 
 public static class Act3_05_Endings
 {
-    // Act 3: Three different endings based on trust (62-64)
-    // Note: StoryController will route to the appropriate ending based on trust value
+    // will choose ending based on trust score
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 62 — Bad Ending (Trust < 50)
+            //Bad Ending (Trust < 50)
             new {
                 SceneId = 62,
                 ActCategory = 3,
@@ -35,7 +34,7 @@ public static class Act3_05_Endings
                 }
             },
 
-            // Scene 63 — Good Ending (Trust 50-99)
+            // Good Ending (Trust 50-99)
             new {
                 SceneId = 63,
                 ActCategory = 3,
@@ -66,7 +65,7 @@ public static class Act3_05_Endings
                 }
             },
 
-            // Scene 64 — True Ending (Trust 100+)
+            // True Ending (Trust 100+)
             new {
                 SceneId = 64,
                 ActCategory = 3,
