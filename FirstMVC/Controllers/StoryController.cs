@@ -171,8 +171,49 @@ public class StoryController : Controller
         // Apply trust change from this choice (-5, 0, +5 etc.)
         progress.Trust += choice.TrustChange;
 
-        // Move to next act if needed
-        if (nextActId != progress.CurrentStoryActId)
+        // Check if we're coming from scene 61 - route to appropriate ending scene
+        if (progress.CurrentStoryActId == 61 && nextActId == 62)
+        {
+            // Calculate ending based on trust (after applying trust change)
+            var endingType = CalculateEnding(progress.Trust);
+            int endingSceneId;
+            
+            if (endingType == "Bad")
+                endingSceneId = 62;
+            else if (endingType == "Good")
+                endingSceneId = 63;
+            else // True
+                endingSceneId = 64;
+            
+            // Move to ending scene
+            var endingScene = await _context.StoryActs
+                .Include(a => a.Choices)
+                .Include(a => a.Character)
+                .FirstOrDefaultAsync(a => a.StoryActId == endingSceneId);
+            
+            if (endingScene != null)
+            {
+                progress.CurrentStoryActId = endingSceneId;
+                progress.CurrentStoryAct = endingScene;
+                progress.EndingType = endingType;
+            }
+            else
+            {
+                _logger.LogError("Ending scene {SceneId} not found", endingSceneId);
+                return await Play(error: "Could not load ending scene.");
+            }
+        }
+        // Check if we're at an ending scene (62, 63, 64) - redirect to ending view
+        else if (progress.CurrentStoryActId >= 62 && progress.CurrentStoryActId <= 64)
+        {
+            // Player has completed the ending scene, show ending view
+            if (string.IsNullOrEmpty(progress.EndingType))
+            {
+                progress.EndingType = CalculateEnding(progress.Trust);
+            }
+        }
+        // Move to next act normally
+        else if (nextActId != progress.CurrentStoryActId)
         {
             var nextAct = await _context.StoryActs
                 .Include(a => a.Choices)
@@ -187,34 +228,19 @@ public class StoryController : Controller
 
             progress.CurrentStoryActId = nextAct.StoryActId;
             progress.CurrentStoryAct = nextAct;
-        }
-
-        // Decide ending only when transitioning out of Act3_04 (entering endings block)
-        // Act3_04 expected to end at SceneId 61; endings begin at 62-64.
-        if (choice.NextActId >= 62 && choice.NextActId <= 64)
-        {
-            var endingType = CalculateEnding(progress.Trust);
-            progress.EndingType = endingType;
-
-            var endingSceneId = CalculateEndingSceneId(endingType);
-            var endingScene = await _context.StoryActs
-                .Include(a => a.Choices)
-                .Include(a => a.Character)
-                .FirstOrDefaultAsync(a => a.StoryActId == endingSceneId);
-
-            if (endingScene != null)
+            
+            // Set ending when reaching any scene in Act 3 (check Act category from Description)
+            var currentAct = await _context.StoryActs
+                .FirstOrDefaultAsync(a => a.StoryActId == progress.CurrentStoryActId);
+            
+            if (currentAct != null && currentAct.Description == "Act 3" && string.IsNullOrEmpty(progress.EndingType))
             {
-                progress.CurrentStoryActId = endingScene.StoryActId;
-                progress.CurrentStoryAct = endingScene;
+                // Only set ending type if we're at an ending scene
+                if (progress.CurrentStoryActId >= 62 && progress.CurrentStoryActId <= 64)
+                {
+                    progress.EndingType = CalculateEnding(progress.Trust);
+                }
             }
-        }
-
-        // If we just clicked a choice on an ending scene (SceneId 62, 63, or 64), go to final ending screen
-        if (choice.NextActId == 65)
-        {
-            progress.LastUpdated = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Ending));
         }
 
         progress.LastUpdated = DateTime.UtcNow;
@@ -229,6 +255,16 @@ public class StoryController : Controller
             return await Play(error: "Your choice could not be saved. Please try again.");
         }
 
+        // If we're at an ending scene (62, 63, 64) and player made a choice, show ending view
+        if (progress.CurrentStoryActId >= 62 && progress.CurrentStoryActId <= 64 && !string.IsNullOrEmpty(progress.EndingType))
+        {
+            // Check if the choice points back to the same ending scene (self-loop means ending is complete)
+            if (choice.NextActId == progress.CurrentStoryActId || choice.NextActId >= 62)
+            {
+                return RedirectToAction(nameof(Ending));
+            }
+        }
+
         return RedirectToAction(nameof(Play));
     }
 
@@ -238,18 +274,6 @@ public class StoryController : Controller
         if (trust < 50) return "Bad";           // 0-49 = Bad ending
         if (trust < 100) return "Good";         // 50-99 = Good ending
         return "True";                          // 100+ = True ending
-    }
-
-    // Maps ending type to scene ID
-    private static int CalculateEndingSceneId(string endingType)
-    {
-        return endingType switch
-        {
-            "Bad" => 62,
-            "Good" => 63,
-            "True" => 64,
-            _ => 62 // Default to bad ending if unknown
-        };
     }
 
     //

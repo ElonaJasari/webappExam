@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FirstMVC.Data;
 using FirstMVC.Models;
 using FirstMVC.StoryContent.Act1;
+using FirstMVC.StoryContent.Act2;
 using FirstMVC.StoryContent.Act3;
 
 namespace FirstMVC.Controllers
@@ -104,7 +105,7 @@ namespace FirstMVC.Controllers
                     Role = "Parent NPC",
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
-                    ImageUrl = "/images/mom_character.png",
+                    ImageUrl = "/images/mother.png",
                 },
                 new Characters
                 {
@@ -121,14 +122,14 @@ namespace FirstMVC.Controllers
                     Role = "Friend NPC",
                     CharacterCode = "ID_FRIEND1",
                     Description = "Helpful classmate who encourages the player",
-                    ImageUrl = "/images/Friend_1.png",
+                    ImageUrl = "/images/friend1.png",
                 },
                 new Characters
                 {
                     Name = "Áila",
                     Role = "Friend NPC",
                     CharacterCode = "ID_FRIEND2",
-                    Description = "Supportive classmate and friend",
+                    Description = "Helpful classmate who encourages the player",
                     ImageUrl = "/images/Friend_2.png",
                 }
             };
