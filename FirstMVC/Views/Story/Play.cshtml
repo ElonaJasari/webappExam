@@ -1,0 +1,52 @@
+@model FirstMVC.ViewModels.StoryPlayViewModel
+
+@{
+    ViewData["Title"] = Model.DisplayTitle;
+}
+
+<div class="story-container">
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+
+    <h1>@Model.DisplayTitle</h1>
+
+    <div class="story-meta">
+        <span>Current act: @Model.CurrentStoryActId</span>
+        <span class="ms-3">Trust: @Model.Trust</span>
+    </div>
+
+    <div class="story-content mt-3">
+        <p>@Model.CurrentAct.Content</p>
+    </div>
+
+    @if (Model.HasChoices)
+    {
+        <form asp-action="Choose" asp-controller="Story" method="post" class="mt-4">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="CurrentStoryActId" />
+
+            <fieldset>
+                <legend>Choose your response:</legend>
+                @foreach (var choice in Model.Choices)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="radio"
+                               asp-for="SelectedChoiceId"
+                               value="@choice.Id"
+                               id="choice_@choice.Id" />
+                        <label class="form-check-label" for="choice_@choice.Id">
+                            @choice.Text
+                        </label>
+                    </div>
+                }
+            </fieldset>
+
+            <button type="submit" class="btn btn-primary mt-3">Continue</button>
+        </form>
+    }
+</div>
+
+
