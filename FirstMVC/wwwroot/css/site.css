@@ -350,6 +350,9 @@ body {
   margin-bottom: 10px;
 }
 
+
+/* -------------------------------------------------------------------------------*/
+
 /* Popup Window Styles */
 .popup-window {
   position: fixed;
@@ -515,6 +518,22 @@ body {
   background: linear-gradient(135deg, #c4b5fd, #9770e7);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(183, 148, 246, 0.4);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #c4b5fd;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 /* Animations */
