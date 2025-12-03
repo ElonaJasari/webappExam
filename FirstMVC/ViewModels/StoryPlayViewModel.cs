@@ -13,6 +13,10 @@ namespace FirstMVC.ViewModels
         // User progress information
         public int CurrentStoryActId { get; set; }
         public DateTime? LastUpdated { get; set; }
+        public int Trust { get; set; }
+
+        // simple error messaging when a choice/reset fails
+        public string? ErrorMessage { get; set; }
         
         // For form submission
         [Display(Name = "Selected Choice")]

@@ -23,6 +23,9 @@ namespace FirstMVC.Models
         public int NextActId { get; set; }
         public bool IsCorrect { get; set; }
 
+        /// Chages in trust value (-5, 0 or +5)
+        public int TrustChange { get; set; }
+
         public int StoryActId { get; set; }
         public StoryAct StoryAct { get; set; } = null!;
     }
