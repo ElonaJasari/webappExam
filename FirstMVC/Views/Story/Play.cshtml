@@ -241,11 +241,20 @@
 </style>
 
 <div class="visual-novel-container">
+    @* Preload current scene and character images to reduce perceived latency *@
+    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl))
+    {
+        <link rel="preload" as="image" href="@Model.CurrentAct.ImageUrl" />
+    }
+    @if (Model.CurrentAct.Character != null && !string.IsNullOrEmpty(Model.CurrentAct.Character.ImageUrl))
+    {
+        <link rel="preload" as="image" href="@Model.CurrentAct.Character.ImageUrl" />
+    }
     @* Background Image *@
     @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl))
     {
         <div class="scene-background">
-            <img src="@Model.CurrentAct.ImageUrl" alt="Scene" />
+            <img src="@Model.CurrentAct.ImageUrl" alt="Scene" loading="eager" />
         </div>
     }
 
@@ -292,7 +301,7 @@
             if (!string.IsNullOrEmpty(npcImage))
             {
                 <div class="character-display">
-                    <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" />
+                    <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" loading="lazy" />
                 </div>
             }
         }
@@ -301,7 +310,7 @@
         @if (Model.PlayerCharacter != null && !string.IsNullOrEmpty(Model.PlayerCharacter.ImageUrl))
         {
             <div class="player-character-display">
-                <img src="@Model.PlayerCharacter.ImageUrl" alt="@Model.SelectedCharacterName" />
+                <img src="@Model.PlayerCharacter.ImageUrl" alt="@Model.SelectedCharacterName" loading="lazy" />
             </div>
         }
 
