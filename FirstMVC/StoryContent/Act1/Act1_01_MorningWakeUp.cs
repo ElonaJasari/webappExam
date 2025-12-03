@@ -49,7 +49,13 @@ public static class Act1_01_MorningWakeUp
                 CharacterCode = "ID_PARENT", 
                 Content = "Fine, but don't blame me when you're late!",
                 Choices = new[] {
-                    new { Text = "Continue...", NextSceneId = 5, TrustChange = 0, IsCorrect = false, ResponseDialog = "" }
+
+                    new { Text = "I'm never late!",
+                     NextSceneId = 5,
+                    TrustChange = 0,
+                    IsCorrect = false, ResponseDialog = "You are always late honey" }
+
+                    
                 }
             },
             
@@ -61,7 +67,11 @@ public static class Act1_01_MorningWakeUp
                 CharacterCode = "ID_PARENT", 
                 Content = "That's my child! Breakfast is ready in 5.",
                 Choices = new[] {
-                    new { Text = "Continue...", NextSceneId = 5, TrustChange = 0, IsCorrect = false, ResponseDialog = "" }
+                    new { Text = "*GASP*  good morning mom and dad!",
+                    NextSceneId = 5,
+                    TrustChange = 0,
+                    IsCorrect = false,
+                    ResponseDialog = "Well hello little one, I hope you slept well!" }
                 }
             },
             
@@ -73,7 +83,26 @@ public static class Act1_01_MorningWakeUp
                 CharacterCode = "ID_PARENT", 
                 Content = "Oh really? Then why are you still in bed? Get moving!",
                 Choices = new[] {
-                    new { Text = "Continue...", NextSceneId = 5, TrustChange = 0, IsCorrect = false, ResponseDialog = "" }
+                    new { Text = "I just wanted a few more minutes to relax.",
+                    NextSceneId = 5, 
+                    TrustChange = 0, 
+                    IsCorrect = false, 
+                    ResponseDialog = "GET GOING YOUNG ONE, TIME IS TICKING!" }
+                }
+            },
+
+             new { 
+                SceneId = 5,
+                ActCategory = 1,
+                Title = "Breakfast", 
+                CharacterCode = "null", 
+                Content = "you head down to the kitchen and see your parents sitting at the table eating breakfast. They look up and smile as you enter.",
+                Choices = new[] {
+                    new { Text = "Wow, this looks amazing! i beter eat quickly so I don't miss the bus.",
+                    NextSceneId = 5, 
+                    TrustChange = 0, 
+                    IsCorrect = false, 
+                    ResponseDialog = "your backpack is by the door, don't forget it when you leave! have a great day at school!"}
                 }
             },
         };
