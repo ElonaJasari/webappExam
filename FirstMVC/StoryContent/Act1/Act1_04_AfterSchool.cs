@@ -49,7 +49,7 @@ public static class Act1_04_AfterSchool
                 ActCategory = 1,
                 Title = "At the Library",
                 CharacterCode = "ID_FRIEND1",
-                ImageUrl = (string?)"/images/library.png",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "You both head to the library. Áilu finds a quiet corner.\r\n\r\n" +
                     "Áilu: \"Geahččal sániid: 'girji' (book), 'skuvla' (school), 'oahppat' (to learn).\"\r\n\r\n" +
@@ -78,7 +78,7 @@ public static class Act1_04_AfterSchool
                 ActCategory = 1,
                 Title = "At the Park",
                 CharacterCode = "ID_FRIEND1",
-                ImageUrl = (string?)"/images/park.png",
+                ImageUrl = (string?)"/images/street.png",
                 Content =
                     "You sit on a bench in the park. Áilu points at things around you.\r\n\r\n" +
                     "Áilu: \"Geahččal: 'muorra' (tree), 'beaivi' (sun), 'biegga' (wind).\"\r\n\r\n" +
@@ -128,7 +128,7 @@ public static class Act1_04_AfterSchool
                 ActCategory = 1,
                 Title = "End of Day One",
                 CharacterCode = "",
-                ImageUrl = (string?)"/images/home.png",
+                ImageUrl = (string?)"/images/bedroom.png",
                 Content =
                     "You arrive home, feeling a bit more confident with Northern Sámi.\r\n\r\n" +
                     "Your parent greets you: \"Maid don oahppat?\" (What did you learn?)\r\n\r\n" +

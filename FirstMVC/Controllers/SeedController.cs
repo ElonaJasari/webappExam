@@ -104,7 +104,7 @@ namespace FirstMVC.Controllers
                     Role = "Parent NPC",
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
-                    ImageUrl = "/images/mother.png",
+                    ImageUrl = "/images/mom_character.png",
                 },
                 new Characters
                 {
@@ -121,14 +121,14 @@ namespace FirstMVC.Controllers
                     Role = "Friend NPC",
                     CharacterCode = "ID_FRIEND1",
                     Description = "Helpful classmate who encourages the player",
-                    ImageUrl = "/images/friend1.png",
+                    ImageUrl = "/images/Friend_1.png",
                 },
                 new Characters
                 {
                     Name = "Áila",
                     Role = "Friend NPC",
-                    CharacterCode = "ID_FRIEND1",
-                    Description = "Helpful classmate who encourages the player",
+                    CharacterCode = "ID_FRIEND2",
+                    Description = "Supportive classmate and friend",
                     ImageUrl = "/images/Friend_2.png",
                 }
             };
