@@ -2,13 +2,30 @@
     Layout = null;
     ViewData["Title"] = "Welcome, new user!";
 }
-<div class="choose-character-page">
-    <div class="container">
-        <div class="header">
-            <h1 class="title">Welcome!</h1>
-            <p class="subtitle">Let's set up your character to begin.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/newuser.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Back to home button -->
+    <a href="@Url.Action("Index", "Home")" class="back-home">← Back to Home</a>
+
+    <!-- Main content -->
+    <div class="page-container">
+        <div class="welcome-content">
+            <h1>Welcome, newcomer!</h1>
+            <p class="subtitle">Let's start your Northern Sami learning journey</p>
+            <p class="description">Choose your character and begin exploring the beautiful sami language.<br>
+            This game was developed to make learning fun and exciting, your choices will shape your experience so choose wisely!</p>
+            
+            <a href="@Url.Action("Character", "Home")" class="get-started-btn">Get Started</a>
         </div>
     </div>
+
     <script src="~/js/newuser.js" asp-append-version="true"></script>
-    <link rel="stylesheet" href="~/css/newuser.css" asp-append-version="true" />
-</div>
+</body>
+</html>
