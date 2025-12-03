@@ -171,8 +171,8 @@ public class StoryController : Controller
         // Apply trust change from this choice (-5, 0, +5 etc.)
         progress.Trust += choice.TrustChange;
 
-        // Check if we're coming from scene 61 - route to appropriate ending scene
-        if (progress.CurrentStoryActId == 61 && nextActId == 62)
+        // Check if we're coming from scene 57 - route to appropriate ending scene
+        if (progress.CurrentStoryActId == 57 && nextActId == 62)
         {
             // Calculate ending based on trust (after applying trust change)
             var endingType = CalculateEnding(progress.Trust);
