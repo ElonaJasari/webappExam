@@ -11,7 +11,8 @@ public static class Act1_01_MorningWakeUp
                 SceneId = 1,
                 ActCategory = 1,
                 Title = "Morning Wake Up", 
-                CharacterCode = "ID_PARENT", 
+                CharacterCode = "ID_PARENT",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content = "*tug *tug* tug\r\n\r\n" +
                           "Wake up! School starts in 30 minutes!\r\n\r\n" +
                           "Seriously, if you miss the bus again, you're walking!\r\n\r\n" +
@@ -46,7 +47,8 @@ public static class Act1_01_MorningWakeUp
                 SceneId = 2,
                 ActCategory = 1,
                 Title = "Parent's Response", 
-                CharacterCode = "ID_PARENT", 
+                CharacterCode = "ID_PARENT",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content = "Fine, but don't blame me when you're late!",
                 Choices = new[] {
 
@@ -64,7 +66,8 @@ public static class Act1_01_MorningWakeUp
                 SceneId = 3,
                 ActCategory = 1,
                 Title = "Parent's Response", 
-                CharacterCode = "ID_PARENT", 
+                CharacterCode = "ID_PARENT",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content = "That's my child! Breakfast is ready in 5.",
                 Choices = new[] {
                     new { Text = "*GASP*  good morning mom and dad!",
@@ -80,7 +83,8 @@ public static class Act1_01_MorningWakeUp
                 SceneId = 4,
                 ActCategory = 1,
                 Title = "Parent's Response", 
-                CharacterCode = "ID_PARENT", 
+                CharacterCode = "ID_PARENT",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content = "Oh really? Then why are you still in bed? Get moving!",
                 Choices = new[] {
                     new { Text = "I just wanted a few more minutes to relax.",

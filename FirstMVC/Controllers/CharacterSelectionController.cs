@@ -24,6 +24,7 @@ namespace FirstMVC.Controllers
 
         public class SaveSelectionDto
         {
+            // Front-end sends 1..5. We'll map to DB by code.
             public int CharacterId { get; set; }
             public string CustomName { get; set; } = string.Empty;
         }
@@ -34,14 +35,54 @@ namespace FirstMVC.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
 
-            var selection = new UserCharacterSelection
+            // Map client id (1..5) to CharacterCode in DB
+            string code = dto.CharacterId switch
             {
-                UserId = userId,
-                CharacterId = dto.CharacterId,
-                CustomName = dto.CustomName
+                1 => "ID_COOL_DUDE",      // Eiven Nordflamme
+                2 => "ID_CONFIDENT_DUDE", // Vargár Ravdna
+                3 => "ID_TUNG_TUNG",      // TUNG TUNG SAMUR
+                4 => "ID_AURORA",         // Aurora Borealis
+                5 => "ID_CHLOEKELLY",     // Chloe Kelly
             };
 
-            _context.UserCharacterSelection.Add(selection);
+            // Prefer CharacterCode lookup; fall back to numeric when present
+            var character = await _context.Characters
+                .FirstOrDefaultAsync(c => c.CharacterCode == code);
+
+            if (character == null)
+            {
+                // If not found by code, try using numeric id directly
+                character = await _context.Characters
+                    .FirstOrDefaultAsync(c => c.CharacterID == dto.CharacterId);
+            }
+
+            if (character == null)
+            {
+                return BadRequest($"Character not found for selection id {dto.CharacterId}.");
+            }
+
+            // Upsert: keep only one selection per user
+            var existing = await _context.UserCharacterSelection
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            if (existing == null)
+            {
+                var selection = new UserCharacterSelection
+                {
+                    UserId = userId,
+                    CharacterId = character.CharacterID,
+                    CustomName = dto.CustomName
+                };
+                _context.UserCharacterSelection.Add(selection);
+            }
+            else
+            {
+                existing.CharacterId = character.CharacterID;
+                existing.CustomName = dto.CustomName;
+            }
+
             await _context.SaveChangesAsync();
 
             return Ok();

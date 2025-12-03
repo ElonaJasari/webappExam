@@ -56,6 +56,16 @@ public class StoryController : Controller
                 return View("Error", new ErrorViewModel { RequestId = "STORY_NO_START" });
             }
 
+            // Get the user's selected character
+            var characterSelection = await _context.UserCharacterSelection
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+
+            if (characterSelection == null)
+            {
+                _logger.LogError("No character selected for user");
+                return RedirectToAction("Character", "Home");
+            }
+
             progress = new UserProgressDB
             {
                 UserID = userId,
@@ -63,7 +73,9 @@ public class StoryController : Controller
                 CurrentStoryAct = startingAct,
                 Trust = 0,
                 EndingType = null,
-                LastUpdated = DateTime.UtcNow
+                LastUpdated = DateTime.UtcNow,
+                SelectedCharacterId = characterSelection.CharacterId,
+                SelectedCharacterName = characterSelection.CustomName
             };
 
             _context.UserProgress.Add(progress);
@@ -79,13 +91,41 @@ public class StoryController : Controller
                 .FirstAsync(a => a.StoryActId == progress.CurrentStoryActId);
         }
 
+        // If progress has no character but user has a selection, update progress
+        if (!progress.SelectedCharacterId.HasValue)
+        {
+            var characterSelection = await _context.UserCharacterSelection
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+            
+            if (characterSelection != null)
+            {
+                progress.SelectedCharacterId = characterSelection.CharacterId;
+                progress.SelectedCharacterName = characterSelection.CustomName;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // No character selected yet, redirect to selection
+                return RedirectToAction("Character", "Home");
+            }
+        }
+
         // If we already have an ending, go straight to the ending screen.
         if (!string.IsNullOrEmpty(progress.EndingType))
         {
             return RedirectToAction(nameof(Ending));
         }
 
+        // Load player's selected character
+        Characters? playerCharacter = null;
+        if (progress.SelectedCharacterId.HasValue)
+        {
+            playerCharacter = await _context.Characters
+                .FirstOrDefaultAsync(c => c.CharacterID == progress.SelectedCharacterId.Value);
+        }
+
         var vm = StoryPlayViewModel.FromUserProgress(progress);
+        vm.PlayerCharacter = playerCharacter;
         vm.Trust = progress.Trust;
         vm.ErrorMessage = error;
         return View(vm);
@@ -219,6 +259,18 @@ public class StoryController : Controller
             progress.EndingType = null;
             progress.LastUpdated = DateTime.UtcNow;
             progress.CurrentStoryAct = null;
+            // Also reset character selection so user re-selects OC
+            progress.SelectedCharacterId = null;
+            progress.SelectedCharacterName = string.Empty;
+            await _context.SaveChangesAsync();
+        }
+
+        // Delete the UserCharacterSelection so user can pick a new character
+        var characterSelection = await _context.UserCharacterSelection
+            .FirstOrDefaultAsync(s => s.UserId == userId);
+        if (characterSelection != null)
+        {
+            _context.UserCharacterSelection.Remove(characterSelection);
             await _context.SaveChangesAsync();
         }
 

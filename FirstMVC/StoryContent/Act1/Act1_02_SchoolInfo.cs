@@ -18,7 +18,7 @@ public static class Act1_02_SchoolInfo
                     "From now on, this class is conducted in Northern Sámi. Try to speak Sámi with one another as much as you can. " +
                     "Don’t worry if you’re new to it—everyone helps each other here.\r\n\r\n" +
                     "[The teacher gestures toward the student next to you.] Please introduce yourselves.",
-                Choices = new[] {
+                Choices = new[] { // add Choices wrapper
                     new {
                         Text = "Nod and look to the classmate",
                         NextSceneId = 6,

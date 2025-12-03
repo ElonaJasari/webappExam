@@ -1,22 +1,60 @@
 @{
+    Layout = null;
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h1>Admin Dashboard</h1>
-<h2>Hello, admin!</h2>
-<p>As an admin, you have access to create your own little game for teaching.</p>
-<p>We have a dictionary with Sami words that you can choose from, or you can add your own words if they are missing.</p>
-<p>Since we are a small startup, our dictionary does not yet contain all the words. You, as an admin, can help improve the game by adding new words that are not already in the dictionary.</p>
-<p>Use the buttons below to manage the words:</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Bures!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-    <a class="btn btn-primary" href="@Url.Action("Create", "Admin")">Create Story Act</a>
-    <a class="btn btn-warning" href="@Url.Action("Edit", "Admin")">Update Story Act</a>
-    <a class="btn btn-danger" href="@Url.Action("Delete", "Admin")">Delete Story Act</a>
-</div>
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>Admin Dashboard</h1>
+            <h2>Bures, Admin!</h2>
+        </div>
+    </header>
 
-<h3 style="margin-top: 30px;">Manage Test Tasks</h3>
-<p>Create and manage test tasks (words/sentences) that will be used to quiz students:</p>
-<div style="display: flex; gap: 10px; margin-bottom: 20px;">
-    <a class="btn btn-primary" href="@Url.Action("Index", "Task")">Manage Test Tasks</a>
-</div>
+    <div class="container">
+        <div class="welcome-section">
+            <p>As an admin, you have access to create your own little game for teaching.</p>
+
+            <div class="info-box">
+                <p>
+                    <strong>Dictionary Feature:</strong>
+                    We have a dictionary with Sami words that you can choose from, or you can add your own words if they are missing.
+                </p>
+            </div>
+
+            <p>
+                Since we are a small startup, our dictionary does not yet contain all the words.
+                You, as an admin, can help improve the game by adding new words that are not already in the dictionary.
+            </p>
+            <p>Use the buttons below to manage the words:</p>
+        </div>
+
+        <div class="section">
+            <h3>Manage Story Acts</h3>
+            <div class="button-group">
+                <a class="btn btn-primary" href="@Url.Action("Create", "Admin")">Create Story Act</a>
+                <a class="btn btn-warning" href="@Url.Action("Edit", "Admin")">Update Story Act</a>
+                <a class="btn btn-danger" href="@Url.Action("Delete", "Admin")">Delete Story Act</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Manage Test Tasks</h3>
+            <p>Create and manage test tasks (words/sentences) that will be used to quiz students:</p>
+            <div class="button-group">
+                <a class="btn btn-primary" href="@Url.Action("Index", "Task")">Manage Test Tasks</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

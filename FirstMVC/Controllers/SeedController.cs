@@ -20,72 +20,162 @@ namespace FirstMVC.Controllers
         // Navigate to /Seed/Characters to run this
         public async Task<IActionResult> Characters()
         {
+            // Clear existing characters and related data to avoid duplicates
+            if (await _context.Characters.AnyAsync())
+            {
+                // Temporarily disable FK enforcement for cleanup (SQLite-specific)
+                await _context.Database.ExecuteSqlRawAsync("PRAGMA foreign_keys = OFF;");
+
+                // First delete foreign key references
+                var userCharacterSelections = await _context.UserCharacterSelection.ToListAsync();
+                _context.UserCharacterSelection.RemoveRange(userCharacterSelections);
+                
+                var userProgress = await _context.UserProgress.ToListAsync();
+                foreach (var progress in userProgress)
+                {
+                    progress.SelectedCharacterId = null;
+                    // Keep NOT NULL constraint happy by using empty string
+                    progress.SelectedCharacterName = string.Empty;
+                }
+                
+                var storyActs = await _context.StoryActs.ToListAsync();
+                foreach (var act in storyActs)
+                {
+                    act.CharacterId = null;
+                }
+                
+                await _context.SaveChangesAsync();
+                
+                // Now safe to delete characters
+                _context.Characters.RemoveRange(_context.Characters);
+                await _context.SaveChangesAsync();
+
+                // Re-enable FK enforcement
+                await _context.Database.ExecuteSqlRawAsync("PRAGMA foreign_keys = ON;");
+            }
+          
             var charactersToAdd = new[]
             {
+                // ===== Selectable Player Characters (for /Home/Character) =====
                 new Characters
                 {
-                    Name = "Friend 1",
-                    Role = "Female Friend",
-                    CharacterCode = "ID_FRIEND1",
-                    Description = "Your first friend in the story",
+                    Name = "Eiven Nordflamme",
+                    Role = "Playable Character",
+                    CharacterCode = "ID_COOL_DUDE",
+                    Description = "Calm, grounded, quiet clumsy",
                     Dialog = "",
-                    ImageUrl = "",
+                    ImageUrl = "/images/cool_dude.png",
                     Translate = ""
                 },
                 new Characters
                 {
-                    Name = "Friend 2",
-                    Role = "Male Friend",
-                    CharacterCode = "ID_FRIEND2",
-                    Description = "Your second friend in the story",
+                    Name = "Vargár Ravdna",
+                    Role = "Playable Character",
+                    CharacterCode = "ID_CONFIDENT_DUDE",
+                    Description = "HIMOTHY",
                     Dialog = "",
-                    ImageUrl = "",
+                    ImageUrl = "/images/confident_dude.png",
                     Translate = ""
                 },
+                new Characters
+                {
+                    Name = "TUNG TUNG SAMUR",
+                    Role = "Playable Character",
+                    CharacterCode = "ID_TUNG_TUNG",
+                    Description = "TUNG TUNG THE GREAT",
+                    Dialog = "",
+                    ImageUrl = "/images/tung_tung.png",
+                    Translate = ""
+                },
+                new Characters
+                {
+                    Name = "Aurora Borealis",
+                    Role = "Playable Character",
+                    CharacterCode = "ID_AURORA",
+                    Description = "caring, fearless, strong",
+                    Dialog = "",
+                    ImageUrl = "/images/awsome_girl.png",
+                    Translate = ""
+                },
+                new Characters
+                {
+                    Name = "Chloe Kelly",
+                    Role = "Playable Character",
+                    CharacterCode = "ID_CHLOEKELLY",
+                    Description = "Pressure? What pressure?",
+                    Dialog = "",
+                    ImageUrl = "/images/chloekelly.png",
+                    Translate = ""
+                },
+                
+                // ===== Story NPCs (appear in scenes) =====
                 new Characters
                 {
                     Name = "Parent",
-                    Role = "Parent",
+                    Role = "Parent NPC",
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
                     Dialog = "",
-                    ImageUrl = "",
+                    ImageUrl = "/images/polar-bear.png",
                     Translate = ""
                 },
                 new Characters
                 {
-                    Name = "Principal",
-                    Role = "Principal",
-                    CharacterCode = "ID_PRINCIPAL",
-                    Description = "The school principal",
-                    Dialog = "",
-                    ImageUrl = "",
-                    Translate = ""
-                },
-                new Characters
-                {
-                    Name = "Teach",
-                    Role = "Teacher",
+                    Name = "Teacher",
+                    Role = "Teacher NPC",
                     CharacterCode = "ID_TEACHER",
                     Description = "The school teacher",
                     Dialog = "",
                     ImageUrl = "",
-                    Translate = "" 
+                    Translate = ""
                 }
             };
 
             _context.Characters.AddRange(charactersToAdd);
             await _context.SaveChangesAsync();
             
-            return Content($"Added 5 characters: Friend 1, Friend 2, Parent, Principal, Teach. Go to /Character to manage them.");
+            return Content($"Added 10 characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + 2 NPCs (Parent, Teacher, Friend1, Friend2 and Principal). Go to /Character to manage them.");
+        }
+
+        // Diagnostic: Check what's in the database
+        public async Task<IActionResult> CheckParent()
+        {
+            var parent = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == "ID_PARENT");
+            if (parent == null)
+                return Content("Parent character NOT FOUND in database. Run /Seed/Characters first.");
+            
+            return Content($"Parent character found:\nCharacterID: {parent.CharacterID}\nName: {parent.Name}\nCharacterCode: {parent.CharacterCode}\nImageUrl: '{parent.ImageUrl}'\n\nNow checking Scene 1...\n\n" +
+                          await CheckScene1());
+        }
+
+        private async Task<string> CheckScene1()
+        {
+            var scene1 = await _context.StoryActs
+                .Include(a => a.Character)
+                .FirstOrDefaultAsync(a => a.StoryActId == 1);
+            
+            if (scene1 == null)
+                return "Scene 1 NOT FOUND. Run /Seed/Story?reset=true";
+            
+            return $"Scene 1 found:\nTitle: {scene1.Title}\nCharacterId FK: {scene1.CharacterId}\nCharacter loaded: {(scene1.Character != null ? "YES" : "NO")}\n" +
+                   (scene1.Character != null ? $"Character Name: {scene1.Character.Name}\nCharacter ImageUrl: '{scene1.Character.ImageUrl}'" : "");
         }
 
 
         // Navigate to /Seed/Story to create all story acts and choices
         // Story is organized in files: StoryContent/Act1/, Act2/, Act3/
         // Each file (like MorningWakeUp.cs) contains a scene sequence
-        public async Task<IActionResult> Story()
+        public async Task<IActionResult> Story(bool reset = false)
         {
+            // Clear existing data if reset is requested
+            if (reset)
+            {
+                _context.Choices.RemoveRange(_context.Choices);
+                _context.StoryActs.RemoveRange(_context.StoryActs);
+                _context.UserProgress.RemoveRange(_context.UserProgress);
+                await _context.SaveChangesAsync();
+            }
+
             // Load scenes from all story content files
             var storyData = GetAllScenesInOrder();
                 
@@ -119,7 +209,8 @@ namespace FirstMVC.Controllers
                     Title = story.Title,
                     Content = story.Content,
                     CharacterId = character.CharacterID,
-                    Description = $"Act {story.ActCategory}"  // Store which Act category this belongs to
+                    Description = $"Act {story.ActCategory}",  // Store which Act category this belongs to
+                    ImageUrl = story.ImageUrl ?? null  // Include image if provided
                 };
 
                 _context.StoryActs.Add(act);
@@ -127,16 +218,17 @@ namespace FirstMVC.Controllers
 
                 var choiceCount = 0;
                 // Create choices if provided
-                if (story.Choices != null && story.Choices.Any())
+                dynamic? choices = story.Choices;
+                if (choices != null && choices.Length > 0)
                 {
-                    foreach (var choiceData in story.Choices)
+                    foreach (var choiceData in choices)
                     {
                         var choice = new Choice
                         {
-                            Text = choiceData.Text,
-                            NextActId = choiceData.NextSceneId,  // NextSceneId points to next scene
-                            TrustChange = choiceData.TrustChange,
-                            IsCorrect = choiceData.IsCorrect,
+                            Text = choiceData.Text ?? string.Empty,
+                            NextActId = choiceData.NextSceneId ?? 0,  // NextSceneId points to next scene
+                            TrustChange = choiceData.TrustChange ?? 0,
+                            IsCorrect = choiceData.IsCorrect ?? false,
                             StoryActId = act.StoryActId
                         };
                         _context.Choices.Add(choice);
