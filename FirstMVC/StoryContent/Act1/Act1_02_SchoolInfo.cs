@@ -12,11 +12,12 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "Class Introduction",
                 CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Good morning everyone! We have a new student with us today.\r\n\r\n" +
                     "(English) Welcome to the course. We'll be learning together this term.\r\n\r\n" +
                     "From now on, this class is conducted in Northern Sámi. Try to speak Sámi with one another as much as you can. " +
-                    "Don’t worry if you’re new to it—everyone helps each other here.\r\n\r\n" +
+                    "Don't worry if you're new to it—everyone helps each other here.\r\n\r\n" +
                     "[The teacher gestures toward the student next to you.] Please introduce yourselves.",
                 Choices = new[] { // add Choices wrapper
                     new {
@@ -35,6 +36,7 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "A Classmate Greets You",
                 CharacterCode = "ID_FRIEND1",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Bures! Mo don orrot? Mun lean Áilu. \r\n\r\n" +
                     "(Hello! How are you? I'm Áilu.)",
@@ -63,14 +65,15 @@ public static class Act1_02_SchoolInfo
                 }
             },
 
-            // Scene 7 — Branch for “perfect Sámi”
+            // Scene 7 — Branch for "perfect Sámi"
             new {
                 SceneId = 7,
                 ActCategory = 1,
                 Title = "Impressed Friend",
                 CharacterCode = "ID_FRIEND1",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Dat lea hui buri! Don galggašedje leat ožžon viiddis ovdalii. (That’s great! You must have practiced a lot.)",
+                    "Dat lea hui buri! Don galggašedje leat ožžon viiddis ovdalii. (That's great! You must have practiced a lot.)",
                 Choices = new[] {
                     new {
                         Text = "Smile and keep talking",
@@ -82,14 +85,15 @@ public static class Act1_02_SchoolInfo
                 }
             },
 
-            // Scene 8 — Branch for “stare blankly”
+            // Scene 8 — Branch for "stare blankly"
             new {
                 SceneId = 8,
                 ActCategory = 1,
                 Title = "Awkward Moment",
                 CharacterCode = "ID_FRIEND1",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Don sáhttet álggahit čábbát. Mun sádden álkes sániid, okei? (You can start simple. I’ll use easy words, okay?)",
+                    "Don sáhttet álggahit čábbát. Mun sádden álkes sániid, okei? (You can start simple. I'll use easy words, okay?)",
                 Choices = new[] {
                     new {
                         Text = "Nod gratefully",
@@ -101,12 +105,13 @@ public static class Act1_02_SchoolInfo
                 }
             },
 
-            // Scene 9 — Branch for “I don't understand”
+            // Scene 9 — Branch for "I don't understand"
             new {
                 SceneId = 9,
                 ActCategory = 1,
                 Title = "Kind Encouragement",
                 CharacterCode = "ID_FRIEND1",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Ođđa giela lea somá goatnit ovttas. (A new language is fun to discover together.)",
                 Choices = new[] {
@@ -126,9 +131,10 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "Proper Introductions",
                 CharacterCode = "ID_FRIEND1",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Bures! Mun lean Áilu, muhto sáhttet čuožžut Áilu. Mun lean du oahppis. (Hi! I’m Áilu. I’m your classmate.)\r\n\r\n" +
-                    "Gulahallat Sámegiela ovttas, ja mun vealahin du go dárbbašat. (We’ll speak Sámi together, and I’ll help when you need.)",
+                    "Bures! Mun lean Áilu, muhto sáhttet čuožžut Áilu. Mun lean du oahppis. (Hi! I'm Áilu. I'm your classmate.)\r\n\r\n" +
+                    "Gulahallat Sámegiela ovttas, ja mun vealahin du go dárbbašat. (We'll speak Sámi together, and I'll help when you need.)",
                 Choices = new[] {
                     new {
                         Text = "Nice to meet you, Áilu!",
