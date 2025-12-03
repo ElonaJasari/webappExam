@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(`API Error: ${response.status} - ${errorText}`);
           }
 
-          window.location.href = "/Home/Play";
+          window.location.href = "/Story/Play";
         } catch (error) {
           console.error("Error saving character selection:", error);
           alert("Could not save your character. Please try again.");
