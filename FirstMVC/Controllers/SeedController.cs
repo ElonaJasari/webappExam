@@ -264,6 +264,70 @@ namespace FirstMVC.Controllers
             return Content(result);
         }
 
+        // Repair CharacterId foreign keys in StoryActs without wiping story or progress.
+        // Recomputes CharacterId from CharacterCode defined in StoryContent for each SceneId.
+        public async Task<IActionResult> RepairStoryCharacters()
+        {
+            var scenes = GetAllScenesInOrder().ToList();
+            if (!scenes.Any())
+            {
+                return Content("No scenes discovered from StoryContent.");
+            }
+
+            // Build map: SceneId -> CharacterCode (may be null/empty)
+            var sceneToCode = new Dictionary<int, string?>(scenes.Count);
+            foreach (var s in scenes)
+            {
+                int id = (int)s.SceneId;
+                string? code = null;
+                try
+                {
+                    code = (string?)s.CharacterCode;
+                }
+                catch { /* ignore casting issues */ }
+                sceneToCode[id] = string.IsNullOrWhiteSpace(code) ? null : code;
+            }
+
+            var storyActs = await _context.StoryActs.ToListAsync();
+            int updated = 0, missing = 0;
+            foreach (var act in storyActs)
+            {
+                if (!sceneToCode.TryGetValue(act.StoryActId, out var code))
+                {
+                    missing++;
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    if (act.CharacterId.HasValue)
+                    {
+                        act.CharacterId = null;
+                        updated++;
+                    }
+                    continue;
+                }
+
+                var character = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == code);
+                if (character != null)
+                {
+                    if (act.CharacterId != character.CharacterID)
+                    {
+                        act.CharacterId = character.CharacterID;
+                        updated++;
+                    }
+                }
+                else
+                {
+                    missing++;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Content($"Repair complete. Updated CharacterId on {updated} scenes. Missing mappings: {missing}.");
+        }
+
         // Helper method to load all scenes in the correct order
         // Uses reflection to find all classes with GetScenes() method in StoryContent namespace
         private static IEnumerable<dynamic> GetAllScenesInOrder()
