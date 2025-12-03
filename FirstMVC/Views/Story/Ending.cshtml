@@ -1,31 +1,168 @@
 @{
     ViewData["Title"] = "Ending";
+    Layout = null;
     var endingType = (string?)ViewData["EndingType"] ?? "Unknown";
     var trust = (int?)ViewData["Trust"] ?? 0;
+    var endingContent = (string?)ViewData["EndingContent"] ?? "The end.";
+    var endingTitle = (string?)ViewData["EndingTitle"] ?? "Ending";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body style="margin: 0; padding: 0; overflow: hidden;">
 
-<div class="story-ending">
-    <h1>@endingType Ending</h1>
-    <p>Your final trust value was <strong>@trust</strong>.</p>
+<style>
+    .ending-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('/images/blackEndingScreen.png');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+    }
 
-    @if (endingType == "Bad")
-    {
-        <p>This path led to a difficult conclusion. Maybe different choices could build more trust next time.</p>
+    .credits-box {
+        background: rgba(0, 0, 0, 0.85);
+        color: #ffffff;
+        padding: 50px 60px;
+        border-radius: 15px;
+        max-width: 900px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        text-align: center;
     }
-    else if (endingType == "Good")
-    {
-        <p>You reached a hopeful ending. With even more trust, there might be an even deeper connection waiting.</p>
-    }
-    else if (endingType == "True")
-    {
-        <p>You unlocked the true ending. Your choices built maximum trust and revealed the full story.</p>
-    }
-   
 
-    <div class="mt-4">
-        <a asp-action="ResetAndStart" asp-controller="Story" class="btn btn-primary">Replay from Act 1</a>
-        <a asp-action="ContinuePage" asp-controller="Home" class="btn btn-secondary ms-2">Back to Menu</a>
+    .credits-box h1 {
+        font-size: 2.5em;
+        font-weight: 900;
+        color: #f39c12;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+    .credits-box h2 {
+        font-size: 1.8em;
+        font-weight: 700;
+        color: #e74c3c;
+        margin-bottom: 20px;
+    }
+
+    .credits-box p {
+        font-size: 1.1em;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        white-space: pre-line;
+    }
+
+    .trust-display {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: #3498db;
+        margin: 25px 0;
+    }
+
+    .credits-footer {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid rgba(255, 255, 255, 0.3);
+        font-size: 1.2em;
+        color: #bdc3c7;
+    }
+
+    .credits-footer strong {
+        color: #ecf0f1;
+    }
+
+    .action-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .action-buttons a,
+    .action-buttons button {
+        padding: 15px 40px;
+        font-size: 1.2em;
+        font-weight: 700;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-play-again {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .btn-play-again:hover {
+        background: linear-gradient(135deg, #c0392b, #a93226);
+        transform: scale(1.08);
+        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        50% {
+            box-shadow: 0 4px 25px rgba(231, 76, 60, 0.6);
+        }
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, #7f8c8d, #6c7a7b);
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="ending-container">
+    <div class="credits-box">
+        <h1>@endingType Ending</h1>
+        <h2>@endingTitle</h2>
+        <div class="trust-display">Your final trust value was @trust.</div>
+        <p>@endingContent</p>
+
+        <div class="credits-footer">
+            <strong>© 2025 - Raja, Elona, Jakub</strong><br />
+            Thank you for playing!
+        </div>
+
+        <div class="action-buttons">
+            <form asp-action="ResetAndStart" asp-controller="Story" method="post" style="margin: 0;">
+                <button type="submit" class="btn-play-again">🎮 Play Again</button>
+            </form>
+            <a asp-action="ContinuePage" asp-controller="Home" class="btn btn-secondary">Back to Menu</a>
+        </div>
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 
 
