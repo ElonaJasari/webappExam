@@ -56,6 +56,16 @@ public class StoryController : Controller
                 return View("Error", new ErrorViewModel { RequestId = "STORY_NO_START" });
             }
 
+            // Get the user's selected character
+            var characterSelection = await _context.UserCharacterSelection
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+
+            if (characterSelection == null)
+            {
+                _logger.LogError("No character selected for user");
+                return RedirectToAction("NewUserPage", "Home");
+            }
+
             progress = new UserProgressDB
             {
                 UserID = userId,
@@ -63,7 +73,9 @@ public class StoryController : Controller
                 CurrentStoryAct = startingAct,
                 Trust = 0,
                 EndingType = null,
-                LastUpdated = DateTime.UtcNow
+                LastUpdated = DateTime.UtcNow,
+                SelectedCharacterId = characterSelection.CharacterId,
+                SelectedCharacterName = characterSelection.CustomName
             };
 
             _context.UserProgress.Add(progress);

@@ -49,7 +49,7 @@ namespace FirstMVC.Controllers
                     CharacterCode = "ID_PARENT",
                     Description = "The parent character",
                     Dialog = "",
-                    ImageUrl = "",
+                    ImageUrl = "/images/polar-bear.png",
                     Translate = ""
                 },
                 new Characters
@@ -119,7 +119,8 @@ namespace FirstMVC.Controllers
                     Title = story.Title,
                     Content = story.Content,
                     CharacterId = character.CharacterID,
-                    Description = $"Act {story.ActCategory}"  // Store which Act category this belongs to
+                    Description = $"Act {story.ActCategory}",  // Store which Act category this belongs to
+                    ImageUrl = story.ImageUrl ?? null  // Include image if provided
                 };
 
                 _context.StoryActs.Add(act);

@@ -11,7 +11,8 @@ public static class Act1_01_MorningWakeUp
                 SceneId = 1,
                 ActCategory = 1,
                 Title = "Morning Wake Up", 
-                CharacterCode = "ID_PARENT", 
+                CharacterCode = "ID_PARENT",
+                ImageUrl = "/images/classroom.png",
                 Content = "*tug *tug* tug\r\n\r\n" +
                           "Wake up! School starts in 30 minutes!\r\n\r\n" +
                           "Seriously, if you miss the bus again, you're walking!\r\n\r\n" +
