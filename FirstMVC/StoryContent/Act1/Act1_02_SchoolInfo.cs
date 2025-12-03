@@ -12,6 +12,7 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "At School", 
                 CharacterCode = "ID_TEACHER", 
+                ImageUrl = (string?)null,
                 Content = "Good morning class! Today we'll be learning about...",
                 Choices = new[] {
                     new { 
@@ -44,6 +45,7 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "Teacher's Response", 
                 CharacterCode = "ID_TEACHER", 
+                ImageUrl = (string?)null,
                 Content = "Great enthusiasm! Let's begin...",
                 Choices = new[] {
                     new { Text = "Continue...", NextSceneId = 9, TrustChange = 0, IsCorrect = false, ResponseDialog = "" }
@@ -56,6 +58,7 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "Teacher's Response", 
                 CharacterCode = "ID_TEACHER", 
+                ImageUrl = (string?)null,
                 Content = "Try to stay focused, please. This is important.",
                 Choices = new[] {
                     new { Text = "Continue...", NextSceneId = 9, TrustChange = 0, IsCorrect = false, ResponseDialog = "" }
@@ -68,6 +71,7 @@ public static class Act1_02_SchoolInfo
                 ActCategory = 1,
                 Title = "Teacher's Response", 
                 CharacterCode = "ID_TEACHER", 
+                ImageUrl = (string?)null,
                 Content = "No, we need to cover this material. Please pay attention.",
                 Choices = new[] {
                     new { Text = "Continue...", NextSceneId = 9, TrustChange = 0, IsCorrect = false, ResponseDialog = "" }
