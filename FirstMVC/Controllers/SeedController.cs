@@ -34,7 +34,8 @@ namespace FirstMVC.Controllers
                 foreach (var progress in userProgress)
                 {
                     progress.SelectedCharacterId = null;
-                    progress.SelectedCharacterName = null;
+                    // Keep NOT NULL constraint happy by using empty string
+                    progress.SelectedCharacterName = string.Empty;
                 }
                 
                 var storyActs = await _context.StoryActs.ToListAsync();
@@ -133,7 +134,31 @@ namespace FirstMVC.Controllers
             _context.Characters.AddRange(charactersToAdd);
             await _context.SaveChangesAsync();
             
-            return Content($"Added 10 characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + 5 NPCs (Parent, Teacher, Friend 1, Friend 2 and Principal). Go to /Character to manage them.");
+            return Content($"Added 10 characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + 2 NPCs (Parent, Teacher, Friend1, Friend2 and Principal). Go to /Character to manage them.");
+        }
+
+        // Diagnostic: Check what's in the database
+        public async Task<IActionResult> CheckParent()
+        {
+            var parent = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == "ID_PARENT");
+            if (parent == null)
+                return Content("Parent character NOT FOUND in database. Run /Seed/Characters first.");
+            
+            return Content($"Parent character found:\nCharacterID: {parent.CharacterID}\nName: {parent.Name}\nCharacterCode: {parent.CharacterCode}\nImageUrl: '{parent.ImageUrl}'\n\nNow checking Scene 1...\n\n" +
+                          await CheckScene1());
+        }
+
+        private async Task<string> CheckScene1()
+        {
+            var scene1 = await _context.StoryActs
+                .Include(a => a.Character)
+                .FirstOrDefaultAsync(a => a.StoryActId == 1);
+            
+            if (scene1 == null)
+                return "Scene 1 NOT FOUND. Run /Seed/Story?reset=true";
+            
+            return $"Scene 1 found:\nTitle: {scene1.Title}\nCharacterId FK: {scene1.CharacterId}\nCharacter loaded: {(scene1.Character != null ? "YES" : "NO")}\n" +
+                   (scene1.Character != null ? $"Character Name: {scene1.Character.Name}\nCharacter ImageUrl: '{scene1.Character.ImageUrl}'" : "");
         }
 
 
@@ -193,17 +218,17 @@ namespace FirstMVC.Controllers
 
                 var choiceCount = 0;
                 // Create choices if provided
-                dynamic choices = story.Choices;
+                dynamic? choices = story.Choices;
                 if (choices != null && choices.Length > 0)
                 {
                     foreach (var choiceData in choices)
                     {
                         var choice = new Choice
                         {
-                            Text = choiceData.Text,
-                            NextActId = choiceData.NextSceneId,  // NextSceneId points to next scene
-                            TrustChange = choiceData.TrustChange,
-                            IsCorrect = choiceData.IsCorrect,
+                            Text = choiceData.Text ?? string.Empty,
+                            NextActId = choiceData.NextSceneId ?? 0,  // NextSceneId points to next scene
+                            TrustChange = choiceData.TrustChange ?? 0,
+                            IsCorrect = choiceData.IsCorrect ?? false,
                             StoryActId = act.StoryActId
                         };
                         _context.Choices.Add(choice);

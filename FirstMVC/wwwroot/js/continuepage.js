@@ -5,10 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelBtn = document.getElementById("cancelBtn");
   const confirmBtn = document.getElementById("confirmBtn");
 
-  // Continue Story button - does nothing for now
+  // Continue Story button - go to current story position
   continueBtn.addEventListener("click", function () {
-    console.log("Continue Story clicked - no action yet");
-    // TODO: Navigate to continue story page
+    window.location.href = "/Story/Play";
   });
 
   // New Story button - show popup
@@ -21,10 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     popup.style.display = "none";
   });
 
-  // Confirm button - go to character selection
+  // Confirm button - reset progress and go to character selection
   confirmBtn.addEventListener("click", function () {
-    // TODO: Call API to delete save data
-    window.location.href = "/Home/Character";
+    window.location.href = "/Story/ResetAndStart";
   });
 
   // Close popup when clicking outside

@@ -8,12 +8,14 @@ namespace FirstMVC.ViewModels
         public StoryAct CurrentAct { get; set; } = null!;
         public IEnumerable<Choice> Choices { get; set; } = Enumerable.Empty<Choice>();
         public Characters? Character { get; set; }
+        public Characters? PlayerCharacter { get; set; }
         public string? CurrentViewName { get; set; }
 
         // User progress information
         public int CurrentStoryActId { get; set; }
         public DateTime? LastUpdated { get; set; }
         public int Trust { get; set; }
+        public string? SelectedCharacterName { get; set; }
 
         // simple error messaging when a choice/reset fails
         public string? ErrorMessage { get; set; }
@@ -45,13 +47,15 @@ namespace FirstMVC.ViewModels
             if (progress?.CurrentStoryAct == null)
                 throw new ArgumentException("Invalid user progress data", nameof(progress));
 
-            return new StoryPlayViewModel(
+            var vm = new StoryPlayViewModel(
                 progress.CurrentStoryAct,
                 progress.CurrentStoryAct.Choices,
                 progress.CurrentStoryAct.Character,
                 null,
                 progress.LastUpdated
             );
+            vm.SelectedCharacterName = progress.SelectedCharacterName;
+            return vm;
         }
     }
 }

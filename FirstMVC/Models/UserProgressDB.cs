@@ -23,6 +23,6 @@ public class UserProgressDB
     public DateTime LastUpdated { get; set; }
 
     public int? SelectedCharacterId { get; set; }
-    public string SelectedCharacterName { get; set;}
+    public string SelectedCharacterName { get; set;} = string.Empty;
     
 }
