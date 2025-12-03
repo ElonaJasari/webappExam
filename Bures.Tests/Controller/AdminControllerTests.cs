@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using FirstMVC.Data;
-using FirstMVC.Models;
+using Bures.Data;
+using Bures.Models;
 
-namespace FirstMVC.Tests
+namespace Bures.Tests
 {
     public class AdminControllerTests
     {

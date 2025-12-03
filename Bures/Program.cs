@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using FirstMVC.Data;
+using Bures.Data;
 using Microsoft.AspNetCore.Identity;
-using FirstMVC.Models; // Add this using statement
-using FirstMVC.Repositories;
+using Bures.Models; // Add this using statement
+using Bures.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
