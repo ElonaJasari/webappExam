@@ -268,6 +268,13 @@ public class StoryController : Controller
         return RedirectToAction(nameof(Play));
     }
 
+    // Guard: prevent accidental GET navigation to /Story/Choose
+    [HttpGet]
+    public IActionResult Choose()
+    {
+        return RedirectToAction(nameof(Play));
+    }
+
     // Chooses ending based on trust value
     private static string CalculateEnding(int trust)
     {
@@ -283,14 +290,23 @@ public class StoryController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId == null) return Unauthorized();
 
-        var progress = await _context.UserProgress.FirstOrDefaultAsync(p => p.UserID == userId);
+        var progress = await _context.UserProgress
+            .Include(p => p.CurrentStoryAct)
+            .FirstOrDefaultAsync(p => p.UserID == userId);
+        
         if (progress == null || string.IsNullOrEmpty(progress.EndingType))
         {
             return RedirectToAction(nameof(Play));
         }
 
+        // Load the full ending scene content (62, 63, or 64)
+        var endingScene = await _context.StoryActs
+            .FirstOrDefaultAsync(a => a.StoryActId == progress.CurrentStoryActId);
+
         ViewData["EndingType"] = progress.EndingType;
         ViewData["Trust"] = progress.Trust;
+        ViewData["EndingContent"] = endingScene?.Content ?? "The end.";
+        ViewData["EndingTitle"] = endingScene?.Title ?? "Ending";
         return View();
     }
 
