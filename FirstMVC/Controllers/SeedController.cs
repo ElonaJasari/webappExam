@@ -129,12 +129,23 @@ namespace FirstMVC.Controllers
                     ImageUrl = "",
                     Translate = ""
                 }
+                ,
+                new Characters
+                {
+                    Name = "Áilu",
+                    Role = "Friend NPC",
+                    CharacterCode = "ID_FRIEND1",
+                    Description = "Helpful classmate who encourages the player",
+                    Dialog = "",
+                    ImageUrl = "/images/friend1.png",
+                    Translate = ""
+                }
             };
 
             _context.Characters.AddRange(charactersToAdd);
             await _context.SaveChangesAsync();
             
-            return Content($"Added 10 characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + 2 NPCs (Parent, Teacher, Friend1, Friend2 and Principal). Go to /Character to manage them.");
+            return Content($"Seeded characters: 5 playable (Eiven, Vargár, TUNG TUNG, Aurora, Chloe) + NPCs (Parent, Teacher, Friend1). Go to /Character to manage them.");
         }
 
         // Diagnostic: Check what's in the database
@@ -193,13 +204,17 @@ namespace FirstMVC.Controllers
                     continue;
                 }
 
-                // Get the character
+                // Get the character (allow scenes with no character sprite)
                 var characterCode = (string)story.CharacterCode;
-                var character = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == characterCode);
-                if (character == null)
+                Characters? character = null;
+                if (!string.IsNullOrWhiteSpace(characterCode))
                 {
-                    errors.Add($"Scene {story.SceneId} (Act {story.ActCategory}): Character '{characterCode}' not found. Skipping.");
-                    continue;
+                    character = await _context.Characters.FirstOrDefaultAsync(c => c.CharacterCode == characterCode);
+                    if (character == null)
+                    {
+                        errors.Add($"Scene {story.SceneId} (Act {story.ActCategory}): Character '{characterCode}' not found. Skipping.");
+                        continue;
+                    }
                 }
 
                 // Create the story act (SceneId becomes StoryActId in database)
@@ -208,7 +223,7 @@ namespace FirstMVC.Controllers
                     StoryActId = story.SceneId,  // SceneId is the unique scene number
                     Title = story.Title,
                     Content = story.Content,
-                    CharacterId = character.CharacterID,
+                    CharacterId = character?.CharacterID,
                     Description = $"Act {story.ActCategory}",  // Store which Act category this belongs to
                     ImageUrl = story.ImageUrl ?? null  // Include image if provided
                 };
@@ -237,7 +252,8 @@ namespace FirstMVC.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                created.Add($"Scene {story.SceneId} (Act {story.ActCategory}): '{story.Title}' ({character.Name}) - {choiceCount} choices");
+                var characterName = character?.Name ?? "No Character";
+                created.Add($"Scene {story.SceneId} (Act {story.ActCategory}): '{story.Title}' ({characterName}) - {choiceCount} choices");
             }
 
             await _context.SaveChangesAsync();
