@@ -101,13 +101,15 @@ public static class Act1_01_MorningWakeUp
                 Title = "Breakfast", 
                 CharacterCode = (string?)null,
                 ImageUrl = (string?)"/images/classroom.png",
-                Content = "you head down to the kitchen and see your parents sitting at the table eating breakfast. They look up and smile as you enter.",
+                Content = "You head down to the kitchen and see your parents sitting at the table eating breakfast. They look up and smile as you enter.",
                 Choices = new[] {
-                    new { Text = "Wow, this looks amazing! I better eat quickly so I don't miss the bus.",
-                    NextSceneId = 5, 
-                    TrustChange = 0, 
-                    IsCorrect = false, 
-                    ResponseDialog = "Your backpack is by the door, don't forget it when you leave! Have a great day at school!"}
+                    new { 
+                        Text = "Wow, this looks amazing! I better eat quickly so I don't miss the bus.",
+                        NextSceneId = 6, 
+                        TrustChange = 0, 
+                        IsCorrect = true, 
+                        ResponseDialog = "Your backpack is by the door, don't forget it when you leave! Have a great day at school!"
+                    }
                 }
             },
         };

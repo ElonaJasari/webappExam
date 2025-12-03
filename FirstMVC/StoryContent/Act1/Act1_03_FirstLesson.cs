@@ -13,20 +13,21 @@ public static class Act1_03_FirstLesson
                 ActCategory = 1,
                 Title = "First Lesson: Introductions",
                 CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Alright, let’s begin with simple introductions.\r\n\r\n" +
-                    "In Northern Sámi we say: “Mun namma lea …” (My name is …).\r\n\r\n" +
+                    "Alright, let's begin with simple introductions.\r\n\r\n" +
+                    "In Northern Sámi we say: \"Mun namma lea ...\" (My name is ...).\r\n\r\n" +
                     "Could you introduce yourself to the class?",
                 Choices = new[] {
                     new {
-                        Text = "Say: “Mun namma lea …” confidently",
+                        Text = "Say: \"Mun namma lea ...\" confidently",
                         NextSceneId = 12,
                         TrustChange = +5,
                         IsCorrect = true,
                         ResponseDialog = "Nugo, hui buorre! (Exactly, very good!)"
                     },
                     new {
-                        Text = "Answer in English: “My name is …”",
+                        Text = "Answer in English: \"My name is ...\"",
                         NextSceneId = 13,
                         TrustChange = -2,
                         IsCorrect = false,
@@ -48,9 +49,10 @@ public static class Act1_03_FirstLesson
                 ActCategory = 1,
                 Title = "Confident Start",
                 CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Fábelaš álgu! Hold that confidence.\r\n\r\n" +
-                    "Class, repeat after me: “Mun namma lea …”.",
+                    "Class, repeat after me: \"Mun namma lea ...\".",
                 Choices = new[] {
                     new {
                         Text = "Smile and nod",
@@ -68,8 +70,9 @@ public static class Act1_03_FirstLesson
                 ActCategory = 1,
                 Title = "Try In Sámi",
                 CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Geahččal fas: “Mun namma lea …”. I’ll help you with pronunciation.",
+                    "Geahččal fas: \"Mun namma lea ...\". I'll help you with pronunciation.",
                 Choices = new[] {
                     new {
                         Text = "Repeat carefully in Sámi",
@@ -85,10 +88,11 @@ public static class Act1_03_FirstLesson
             new {
                 SceneId = 14,
                 ActCategory = 1,
-                Title = "We’ll Do It Together",
+                Title = "We'll Do It Together",
                 CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Veahkkin: “Mun… namma… lea…”. Little by little.\r\n\r\n" +
+                    "Veahkkin: \"Mun... namma... lea...\". Little by little.\r\n\r\n" +
                     "Everyone starts somewhere.",
                 Choices = new[] {
                     new {
@@ -107,12 +111,13 @@ public static class Act1_03_FirstLesson
                 ActCategory = 1,
                 Title = "Pair Practice",
                 CharacterCode = "ID_FRIEND1",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Áilu turns to you.\r\n\r\n" +
-                    "Áilu: “Gos don orrot?” (Where do you live?)",
+                    "Áilu: \"Gos don orrot?\" (Where do you live?)",
                 Choices = new[] {
                     new {
-                        Text = "Answer in Sámi: “Mun orron …”",
+                        Text = "Answer in Sámi: \"Mun orron ...\"",
                         NextSceneId = 16,
                         TrustChange = +4,
                         IsCorrect = true,
@@ -141,10 +146,11 @@ public static class Act1_03_FirstLesson
                 ActCategory = 1,
                 Title = "Wrap-Up",
                 CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Great work today!\r\n\r\n" +
-                    "Homework: practice “Mun namma lea …” and “Gos don orrot?”.\r\n\r\n" +
-                    "Tomorrow we’ll learn greetings and small talk.",
+                    "Homework: practice \"Mun namma lea ...\" and \"Gos don orrot?\".\r\n\r\n" +
+                    "Tomorrow we'll learn greetings and small talk.",
                 Choices = new[] {
                     new {
                         Text = "Pack your things and head out with Áilu",
