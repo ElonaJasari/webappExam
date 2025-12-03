@@ -122,7 +122,7 @@ namespace FirstMVC.Controllers
                     Role = "Friend NPC",
                     CharacterCode = "ID_FRIEND1",
                     Description = "Helpful classmate who encourages the player",
-                    ImageUrl = "/images/friend1.png",
+                    ImageUrl = "/images/Friend1.png",
                 },
                 new Characters
                 {

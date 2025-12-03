@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelBtn = document.getElementById("cancelBtn");
   const confirmBtn = document.getElementById("confirmBtn");
 
-  // Continue Story button - go to current story position
+  // Continue Story button - start at the beginning of the current act
   continueBtn.addEventListener("click", function () {
-    window.location.href = "/Story/Play";
+    window.location.href = "/Story/StartOfAct";
   });
 
   // New Story button - show popup
