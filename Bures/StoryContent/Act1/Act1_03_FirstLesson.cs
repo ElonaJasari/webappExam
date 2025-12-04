@@ -172,7 +172,7 @@ public static class Act1_03_FirstLesson
                 Choices = new[] {
                     new {
                         Text = "Continue",
-                        NextSceneId = 20,
+                        NextSceneId = 19,
                         TrustChange = 0,
                         IsCorrect = true,
                         ResponseDialog = "Let's keep going."
@@ -209,15 +209,36 @@ public static class Act1_03_FirstLesson
                 ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Great work today!\r\n\r\n" +
-                    "Homework: practice \"Mun namma lea ...\" and \"Gos don orrot?\".\r\n\r\n" +
+                    "Homework: practice \"Mun namma lea ...\", \"Gos don orrot?\".\r\n\r\n" +
+                    "And the words written on the tabelt.\r\n\r\n" +
                     "Tomorrow we'll learn greetings and small talk.",
                 Choices = new[] {
                     new {
                         Text = "Pack your things and head out with Áilu",
-                        NextSceneId = 21, // next act/scene
-                        TrustChange = +1,
+                        NextSceneId = 21, // Routes to Scene 21 (iPad vocabulary scene)
+                        TrustChange = +0,
                         IsCorrect = true,
                         ResponseDialog = "Oaidnaleapmi iđđes! (See you tomorrow!)"
+                    }
+                }
+            }, 
+            new {
+                SceneId = 21,
+                ActCategory = 1,
+                Title = "iPad Practice",
+                CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
+                    Content =
+                        "Before you leave, the teacher gives out an iPad to each student.\r\n\r\n" +
+                        "On the screen, you see today's new words and phrases.\r\n\r\n" +
+                        "Take a moment to review them and practice writing each one.",
+                Choices = new[] {
+                    new {
+                        Text = "Review the words on the iPad",
+                        NextSceneId = 22, // Routes to Scene 22 (Act1_04_AfterSchool)
+                        TrustChange = +0,
+                        IsCorrect = true,
+                        ResponseDialog = "Buorre! (Good job reviewing!)"
                     }
                 }
             }

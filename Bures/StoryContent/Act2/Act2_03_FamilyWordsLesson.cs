@@ -2,35 +2,14 @@ namespace Bures.StoryContent.Act2;
 
 public static class Act2_03_FamilyWordsLesson
 {
-    // Act 2: Practice branches with both friends converging at lunch (39-42)
+    // Act 2: Practice branches with both friends converging at lunch
+    // NOTE: Scene 39 is the iPad vocabulary scene (sentences) - it routes to Scene 42
+    // Scene 40 is the slower practice branch, Scene 41 is lunch, Scene 42 is end of day
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 39 — Confident practice branch
-            new {
-                SceneId = 39,
-                ActCategory = 2,
-                Title = "Great Progress",
-                CharacterCode = "ID_FRIEND1",
-                ImageUrl = (string?)"/images/classroom.png",
-                Content =
-                    "You practice confidently with both Áilu and Áila.\r\n\r\n" +
-                    "Áilu: \"Hui buorre! (Very good!) You're learning so fast!\"\r\n\r\n" +
-                    "Áila: \"Don hállat bures! (You speak well!) Keep it up!\"\r\n\r\n" +
-                    "The bell rings for lunch.",
-                Choices = new[] {
-                    new {
-                        Text = "Say: \"Giitu! Let's go to lunch!\"",
-                        NextSceneId = 42,
-                        TrustChange = +2,
-                        IsCorrect = true,
-                        ResponseDialog = "Both friends: \"Jus don háliidat! (If you want!)\""
-                    }
-                }
-            },
-
-            // Scene 40 — Slower practice branch
+            // Scene 40 — Slower practice branch (Scene 39 is iPad, so this stays at 40)
             new {
                 SceneId = 40,
                 ActCategory = 2,
@@ -53,7 +32,7 @@ public static class Act2_03_FamilyWordsLesson
                 }
             },
 
-            // Scene 41 — Lunch with both friends (new scene)
+            // Scene 41 — Lunch with both friends
             new {
                 SceneId = 41,
                 ActCategory = 2,
@@ -82,7 +61,7 @@ public static class Act2_03_FamilyWordsLesson
                 }
             },
 
-            // Scene 42 — Converge: End of day with both friends
+            // Scene 42 — Converge: End of day with both friends (iPad scene 39 routes here)
             new {
                 SceneId = 42,
                 ActCategory = 2,

@@ -129,6 +129,7 @@ public class StoryController : Controller
         vm.Trust = progress.Trust;
         vm.ErrorMessage = error;
         
+        
         // Load vocabulary contextually based on current act
         await LoadContextualVocabulary(vm, progress);
         
@@ -296,7 +297,7 @@ public class StoryController : Controller
     /// Act 2: Shows sentences at specific moments (customize StoryActIds below)
     /// Act 3: Shows test before ending (customize StoryActIds below)
     /// 
-    /// To customize when vocabulary appears, modify the StoryActId checks below.
+    /// To customize when vocabulary appears, modify the StoryActId constants below.
     /// </summary>
     private async Task LoadContextualVocabulary(StoryPlayViewModel vm, UserProgressDB progress)
     {
@@ -304,6 +305,14 @@ public class StoryController : Controller
         {
             var currentAct = progress.CurrentStoryAct;
             if (currentAct == null) return;
+
+            // ============================================
+            // CONFIGURATION: Customize these scene IDs to change when iPad appears
+            // ============================================
+            const int ACT1_VOCABULARY_SCENE = 21;  // Scene ID where words appear in Act 1 (iPad-only scene)
+            const int ACT2_VOCABULARY_SCENE = 39;  // Scene ID where sentences appear in Act 2
+            int[] ACT3_TEST_SCENES = new[] { 57, 58, 61 }; // Scene IDs where test appears in Act 3
+            // ============================================
 
             // Determine act category from Description (e.g., "Act 1", "Act 2", "Act 3")
             var actDescription = currentAct.Description ?? "";
@@ -313,12 +322,12 @@ public class StoryController : Controller
                 int.TryParse(actDescription.Replace("Act ", "").Trim(), out actCategory);
             }
 
-            // Act 1: Show ONLY WORDS/Nouns AFTER Act1_03 (Scene 21)
+            // Act 1: Show ONLY WORDS/Nouns AFTER Act1_03 (Scene 22)
             // Admins add words via admin panel with Type="word" or Type="noun"
             if (actCategory == 1)
             {
-                // Show vocabulary after Act1_03 ends (Scene 21 is the next scene after Act1_03)
-                if (progress.CurrentStoryActId == 21)
+                // Show vocabulary at the configured scene
+                if (progress.CurrentStoryActId == ACT1_VOCABULARY_SCENE)
                 {
                     // Filter: Only get words/nouns (case-insensitive matching)
                     // These are added by admins before game start via admin panel
@@ -339,8 +348,8 @@ public class StoryController : Controller
             // Admins add sentences via admin panel with Type="sentence" or Type="sentences"
             else if (actCategory == 2)
             {
-                // Show vocabulary after Act2_02 ends (Scene 39 is the next scene after Act2_02)
-                if (progress.CurrentStoryActId == 39)
+                // Show vocabulary at the configured scene
+                if (progress.CurrentStoryActId == ACT2_VOCABULARY_SCENE)
                 {
                     // Filter: Only get sentences (case-insensitive matching)
                     // These are added by admins before game start via admin panel
@@ -361,10 +370,8 @@ public class StoryController : Controller
             // Test includes all tasks (both words and sentences) from TaskDB
             else if (actCategory == 3)
             {
-                // Show test in Act3_03 (Scene 57 is the convergence scene, or 58/61 after it)
-                var testSceneIds = new[] { 57, 58, 61 }; // Act3_03 scenes
-                
-                if (testSceneIds.Contains(progress.CurrentStoryActId))
+                // Show test at the configured scenes
+                if (ACT3_TEST_SCENES.Contains(progress.CurrentStoryActId))
                 {
                     // Check if user already took the test (prevent retaking)
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

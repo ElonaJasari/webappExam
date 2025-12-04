@@ -22,15 +22,16 @@
     {
         <link rel="preload" as="image" href="@Model.CurrentAct.ImageUrl" />
     }
+    @* Remove tablet.png preload if not used *@
     @if (Model.CurrentAct.Character != null && !string.IsNullOrEmpty(Model.CurrentAct.Character.ImageUrl))
     {
         <link rel="preload" as="image" href="@Model.CurrentAct.Character.ImageUrl" />
     }
-    @* Background Image *@
-    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl))
+    @* Background Image - Skip if image doesn't exist or is tablet.png *@
+    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl) && !Model.CurrentAct.ImageUrl.Contains("tablet.png"))
     {
         <div class="scene-background">
-            <img src="@Model.CurrentAct.ImageUrl" alt="Scene" loading="eager" />
+            <img src="@Model.CurrentAct.ImageUrl" alt="Scene" loading="eager" onerror="this.style.display='none';" />
         </div>
     }
 
@@ -49,83 +50,95 @@
             </div>
         </div>
 
-        @* NPC Character Sprite with fallback *@
-        @if (Model.CurrentAct.Character != null)
+        @* If this is an iPad scene, hide normal story content and show only iPad *@
+        @if (Model.ShouldShowVocabulary || Model.ShouldShowTest)
         {
-            var npcImage = Model.CurrentAct.Character.ImageUrl;
-            if (string.IsNullOrEmpty(npcImage))
-            {
-                // Fallbacks by known character names
-                var name = Model.CurrentAct.Character.Name ?? string.Empty;
-                if (name.Contains("Teach", StringComparison.OrdinalIgnoreCase))
-                {
-                    npcImage = "/images/teacher.png";
-                }
-                else if (name.Contains("Mother", StringComparison.OrdinalIgnoreCase) || name.Contains("Parent", StringComparison.OrdinalIgnoreCase))
-                {
-                    npcImage = "/images/mom_character.png";
-                }
-                else if (name.Contains("Áilu", StringComparison.OrdinalIgnoreCase))
-                {
-                    npcImage = "/images/Friend_1.png";
-                }
-                else if (name.Contains("Áila", StringComparison.OrdinalIgnoreCase))
-                {
-                    npcImage = "/images/Friend_2.png";
-                }
-            }
-            if (!string.IsNullOrEmpty(npcImage))
-            {
-                <div class="character-display">
-                    <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" loading="lazy" />
-                </div>
-            }
-        }
-
-        @* Player Character Sprite *@
-        @if (Model.PlayerCharacter != null && !string.IsNullOrEmpty(Model.PlayerCharacter.ImageUrl))
-        {
-            <div class="player-character-display">
-                <img src="@Model.PlayerCharacter.ImageUrl" alt="@Model.SelectedCharacterName" loading="lazy" />
+            @* iPad Scene - Hide all normal story elements *@
+            <div style="display: none;">
+                @* Hidden story content *@
             </div>
         }
-
-        @* Dialogue Box - Split into NPC dialogue and Player choices *@
-        <div class="dialogue-box">
-            @* NPC Dialogue Section *@
-            <div class="npc-dialogue">
-                @if (Model.CurrentAct.Character != null)
-                {
-                    <div class="speaker-name">@Model.CurrentAct.Character.Name</div>
-                }
-                
-                <div class="dialogue-text">@Model.CurrentAct.Content</div>
-            </div>
-
-            @* Player Choices Section *@
-            @if (Model.HasChoices)
+        else
+        {
+            @* Normal Story Scene - Show dialogue and characters *@
+            @* NPC Character Sprite with fallback *@
+            @if (Model.CurrentAct.Character != null)
             {
-                <div class="player-choices">
-                    <div class="choices-label">Your Response:</div>
-                    <form asp-action="Choose" asp-controller="Story" method="post">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" asp-for="CurrentStoryActId" />
+                var npcImage = Model.CurrentAct.Character.ImageUrl;
+                if (string.IsNullOrEmpty(npcImage))
+                {
+                    // Fallbacks by known character names
+                    var name = Model.CurrentAct.Character.Name ?? string.Empty;
+                    if (name.Contains("Teach", StringComparison.OrdinalIgnoreCase))
+                    {
+                        npcImage = "/images/teacher.png";
+                    }
+                    else if (name.Contains("Mother", StringComparison.OrdinalIgnoreCase) || name.Contains("Parent", StringComparison.OrdinalIgnoreCase))
+                    {
+                        npcImage = "/images/mom_character.png";
+                    }
+                    else if (name.Contains("Áilu", StringComparison.OrdinalIgnoreCase))
+                    {
+                        npcImage = "/images/Friend_1.png";
+                    }
+                    else if (name.Contains("Áila", StringComparison.OrdinalIgnoreCase))
+                    {
+                        npcImage = "/images/Friend_2.png";
+                    }
+                }
+                if (!string.IsNullOrEmpty(npcImage))
+                {
+                    <div class="character-display">
+                        <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" loading="lazy" />
+                    </div>
+                }
+            }
 
-                        <div class="choices-container">
-                        @foreach (var choice in Model.Choices)
-                        {
-                            <button type="submit" 
-                                    class="choice-button" 
-                                    name="SelectedChoiceId" 
-                                    value="@choice.Id">
-                                @choice.Text
-                            </button>
-                        }
-                        </div>
-                    </form>
+            @* Player Character Sprite *@
+            @if (Model.PlayerCharacter != null && !string.IsNullOrEmpty(Model.PlayerCharacter.ImageUrl))
+            {
+                <div class="player-character-display">
+                    <img src="@Model.PlayerCharacter.ImageUrl" alt="@Model.SelectedCharacterName" loading="lazy" />
                 </div>
             }
-        </div>
+
+            @* Dialogue Box - Split into NPC dialogue and Player choices *@
+            <div class="dialogue-box">
+                @* NPC Dialogue Section *@
+                <div class="npc-dialogue">
+                    @if (Model.CurrentAct.Character != null)
+                    {
+                        <div class="speaker-name">@Model.CurrentAct.Character.Name</div>
+                    }
+                    
+                    <div class="dialogue-text">@Model.CurrentAct.Content</div>
+                </div>
+
+                @* Player Choices Section *@
+                @if (Model.HasChoices)
+                {
+                    <div class="player-choices">
+                        <div class="choices-label">Your Response:</div>
+                        <form asp-action="Choose" asp-controller="Story" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="CurrentStoryActId" />
+
+                            <div class="choices-container">
+                            @foreach (var choice in Model.Choices)
+                            {
+                                <button type="submit" 
+                                        class="choice-button" 
+                                        name="SelectedChoiceId" 
+                                        value="@choice.Id">
+                                    @choice.Text
+                                </button>
+                            }
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
@@ -133,15 +146,14 @@
         }
     </div>
     
-    @* Vocabulary Modal - iPad style overlay for Act 1 (words) and Act 2 (sentences) *@
+    @* Vocabulary Scene - iPad as the main scene content (not overlay) *@
     @if (Model.ShouldShowVocabulary)
     {
-        <div id="vocabularyModal" class="ipad-modal-overlay">
+        <div id="vocabularyScene" class="ipad-scene-container">
             <div class="ipad-modal">
                 <div class="ipad-header">
                     <div class="ipad-notch"></div>
                     <h3>📱 Your iPad</h3>
-                    <button type="button" class="ipad-close" onclick="closeVocabularyModal()">×</button>
                 </div>
                 <div class="ipad-content">
                     <p class="ipad-message">@Model.VocabularyMessage</p>
@@ -178,16 +190,38 @@
                         </div>
                     }
                     
-                    <button type="button" class="ipad-button" onclick="closeVocabularyModal()">Got it!</button>
+                    @* Continue button - advances to next scene *@
+                    @if (Model.HasChoices && Model.Choices.Any())
+                    {
+                        <form asp-action="Choose" asp-controller="Story" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="CurrentStoryActId" />
+                            @* Use the first choice to continue to next scene *@
+                            @{
+                                var continueChoice = Model.Choices.First();
+                            }
+                            <button type="submit" 
+                                    class="ipad-button" 
+                                    name="SelectedChoiceId" 
+                                    value="@continueChoice.Id">
+                                Continue
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        @* Fallback: If no choices exist, we need to create a default route *@
+                        <p class="text-muted">No navigation available. Please ensure this scene has choices configured.</p>
+                    }
                 </div>
             </div>
         </div>
     }
     
-    @* Test Modal - iPad style overlay for Act 3 test *@
+    @* Test Scene - iPad as the main scene content (not overlay) *@
     @if (Model.ShouldShowTest && Model.TestTasks.Any())
     {
-        <div id="testModal" class="ipad-modal-overlay">
+        <div id="testScene" class="ipad-scene-container">
             <div class="ipad-modal ipad-modal-large">
                 <div class="ipad-header">
                     <div class="ipad-notch"></div>
@@ -278,22 +312,9 @@
         });
     }
     
-    // Auto-show modals when page loads
+    // iPad scenes are always visible (they're the main scene content, not modals)
+    // Test result modal still appears as overlay
     $(document).ready(function() {
-        @if (Model.ShouldShowVocabulary)
-        {
-            <text>
-            $('#vocabularyModal').show();
-            </text>
-        }
-        
-        @if (Model.ShouldShowTest)
-        {
-            <text>
-            $('#testModal').show();
-            </text>
-        }
-        
         @if (TempData["TestScore"] != null)
         {
             <text>
