@@ -21,8 +21,18 @@
 
             <div class="mb-3">
                 <label asp-for="Type" class="form-label"></label>
-                <input asp-for="Type" class="form-control" />
+                <select asp-for="Type" class="form-select" required>
+                    <option value="">-- Select Type --</option>
+                    <option value="word">Word (appears in Act 1)</option>
+                    <option value="noun">Noun (appears in Act 1)</option>
+                    <option value="sentence">Sentence (appears in Act 2)</option>
+                    <option value="sentences">Sentences (appears in Act 2)</option>
+                </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
+                <small class="text-muted">
+                    <strong>Important:</strong> Words/Nouns appear in Act 1, Sentences appear in Act 2. 
+                    Both will be included in the Act 3 test.
+                </small>
             </div>
 
             <div class="mb-3">

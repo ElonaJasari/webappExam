@@ -128,6 +128,10 @@ public class StoryController : Controller
         vm.PlayerCharacter = playerCharacter;
         vm.Trust = progress.Trust;
         vm.ErrorMessage = error;
+        
+        // Load vocabulary contextually based on current act
+        await LoadContextualVocabulary(vm, progress);
+        
         return View(vm);
     }
 
@@ -286,6 +290,120 @@ public class StoryController : Controller
         return "True";                          // 100+ = True ending
     }
 
+    /// <summary>
+    /// Loads vocabulary contextually based on the current story act.
+    /// Act 1: Shows words/nouns at specific moments (customize StoryActIds below)
+    /// Act 2: Shows sentences at specific moments (customize StoryActIds below)
+    /// Act 3: Shows test before ending (customize StoryActIds below)
+    /// 
+    /// To customize when vocabulary appears, modify the StoryActId checks below.
+    /// </summary>
+    private async Task LoadContextualVocabulary(StoryPlayViewModel vm, UserProgressDB progress)
+    {
+        try
+        {
+            var currentAct = progress.CurrentStoryAct;
+            if (currentAct == null) return;
+
+            // Determine act category from Description (e.g., "Act 1", "Act 2", "Act 3")
+            var actDescription = currentAct.Description ?? "";
+            int actCategory = 0;
+            if (actDescription.StartsWith("Act "))
+            {
+                int.TryParse(actDescription.Replace("Act ", "").Trim(), out actCategory);
+            }
+
+            // Act 1: Show ONLY WORDS/Nouns at specific scenes
+            // Admins add words via admin panel with Type="word" or Type="noun"
+            // CUSTOMIZE: Add the StoryActIds where you want vocabulary to appear in Act 1
+            if (actCategory == 1)
+            {
+                // Add your specific StoryActIds here where vocabulary should appear
+                var vocabularySceneIds = new[] { 6, 5 }; // Customize these IDs
+                
+                if (vocabularySceneIds.Contains(progress.CurrentStoryActId))
+                {
+                    // Filter: Only get words/nouns (case-insensitive matching)
+                    // These are added by admins before game start via admin panel
+                    var words = await _context.Tasks
+                        .Where(t => t.Type.ToLower() == "word" || t.Type.ToLower() == "noun")
+                        .OrderBy(t => t.Text)
+                        .ToListAsync();
+                    
+                    if (words.Any())
+                    {
+                        vm.VocabularyWords = words;
+                        vm.ShouldShowVocabulary = true;
+                        vm.VocabularyMessage = "On your iPad, there are " + words.Count() + " words you need to learn. Take a moment to review them!";
+                    }
+                }
+            }
+            // Act 2: Show ONLY SENTENCES at specific scenes
+            // Admins add sentences via admin panel with Type="sentence" or Type="sentences"
+            // CUSTOMIZE: Add the StoryActIds where you want sentences to appear in Act 2
+            else if (actCategory == 2)
+            {
+                // Add your specific StoryActIds here where sentences should appear
+                var sentenceSceneIds = new[] { 42, 43 }; // Customize these IDs
+                
+                if (sentenceSceneIds.Contains(progress.CurrentStoryActId))
+                {
+                    // Filter: Only get sentences (case-insensitive matching)
+                    // These are added by admins before game start via admin panel
+                    var sentences = await _context.Tasks
+                        .Where(t => t.Type.ToLower() == "sentence" || t.Type.ToLower() == "sentences")
+                        .OrderBy(t => t.Text)
+                        .ToListAsync();
+                    
+                    if (sentences.Any())
+                    {
+                        vm.VocabularySentences = sentences;
+                        vm.ShouldShowVocabulary = true;
+                        vm.VocabularyMessage = "On your iPad, there are " + sentences.Count() + " sentences using the words you learned. Practice them!";
+                    }
+                }
+            }
+            // Act 3: Show TEST with BOTH words and sentences
+            // Test includes all tasks (both words and sentences) from TaskDB
+            // CUSTOMIZE: Add the StoryActId where the test should appear (before ending)
+            else if (actCategory == 3)
+            {
+                // Add your specific StoryActId where the test should appear
+                // This should be the scene right before the ending (scene 60 in your case)
+                var testSceneIds = new[] { 60, 59, 58 }; // Customize these IDs - typically scene 60 before ending
+                
+                if (testSceneIds.Contains(progress.CurrentStoryActId))
+                {
+                    // Check if user already took the test (prevent retaking)
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var hasTakenTest = await _context.UserTaskResults
+                        .AnyAsync(r => r.UserId == userId && r.ActNumber == 3);
+                    
+                    if (!hasTakenTest)
+                    {
+                        // Get ALL tasks (both words AND sentences) for the test
+                        // Admins add these via admin panel before game start
+                        var allTasks = await _context.Tasks.ToListAsync();
+                        var random = new Random();
+                        // Randomly select up to 10 tasks, or all if less than 10
+                        var testTasks = allTasks.OrderBy(x => random.Next()).Take(Math.Min(10, allTasks.Count)).ToList();
+                        
+                        if (testTasks.Any())
+                        {
+                            vm.TestTasks = testTasks;
+                            vm.ShouldShowTest = true;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to load contextual vocabulary for StoryActId {StoryActId}", progress.CurrentStoryActId);
+            // Continue without vocabulary - not critical
+        }
+    }
+
     //
     // Displays the final ending screen based on the stored ending type.
     public async Task<IActionResult> Ending()
@@ -414,6 +532,93 @@ public class StoryController : Controller
         return View("Act3Test", selectedTasks);
     }
 
+    /// <summary>
+    /// Handles test submission from within the story flow.
+    /// Updates trust values based on performance:
+    /// - Under 70%: -40 trust
+    /// - 71-90%: +10 trust  
+    /// - Over 90%: +20 trust
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SubmitStoryTest(Dictionary<int, string> answers)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return Unauthorized();
+
+        var progress = await _context.UserProgress.FirstOrDefaultAsync(p => p.UserID == userId);
+        if (progress == null)
+        {
+            return RedirectToAction(nameof(Play), new { error = "Progress not found." });
+        }
+
+        // Check if user already took the test
+        var hasTakenTest = await _context.UserTaskResults
+            .AnyAsync(r => r.UserId == userId && r.ActNumber == 3);
+        
+        if (hasTakenTest)
+        {
+            return RedirectToAction(nameof(Play), new { error = "You have already completed the test." });
+        }
+
+        var allTasks = await _context.Tasks.ToListAsync();
+        int correct = 0;
+        int total = 0;
+
+        foreach (var task in allTasks.Where(t => answers.ContainsKey(t.TaskId)))
+        {
+            total++;
+            var userAnswer = answers[task.TaskId]?.Trim().ToLower();
+            var correctText = task.Text.ToLower();
+            var correctDescription = task.Description.ToLower();
+            
+            // Check if answer matches either the Sami text or Norwegian description
+            if (userAnswer == correctText || userAnswer == correctDescription || 
+                correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer))
+            {
+                correct++;
+            }
+
+            // Record the result
+            _context.UserTaskResults.Add(new UserTaskResult
+            {
+                UserId = userId,
+                TaskId = task.TaskId,
+                ActNumber = 3,
+                IsCorrect = userAnswer == correctText || userAnswer == correctDescription ||
+                           correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer)
+            });
+        }
+
+        double percent = total > 0 ? (double)correct / total * 100 : 0;
+        int trustChange = 0;
+        
+        // Trust value changes based on performance
+        if (percent < 70)
+            trustChange = -40;
+        else if (percent < 91)
+            trustChange = 10;
+        else
+            trustChange = 20; // Changed from 50 to 20 as per user request
+
+        // Apply trust change
+        progress.Trust += trustChange;
+        if (progress.Trust < MIN_TRUST) progress.Trust = MIN_TRUST;
+        if (progress.Trust > MAX_TRUST) progress.Trust = MAX_TRUST;
+
+        await _context.SaveChangesAsync();
+
+        // Store test result in ViewBag for the result view
+        TempData["TestScore"] = percent;
+        TempData["TestCorrect"] = correct;
+        TempData["TestTotal"] = total;
+        TempData["TrustChange"] = trustChange;
+
+        // Continue to next scene (ending)
+        return RedirectToAction(nameof(Play));
+    }
+
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Act3TestSubmit(Dictionary<int, string> answers)
@@ -432,7 +637,7 @@ public class StoryController : Controller
         int trustChange = 0;
         if (percent < 70) trustChange = -40;
         else if (percent < 91) trustChange = 10;
-        else trustChange = 50;
+        else trustChange = 20; // Updated to match user's requirement
         // Apply trust change to user progress
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId != null)

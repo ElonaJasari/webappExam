@@ -12,6 +12,7 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/story.css" />
 </head>
 <body style="margin: 0; padding: 0; overflow: hidden;">
 
@@ -131,9 +132,175 @@
             <div class="alert alert-danger mt-3" style="position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 999;">@Model.ErrorMessage</div>
         }
     </div>
+    
+    @* Vocabulary Modal - iPad style overlay for Act 1 (words) and Act 2 (sentences) *@
+    @if (Model.ShouldShowVocabulary)
+    {
+        <div id="vocabularyModal" class="ipad-modal-overlay">
+            <div class="ipad-modal">
+                <div class="ipad-header">
+                    <div class="ipad-notch"></div>
+                    <h3>📱 Your iPad</h3>
+                    <button type="button" class="ipad-close" onclick="closeVocabularyModal()">×</button>
+                </div>
+                <div class="ipad-content">
+                    <p class="ipad-message">@Model.VocabularyMessage</p>
+                    
+                    @if (Model.VocabularyWords.Any())
+                    {
+                        <div class="vocabulary-section">
+                            <h4>Words to Learn</h4>
+                            <div class="vocabulary-grid">
+                                @foreach (var word in Model.VocabularyWords)
+                                {
+                                    <div class="vocabulary-card">
+                                        <div class="vocabulary-sami">@word.Text</div>
+                                        <div class="vocabulary-translation">@word.Description</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                    @if (Model.VocabularySentences.Any())
+                    {
+                        <div class="vocabulary-section">
+                            <h4>Sentences to Practice</h4>
+                            <div class="vocabulary-list">
+                                @foreach (var sentence in Model.VocabularySentences)
+                                {
+                                    <div class="vocabulary-card">
+                                        <div class="vocabulary-sami">@sentence.Text</div>
+                                        <div class="vocabulary-translation">@sentence.Description</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                    <button type="button" class="ipad-button" onclick="closeVocabularyModal()">Got it!</button>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @* Test Modal - iPad style overlay for Act 3 test *@
+    @if (Model.ShouldShowTest && Model.TestTasks.Any())
+    {
+        <div id="testModal" class="ipad-modal-overlay">
+            <div class="ipad-modal ipad-modal-large">
+                <div class="ipad-header">
+                    <div class="ipad-notch"></div>
+                    <h3>📱 Final Test</h3>
+                </div>
+                <div class="ipad-content">
+                    <p class="ipad-message">Time for your final test! Translate the following words and sentences.</p>
+                    
+                    <form asp-action="SubmitStoryTest" asp-controller="Story" method="post" id="testForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="CurrentStoryActId" />
+                        
+                        <div class="test-questions">
+                            @foreach (var task in Model.TestTasks)
+                            {
+                                <div class="test-question">
+                                    <label class="test-label">
+                                        <strong>@task.Text</strong>
+                                        <span class="test-hint">(@task.Description)</span>
+                                    </label>
+                                    <input type="text" 
+                                           name="answers[@task.TaskId]" 
+                                           class="test-input" 
+                                           placeholder="Enter your answer..." 
+                                           autocomplete="off" 
+                                           required />
+                                </div>
+                            }
+                        </div>
+                        
+                        <div class="test-actions">
+                            <button type="submit" class="ipad-button ipad-button-primary">Submit Test</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @* Test Result Display *@
+    @if (TempData["TestScore"] != null)
+    {
+        <div id="testResultModal" class="ipad-modal-overlay">
+            <div class="ipad-modal">
+                <div class="ipad-header">
+                    <div class="ipad-notch"></div>
+                    <h3>📱 Test Results</h3>
+                    <button type="button" class="ipad-close" onclick="closeTestResultModal()">×</button>
+                </div>
+                <div class="ipad-content">
+                    @{
+                        var score = (double)TempData["TestScore"];
+                        var correct = (int)TempData["TestCorrect"];
+                        var total = (int)TempData["TestTotal"];
+                        var trustChange = (int)TempData["TrustChange"];
+                    }
+                    <div class="test-result">
+                        <h2 class="test-score">@score.ToString("F1")%</h2>
+                        <p>You got <strong>@correct out of @total</strong> correct!</p>
+                        @if (trustChange < 0)
+                        {
+                            <p class="trust-change negative">Trust: @trustChange</p>
+                        }
+                        else
+                        {
+                            <p class="trust-change positive">Trust: +@trustChange</p>
+                        }
+                    </div>
+                    <button type="button" class="ipad-button" onclick="closeTestResultModal()">Continue</button>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function closeVocabularyModal() {
+        $('#vocabularyModal').fadeOut(300, function() {
+            $(this).remove();
+        });
+    }
+    
+    function closeTestResultModal() {
+        $('#testResultModal').fadeOut(300, function() {
+            $(this).remove();
+        });
+    }
+    
+    // Auto-show modals when page loads
+    $(document).ready(function() {
+        @if (Model.ShouldShowVocabulary)
+        {
+            <text>
+            $('#vocabularyModal').show();
+            </text>
+        }
+        
+        @if (Model.ShouldShowTest)
+        {
+            <text>
+            $('#testModal').show();
+            </text>
+        }
+        
+        @if (TempData["TestScore"] != null)
+        {
+            <text>
+            $('#testResultModal').show();
+            </text>
+        }
+    });
+</script>
 </body>
 </html>
