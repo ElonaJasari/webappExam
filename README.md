@@ -3,6 +3,9 @@
 admin user: admin@test.com 
 admin pwd: Admin.123
 
+regular user: test1@test.com
+regular pwd: Test.123
+
 Task 3:
 A web-based interactive game for Sámi language learning
 
