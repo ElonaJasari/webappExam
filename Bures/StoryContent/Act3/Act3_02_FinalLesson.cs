@@ -2,70 +2,73 @@ namespace Bures.StoryContent.Act3;
 
 public static class Act3_02_FinalLesson
 {
-    // Act 3: Final lesson branches converging at practice (48-52)
+    // Act 3: Final lesson branches converging at practice (49-52)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 48 — Confident greeting branch
+            // Scene 49 — Confident greeting branch (from Scene 48)
             new {
-                SceneId = 48,
+                SceneId = 49,
                 ActCategory = 3,
                 Title = "Eager to Learn",
                 CharacterCode = "ID_FRIEND1",
                 ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Áilu grins widely.\r\n\r\n" +
-                    "Áilu: \"Don hállat buoremusat! (You speak so well!) Today we'll practice everything we learned!\"",
+                    "Áilu and Áila grin widely.\r\n\r\n" +
+                    "Áilu: \"Don hállat buoremusat! (You speak so well!) Today we'll practice everything we learned!\"\r\n\r\n" +
+                    "Áila: \"We're all here to help each other!\"",
                 Choices = new[] {
                     new {
                         Text = "Say: \"Jus don vealahit du!\" (If you help me!)",
                         NextSceneId = 52,
                         TrustChange = +3,
                         IsCorrect = true,
-                        ResponseDialog = "Áilu: \"Of course! That's what friends do!\""
+                        ResponseDialog = "Both: \"Of course! That's what friends do!\""
                     }
                 }
             },
 
-            // Scene 49 — Nervous greeting branch
+            // Scene 50 — Nervous greeting branch (from Scene 48)
             new {
-                SceneId = 49,
+                SceneId = 50,
                 ActCategory = 3,
-                Title = "Supportive Friend",
+                Title = "Supportive Friends",
                 CharacterCode = "ID_FRIEND1",
                 ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Áilu puts a hand on your shoulder.\r\n\r\n" +
-                    "Áilu: \"Ii leat váttis! (No worries!) You've learned so much. Today we'll practice together!\"",
+                    "Áilu and Áila both put hands on your shoulders.\r\n\r\n" +
+                    "Áila: \"Ii leat váttis! (No worries!) You've learned so much. Today we'll practice together!\"\r\n\r\n" +
+                    "Áilu: \"We're here for you!\"",
                 Choices = new[] {
                     new {
-                        Text = "Smile: \"Giitu, Áilu!\"",
+                        Text = "Smile: \"Giitu, Áilu ja Áila!\"",
                         NextSceneId = 52,
                         TrustChange = +3,
                         IsCorrect = true,
-                        ResponseDialog = "Áilu: \"You're welcome! Let's go!\""
+                        ResponseDialog = "Both: \"You're welcome! Let's go!\""
                     }
                 }
             },
 
-            // Scene 50 — Shy greeting branch
+            // Scene 51 — Shy greeting branch (from Scene 48)
             new {
-                SceneId = 50,
+                SceneId = 51,
                 ActCategory = 3,
                 Title = "Encouragement",
                 CharacterCode = "ID_FRIEND1",
                 ImageUrl = (string?)"/images/classroom.png",
                 Content =
-                    "Áilu walks with you into the classroom.\r\n\r\n" +
-                    "Áilu: \"Today we'll review everything: greetings, family, food. You know these words!\"",
+                    "Áilu and Áila walk with you into the classroom.\r\n\r\n" +
+                    "Áila: \"Today we'll review everything: greetings, family, food. You know these words!\"\r\n\r\n" +
+                    "Áilu: \"We'll practice together!\"",
                 Choices = new[] {
                     new {
                         Text = "Nod: \"Jus don vealahit du\"",
                         NextSceneId = 52,
                         TrustChange = +2,
                         IsCorrect = true,
-                        ResponseDialog = "Áilu: \"Always! Let's start!\""
+                        ResponseDialog = "Both: \"Always! Let's start!\""
                     }
                 }
             },

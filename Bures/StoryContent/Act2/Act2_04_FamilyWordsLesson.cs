@@ -7,8 +7,9 @@ public static class Act2_04_FamilyWordsLesson
     {
         return new[]
         {
+            // Scene 39 — Great Progress (from Family Words path: scenes 35/37) OR after Sentence Period (from scene 38)
             new {
-                SceneId = 40,
+                SceneId = 39,
                 ActCategory = 2,
                 Title = "Great Progress",
                 CharacterCode = "ID_FRIEND1",
@@ -21,7 +22,7 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Say: \"Giitu! Let's go to lunch!\"",
-                        NextSceneId = 43,
+                        NextSceneId = 42,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Both friends: \"Jus don háliidat! (If you want!)\""
@@ -29,9 +30,9 @@ public static class Act2_04_FamilyWordsLesson
                 }
             },
 
-            // Scene 40 — Slower practice branch
+            // Scene 40 — Patient Learning (from Scene 36)
             new {
-                SceneId = 41,
+                SceneId = 40,
                 ActCategory = 2,
                 Title = "Patient Learning",
                 CharacterCode = "ID_FRIEND2",
@@ -44,7 +45,7 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Thank both friends: \"Giitu, Áilu ja Áila!\"",
-                        NextSceneId = 43,
+                        NextSceneId = 42,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Ipmelattá! (You're welcome!) Let's eat!\""
@@ -52,9 +53,9 @@ public static class Act2_04_FamilyWordsLesson
                 }
             },
 
-            // Scene 41 — Lunch with both friends (new scene)
+            // Scene 41 — Lunch with both friends
             new {
-                SceneId = 42,
+                SceneId = 41,
                 ActCategory = 2,
                 Title = "Lunch with Friends",
                 CharacterCode = "ID_FRIEND2",
@@ -66,14 +67,14 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Answer: \"Mun borran láibbi ja vuostá\" (I'm eating bread and cheese)",
-                        NextSceneId = 43,
+                        NextSceneId = 42,
                         TrustChange = +5,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Oho! Don hállat buoremusat! (Wow! You speak so well!)\""
                     },
                     new {
                         Text = "Try but mix some English",
-                        NextSceneId = 43,
+                        NextSceneId = 42,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Good try! Keep practicing!\""
@@ -81,9 +82,9 @@ public static class Act2_04_FamilyWordsLesson
                 }
             },
 
-            // Scene 42 — Converge: End of day with both friends
+            // Scene 42 — Converge: End of day with both friends (from scenes 39, 40, or 41)
             new {
-                SceneId = 43,
+                SceneId = 42,
                 ActCategory = 2,
                 Title = "End of Day Two",
                 CharacterCode = "ID_FRIEND1",
@@ -95,17 +96,39 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Say: \"Jus don háliidat! Giitu!\" (If you want! Thanks!)",
-                        NextSceneId = 44,
+                        NextSceneId = 43,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Oaidnaleapmi iđđes! (See you tomorrow!)\""
                     },
                     new {
                         Text = "Nod and wave goodbye",
-                        NextSceneId = 44,
+                        NextSceneId = 43,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Both friends wave: \"Oaidnaleapmi!\""
+                    }
+                }
+            },
+
+            // Scene 43 — Final scene of Act 2, transitions to Act 3
+            new {
+                SceneId = 43,
+                ActCategory = 2,
+                Title = "Ready for Tomorrow",
+                CharacterCode = (string?)null,
+                ImageUrl = (string?)"/images/home.png",
+                Content =
+                    "You arrive home, reflecting on another day of learning.\r\n\r\n" +
+                    "You've made great progress with Northern Sámi and formed strong friendships with Áilu and Áila.\r\n\r\n" +
+                    "Tomorrow is the final day of this week's lessons...",
+                Choices = new[] {
+                    new {
+                        Text = "Rest and prepare for the final day",
+                        NextSceneId = 44,
+                        TrustChange = +1,
+                        IsCorrect = true,
+                        ResponseDialog = "You sleep well, ready for tomorrow."
                     }
                 }
             }

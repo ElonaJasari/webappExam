@@ -2,12 +2,12 @@ namespace Bures.StoryContent.Act3;
 
 public static class Act3_01_FinalDayBegins
 {
-    // Act 3: Final Day - Morning scenes (43-47)
+    // Act 3: Final Day - Morning scenes (44-48)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 43 — Morning of Final Day
+            // Scene 44 — Morning of Final Day (continues from Act 2 Scene 43)
             new {
                 SceneId = 44,
                 ActCategory = 3,
@@ -43,7 +43,7 @@ public static class Act3_01_FinalDayBegins
                 }
             },
 
-            // Scene 44 — Confident answer branch
+            // Scene 45 — Confident answer branch
             new {
                 SceneId = 45,
                 ActCategory = 3,
@@ -64,7 +64,7 @@ public static class Act3_01_FinalDayBegins
                 }
             },
 
-            // Scene 45 — Mixed language branch
+            // Scene 46 — Mixed language branch
             new {
                 SceneId = 46,
                 ActCategory = 3,
@@ -85,7 +85,7 @@ public static class Act3_01_FinalDayBegins
                 }
             },
 
-            // Scene 46 — Silent branch
+            // Scene 47 — Silent branch
             new {
                 SceneId = 47,
                 ActCategory = 3,
@@ -115,22 +115,23 @@ public static class Act3_01_FinalDayBegins
                 ImageUrl = (string?)"/images/street.png",
                 Content =
                     "You walk to school, thinking about everything you've learned.\r\n\r\n" +
-                    "Áilu is waiting at the gate with a big smile.\r\n\r\n" +
-                    "Áilu: \"Bures! Dál lea maŋimus beaivi! (Hello! Today is the last day!)\"",
+                    "Áilu and Áila are waiting at the gate with big smiles.\r\n\r\n" +
+                    "Áilu: \"Bures! Dál lea maŋimus beaivi! (Hello! Today is the last day!)\"\r\n\r\n" +
+                    "Áila: \"Let's make it a great day!\"",
                 Choices = new[] {
                     new {
                         Text = "Answer: \"Joo! Mun háliidan oahppat buoremusat!\" (Yes! I want to learn well!)",
                         NextSceneId = 49,
                         TrustChange = +4,
                         IsCorrect = true,
-                        ResponseDialog = "Áilu: \"Perfect! Let's make it count!\""
+                        ResponseDialog = "Both: \"Perfect! Let's make it count!\""
                     },
                     new {
                         Text = "Say: \"Bures! Mun lean nervous\"",
                         NextSceneId = 50,
                         TrustChange = +2,
                         IsCorrect = true,
-                        ResponseDialog = "Áilu: \"Ii leat váttis! (No worries!) We'll help each other!\""
+                        ResponseDialog = "Áila: \"Ii leat váttis! (No worries!) We'll help each other!\""
                     },
                     new {
                         Text = "Just wave and smile",
