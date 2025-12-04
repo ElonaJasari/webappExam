@@ -27,6 +27,24 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+// Automatic seeding for Characters and StoryActs
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    // Seed Characters if none exist
+    if (!db.Characters.Any())
+    {
+        var seedController = new Bures.Controllers.SeedController(db);
+        // Run synchronously for startup
+        seedController.Characters().GetAwaiter().GetResult();
+    }
+    // Seed StoryActs if none exist
+    if (!db.StoryActs.Any())
+    {
+        var seedController = new Bures.Controllers.SeedController(db);
+        seedController.Story().GetAwaiter().GetResult();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

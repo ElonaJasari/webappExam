@@ -209,7 +209,8 @@ public static class Act1_03_FirstLesson
                 ImageUrl = (string?)"/images/classroom.png",
                 Content =
                     "Great work today!\r\n\r\n" +
-                    "Homework: practice \"Mun namma lea ...\" and \"Gos don orrot?\".\r\n\r\n" +
+                    "Homework: practice \"Mun namma lea ...\", \"Gos don orrot?\".\r\n\r\n" +
+                    "And the words written on the tabelt.\r\n\r\n" +
                     "Tomorrow we'll learn greetings and small talk.",
                 Choices = new[] {
                     new {
