@@ -2,14 +2,14 @@ namespace Bures.StoryContent.Act2;
 
 public static class Act2_01_DayTwoBegins
 {
-    // Act 2: Day Two - Morning scenes (26-30)
+    // Act 2: Day Two - Morning scenes (27-31, shifted forward by 1)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 26 — Morning of Day Two
+            // Scene 27 — Morning of Day Two (shifted from 26)
             new {
-                SceneId = 26,
+                SceneId = 27,
                 ActCategory = 2,
                 Title = "Day Two Begins",
                 CharacterCode = "ID_PARENT",
@@ -21,21 +21,21 @@ public static class Act2_01_DayTwoBegins
                 Choices = new[] {
                     new {
                         Text = "Answer in Sámi: \"Mun háliidan láibbi\" (I want bread)",
-                        NextSceneId = 27,
+                        NextSceneId = 28,
                         TrustChange = +5,
                         IsCorrect = true,
                         ResponseDialog = "Hui buorre! (Very good!) Here you go!"
                     },
                     new {
                         Text = "Point at the food and say \"That one\"",
-                        NextSceneId = 28,
+                        NextSceneId = 29,
                         TrustChange = 0,
                         IsCorrect = false,
                         ResponseDialog = "Try using Sámi words next time, dear."
                     },
                     new {
                         Text = "Say nothing and just take food",
-                        NextSceneId = 29,
+                        NextSceneId = 30,
                         TrustChange = -2,
                         IsCorrect = false,
                         ResponseDialog = "Remember to use your words, even if it's hard."
@@ -43,9 +43,9 @@ public static class Act2_01_DayTwoBegins
                 }
             },
 
-            // Scene 27 — Good Sámi answer branch
+            // Scene 28 — Good Sámi answer branch (shifted from 27)
             new {
-                SceneId = 27,
+                SceneId = 28,
                 ActCategory = 2,
                 Title = "Encouraging Response",
                 CharacterCode = "ID_PARENT",
@@ -56,7 +56,7 @@ public static class Act2_01_DayTwoBegins
                 Choices = new[] {
                     new {
                         Text = "Smile and say \"Giitu!\" (Thanks!)",
-                        NextSceneId = 30,
+                        NextSceneId = 31,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "You're welcome, sweetheart!"
@@ -64,9 +64,9 @@ public static class Act2_01_DayTwoBegins
                 }
             },
 
-            // Scene 28 — Pointing branch
+            // Scene 29 — Pointing branch (shifted from 28)
             new {
-                SceneId = 28,
+                SceneId = 29,
                 ActCategory = 2,
                 Title = "Gentle Reminder",
                 CharacterCode = "ID_PARENT",
@@ -77,7 +77,7 @@ public static class Act2_01_DayTwoBegins
                 Choices = new[] {
                     new {
                         Text = "Nod and try: \"Giitu, láibbi\"",
-                        NextSceneId = 30,
+                        NextSceneId = 31,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "That's better! Keep practicing!"
@@ -85,9 +85,9 @@ public static class Act2_01_DayTwoBegins
                 }
             },
 
-            // Scene 29 — Silent branch
+            // Scene 30 — Silent branch (shifted from 29)
             new {
-                SceneId = 29,
+                SceneId = 30,
                 ActCategory = 2,
                 Title = "Learning Moment",
                 CharacterCode = "ID_PARENT",
@@ -98,7 +98,7 @@ public static class Act2_01_DayTwoBegins
                 Choices = new[] {
                     new {
                         Text = "Try: \"Giitu, áhčči/eadni\" (Thanks, dad/mom)",
-                        NextSceneId = 30,
+                        NextSceneId = 31,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Your parent's eyes light up with joy!"
@@ -106,9 +106,9 @@ public static class Act2_01_DayTwoBegins
                 }
             },
 
-            // Scene 30 — Converge: Heading to school
+            // Scene 31 — Converge: Heading to school (shifted from 30)
             new {
-                SceneId = 30,
+                SceneId = 31,
                 ActCategory = 2,
                 Title = "On the Way to School",
                 CharacterCode = "",
@@ -120,21 +120,21 @@ public static class Act2_01_DayTwoBegins
                 Choices = new[] {
                     new {
                         Text = "Answer: \"Mun lean buorre, giitu!\" (I'm good, thanks!)",
-                        NextSceneId = 31,
+                        NextSceneId = 32,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Oho! Don hállat buoremusat! (Wow! You speak so well!)"
                     },
                     new {
                         Text = "Wave and say \"Bures!\"",
-                        NextSceneId = 32,
+                        NextSceneId = 33,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áilu grins and walks with you inside."
                     },
                     new {
                         Text = "Just nod and smile",
-                        NextSceneId = 33,
+                        NextSceneId = 34,
                         TrustChange = 0,
                         IsCorrect = false,
                         ResponseDialog = "Áilu: \"Ii leat váttis. (No worries.) Let's practice more today!\""

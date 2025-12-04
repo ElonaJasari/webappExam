@@ -2,14 +2,14 @@ namespace Bures.StoryContent.Act2;
 
 public static class Act2_02_SchoolGreeting
 {
-    // Act 2: School greeting branches converging at lesson (31-34)
+    // Act 2: School greeting branches converging at lesson (32-35, shifted forward by 1)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 31 — Confident greeting branch
+            // Scene 32 — Confident greeting branch (shifted from 31)
             new {
-                SceneId = 31,
+                SceneId = 32,
                 ActCategory = 2,
                 Title = "Impressive Progress",
                 CharacterCode = "ID_FRIEND1",
@@ -22,7 +22,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Show interest: \"Sáhtán oahppat?\" (Can I learn?)",
-                        NextSceneId = 34,
+                        NextSceneId = 35,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Áilu: \"Of course! And Áila can help too!\""
@@ -30,9 +30,9 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 32 — Simple greeting branch
+            // Scene 33 — Simple greeting branch (shifted from 32)
             new {
-                SceneId = 32,
+                SceneId = 33,
                 ActCategory = 2,
                 Title = "Friendly Walk",
                 CharacterCode = "ID_FRIEND1",
@@ -43,7 +43,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Nod enthusiastically",
-                        NextSceneId = 34,
+                        NextSceneId = 35,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Great! Let's begin!"
@@ -51,9 +51,9 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 33 — Shy branch
+            // Scene 34 — Shy branch (shifted from 33)
             new {
-                SceneId = 33,
+                SceneId = 34,
                 ActCategory = 2,
                 Title = "Encouragement",
                 CharacterCode = "ID_FRIEND1",
@@ -64,7 +64,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Smile and say \"Giitu\" (Thanks)",
-                        NextSceneId = 34,
+                        NextSceneId = 35,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "You're welcome! Let's learn!"
@@ -72,9 +72,9 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 34 — Converge: Family words lesson with Áila introduction
+            // Scene 35 — Converge: Family words lesson with Áila introduction (shifted from 34)
             new {
-                SceneId = 34,
+                SceneId = 35,
                 ActCategory = 2,
                 Title = "Meeting Áila",
                 CharacterCode = "ID_FRIEND2",
@@ -88,21 +88,21 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Answer: \"Bures! Mun namma lea... Soma beassat diehtit du!\"",
-                        NextSceneId = 35,
+                        NextSceneId = 36,
                         TrustChange = +5,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Oho! Don hállat bures! (Wow! You speak well!)\""
                     },
                     new {
                         Text = "Say: \"Bures! Mun lean... nervous\"",
-                        NextSceneId = 36,
+                        NextSceneId = 37,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Ii leat váttis! (No worries!) We're all learning together!\""
                     },
                     new {
                         Text = "Just wave and smile",
-                        NextSceneId = 37,
+                        NextSceneId = 38,
                         TrustChange = +1,
                         IsCorrect = false,
                         ResponseDialog = "Áila: \"Don sáhtát ságastit Sámegillii goas don háliidat! (You can speak Sámi whenever you want!)\""
@@ -110,9 +110,9 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 35 — Good introduction branch
+            // Scene 36 — Good introduction branch (shifted from 35)
             new {
-                SceneId = 35,
+                SceneId = 36,
                 ActCategory = 2,
                 Title = "Three Friends",
                 CharacterCode = "ID_FRIEND2",
@@ -133,9 +133,9 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 36 — Nervous introduction branch
+            // Scene 37 — Nervous introduction branch (shifted from 36)
             new {
-                SceneId = 36,
+                SceneId = 37,
                 ActCategory = 2,
                 Title = "Encouraging Friends",
                 CharacterCode = "ID_FRIEND2",
@@ -156,30 +156,7 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 37 — Shy introduction branch
-            new {
-                SceneId = 37,
-                ActCategory = 2,
-                Title = "Patient Friends",
-                CharacterCode = "ID_FRIEND2",
-                ImageUrl = (string?)"/images/classroom.png",
-                Content =
-                    "Áila smiles understandingly.\r\n\r\n" +
-                    "Áila: \"Don sáhtát ságastit goas don háliidat. (You can speak whenever you want.) No pressure!\"\r\n\r\n" +
-                    "Áilu: \"We'll practice together. It's more fun with friends!\"\r\n\r\n" +
-                    "The teacher starts: \"Family words: 'eahket', 'áhčči', 'oappát', 'viellja'...\"",
-                Choices = new[] {
-                    new {
-                        Text = "Try repeating the words quietly",
-                        NextSceneId = 38,
-                        TrustChange = +3,
-                        IsCorrect = true,
-                        ResponseDialog = "Áila: \"Good! You're trying!\""
-                    }
-                }
-            },
-
-            // Scene 38 — Converge: Family words practice with both friends
+            // Scene 38 — Converge: Family words practice with both friends (stays at 38, routes to iPad scene 39)
             new {
                 SceneId = 38,
                 ActCategory = 2,
@@ -194,14 +171,14 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Practice confidently with both friends",
-                        NextSceneId = 39,
+                        NextSceneId = 39, // iPad vocabulary scene
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Hui buorre! (Very good!)\""
                     },
                     new {
                         Text = "Ask them to slow down",
-                        NextSceneId = 40,
+                        NextSceneId = 40, // Routes to Scene 40 (slower practice branch)
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Of course! We'll go slower.\""
