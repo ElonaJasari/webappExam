@@ -22,13 +22,11 @@
     {
         <link rel="preload" as="image" href="@Model.CurrentAct.ImageUrl" />
     }
-    @* Remove tablet.png preload if not used *@
     @if (Model.CurrentAct.Character != null && !string.IsNullOrEmpty(Model.CurrentAct.Character.ImageUrl))
     {
         <link rel="preload" as="image" href="@Model.CurrentAct.Character.ImageUrl" />
     }
-    @* Background Image - Skip if image doesn't exist or is tablet.png *@
-    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl) && !Model.CurrentAct.ImageUrl.Contains("tablet.png"))
+    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl))
     {
         <div class="scene-background">
             <img src="@Model.CurrentAct.ImageUrl" alt="Scene" loading="eager" onerror="this.style.display='none';" />
@@ -53,9 +51,40 @@
         @* If this is an iPad scene, hide normal story content and show only iPad *@
         @if (Model.ShouldShowVocabulary || Model.ShouldShowTest)
         {
-            @* iPad Scene - Hide all normal story elements *@
-            <div style="display: none;">
-                @* Hidden story content *@
+            <div class="ipad-vocabulary" style="background: #f8f9fa; border-radius: 16px; padding: 2rem; margin: 2rem auto; max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h2><span style="font-size:2em;">📱</span> iPad Practice</h2>
+                <p>@Model.VocabularyMessage</p>
+                @if (Model.ShouldShowVocabulary && Model.VocabularyWords.Any())
+                {
+                    <ul>
+                    @foreach (var word in Model.VocabularyWords)
+                    {
+                        <li><strong>@word.Text</strong> <span style="color: #888;">(@word.Description)</span></li>
+                    }
+                    </ul>
+                }
+                @if (Model.ShouldShowVocabulary && Model.VocabularySentences.Any())
+                {
+                    <ul>
+                    @foreach (var sentence in Model.VocabularySentences)
+                    {
+                        <li><strong>@sentence.Text</strong> <span style="color: #888;">(@sentence.Description)</span></li>
+                    }
+                    </ul>
+                }
+                @if (Model.ShouldShowTest && Model.TestTasks.Any())
+                {
+                    <h3>Test</h3>
+                    <ol>
+                    @foreach (var task in Model.TestTasks)
+                    {
+                        <li><strong>@task.Text</strong> <span style="color: #888;">(@task.Description)</span></li>
+                    }
+                    </ol>
+                }
+                <form asp-action="Choose" asp-controller="Story" method="post">
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </form>
             </div>
         }
         else
@@ -89,7 +118,7 @@
                 if (!string.IsNullOrEmpty(npcImage))
                 {
                     <div class="character-display">
-                        <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" loading="lazy" />
+                        <img src="@npcImage" alt="@Model.CurrentAct.Character.Name" />
                     </div>
                 }
             }
@@ -98,7 +127,7 @@
             @if (Model.PlayerCharacter != null && !string.IsNullOrEmpty(Model.PlayerCharacter.ImageUrl))
             {
                 <div class="player-character-display">
-                    <img src="@Model.PlayerCharacter.ImageUrl" alt="@Model.SelectedCharacterName" loading="lazy" />
+                    <img src="@Model.PlayerCharacter.ImageUrl" alt="@Model.SelectedCharacterName" />
                 </div>
             }
 
@@ -157,7 +186,6 @@
                 </div>
                 <div class="ipad-content">
                     <p class="ipad-message">@Model.VocabularyMessage</p>
-                    
                     @if (Model.VocabularyWords.Any())
                     {
                         <div class="vocabulary-section">
@@ -171,6 +199,21 @@
                                     </div>
                                 }
                             </div>
+                        </div>
+                    }
+                    @if (Model.VocabularySentences.Any())
+                    {
+                        <div class="vocabulary-section">
+                            <h4>Sentences to Learn</h4>
+                            <ul class="vocabulary-list">
+                                @foreach (var sentence in Model.VocabularySentences)
+                                {
+                                    <li>
+                                        <strong>@sentence.Text</strong><br />
+                                        <span style="color: #888;">@sentence.Description</span>
+                                    </li>
+                                }
+                            </ul>
                         </div>
                     }
                     
@@ -228,37 +271,59 @@
                     <h3>📱 Final Test</h3>
                 </div>
                 <div class="ipad-content">
-                    <p class="ipad-message">Time for your final test! Translate the following words and sentences.</p>
-                    
-                    <form asp-action="SubmitStoryTest" asp-controller="Story" method="post" id="testForm">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" asp-for="CurrentStoryActId" />
-                        
-                        <div class="test-questions">
-                            @foreach (var task in Model.TestTasks)
-                            {
-                                <div class="test-question">
-                                    <label class="test-label">
-                                        <strong>@task.Text</strong>
-                                        <span class="test-hint">(@task.Description)</span>
-                                    </label>
-                                    <input type="text" 
-                                           name="answers[@task.TaskId]" 
-                                           class="test-input" 
-                                           placeholder="Enter your answer..." 
-                                           autocomplete="off" 
-                                           required />
-                                </div>
-                            }
+                    <p class="ipad-message">Time for your final test! Click the correct translation for each word or sentence.</p>
+                    <div class="test-questions">
+                        @foreach (var task in Model.TestTasks)
+                        {
+                            var choices = new List<string> { task.Description };
+                            // Add 2 random distractors (for demo, use first 2 other descriptions)
+                            var distractors = Model.TestTasks.Where(t => t.TaskId != task.TaskId).Select(t => t.Description).Take(2).ToList();
+                            choices.AddRange(distractors);
+                            var rnd = new System.Random(task.TaskId); // Seed for stable order per user
+                            choices = choices.OrderBy(x => rnd.Next()).ToList();
+                        <div class="test-question" data-taskid="@task.TaskId">
+                            <div class="test-label"><strong>@task.Text</strong></div>
+                            <div class="test-choices">
+                                @foreach (var choice in choices)
+                                {
+                                    <button type="button" class="test-choice-btn" onclick="checkTestAnswer(this, '@task.Description')">@choice</button>
+                                }
+                            </div>
                         </div>
-                        
-                        <div class="test-actions">
-                            <button type="submit" class="ipad-button ipad-button-primary">Submit Test</button>
-                        </div>
-                    </form>
+                        }
+                    </div>
+                    <div class="test-actions">
+                        <form asp-action="FinishTest" asp-controller="Story" method="post">
+                            <button type="submit" class="ipad-button ipad-button-primary">Finish Test</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <script>
+        function checkTestAnswer(btn, correct) {
+            if (btn.textContent.trim() === correct.trim()) {
+                btn.classList.add('test-correct');
+                setTimeout(function() {
+                    btn.closest('.test-question').remove();
+                }, 600);
+            } else {
+                btn.classList.add('test-wrong');
+                setTimeout(function() {
+                    btn.classList.remove('test-wrong');
+                }, 600);
+            }
+        }
+        function finishTest() {
+            alert('Test finished!');
+            // You can add logic to submit results or continue the story
+        }
+        </script>
+        <style>
+        .test-choice-btn { margin: 0.5em; padding: 0.5em 1em; border-radius: 8px; border: 1px solid #ccc; background: #f8f9fa; cursor: pointer; transition: background 0.2s; }
+        .test-choice-btn.test-correct { background: #c8f7c5; border-color: #4caf50; color: #222; }
+        .test-choice-btn.test-wrong { background: #f7c5c5; border-color: #f44336; color: #222; }
+        </style>
     }
     
     @* Test Result Display *@
@@ -273,10 +338,10 @@
                 </div>
                 <div class="ipad-content">
                     @{
-                        var score = (double)TempData["TestScore"];
-                        var correct = (int)TempData["TestCorrect"];
-                        var total = (int)TempData["TestTotal"];
-                        var trustChange = (int)TempData["TrustChange"];
+                        var score = TempData["TestScore"] as double? ?? 0.0;
+                        var correct = TempData["TestCorrect"] as int? ?? 0;
+                        var total = TempData["TestTotal"] as int? ?? 0;
+                        var trustChange = TempData["TrustChange"] as int? ?? 0;
                     }
                     <div class="test-result">
                         <h2 class="test-score">@score.ToString("F1")%</h2>
