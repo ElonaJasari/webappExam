@@ -1,6 +1,6 @@
 namespace Bures.StoryContent.Act2;
 
-public static class Act2_03_FamilyWordsLesson
+public static class Act2_04_FamilyWordsLesson
 {
     // Act 2: Practice branches with both friends converging at lunch (39-42)
     public static IEnumerable<dynamic> GetScenes()

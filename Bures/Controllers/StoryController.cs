@@ -170,6 +170,9 @@ public class StoryController : Controller
 
         // Apply trust change from this choice (-5, 0, +5 etc.)
         progress.Trust += choice.TrustChange;
+        // Clamp trust value between MIN_TRUST and MAX_TRUST
+        if (progress.Trust < MIN_TRUST) progress.Trust = MIN_TRUST;
+        if (progress.Trust > MAX_TRUST) progress.Trust = MAX_TRUST;
 
         // Check if we're coming from scene 57 - route to appropriate ending scene
         if (progress.CurrentStoryActId == 57 && nextActId == 62)
@@ -389,6 +392,63 @@ public class StoryController : Controller
         }
 
         return RedirectToAction("Character", "Home");
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Act1Words()
+    {
+        // Get all single words (Type == "Word") from Tasks
+        var words = await _context.Tasks
+            .Where(t => t.Type.ToLower() == "word")
+            .ToListAsync();
+        return View("Act1Words", words);
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Act3Test()
+    {
+        // Randomly select words and sentences from Tasks
+        var allTasks = await _context.Tasks.ToListAsync();
+        var random = new Random();
+        var selectedTasks = allTasks.OrderBy(x => random.Next()).Take(10).ToList(); // 10 random items
+        return View("Act3Test", selectedTasks);
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> Act3TestSubmit(Dictionary<int, string> answers)
+    {
+        var allTasks = await _context.Tasks.ToListAsync();
+        int correct = 0;
+        foreach (var task in allTasks.Where(t => answers.ContainsKey(t.TaskId)))
+        {
+            // Check answer: either Text or Description matches
+            var userAnswer = answers[task.TaskId]?.Trim().ToLower();
+            var correctAnswer = (task.Text + "," + task.Description).ToLower();
+            if (correctAnswer.Contains(userAnswer)) correct++;
+        }
+        int total = answers.Count;
+        double percent = total > 0 ? (double)correct / total * 100 : 0;
+        int trustChange = 0;
+        if (percent < 70) trustChange = -40;
+        else if (percent < 91) trustChange = 10;
+        else trustChange = 50;
+        // Apply trust change to user progress
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId != null)
+        {
+            var progress = await _context.UserProgress.FirstOrDefaultAsync(p => p.UserID == userId);
+            if (progress != null)
+            {
+                progress.Trust += trustChange;
+                if (progress.Trust < MIN_TRUST) progress.Trust = MIN_TRUST;
+                if (progress.Trust > MAX_TRUST) progress.Trust = MAX_TRUST;
+                await _context.SaveChangesAsync();
+            }
+        }
+        ViewBag.Score = percent;
+        ViewBag.TrustChange = trustChange;
+        return View("Act3TestResult");
     }
 }
 

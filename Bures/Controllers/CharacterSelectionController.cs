@@ -12,7 +12,6 @@ namespace Bures.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // require logged-in user
     public class CharacterSelectionController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -30,10 +29,10 @@ namespace Bures.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous] // allow unauthenticated users to start playing
         public async Task<IActionResult> SaveSelection([FromBody] SaveSelectionDto dto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
 
             // Map client id (1..5) to CharacterCode in DB
             string code = dto.CharacterId switch
@@ -43,6 +42,7 @@ namespace Bures.Controllers
                 3 => "ID_TUNG_TUNG",      // TUNG TUNG SAMUR
                 4 => "ID_AURORA",         // Aurora Borealis
                 5 => "ID_CHLOEKELLY",     // Chloe Kelly
+                _ => string.Empty
             };
 
             // Prefer CharacterCode lookup; fall back to numeric when present
@@ -61,34 +61,44 @@ namespace Bures.Controllers
                 return BadRequest($"Character not found for selection id {dto.CharacterId}.");
             }
 
-            // Upsert: keep only one selection per user
-            var existing = await _context.UserCharacterSelection
-                .Where(x => x.UserId == userId)
-                .OrderByDescending(x => x.CreatedAt)
-                .FirstOrDefaultAsync();
-
-            if (existing == null)
+            if (!string.IsNullOrEmpty(userId))
             {
-                var selection = new UserCharacterSelection
+                // Upsert: keep only one selection per logged-in user
+                var existing = await _context.UserCharacterSelection
+                    .Where(x => x.UserId == userId)
+                    .OrderByDescending(x => x.CreatedAt)
+                    .FirstOrDefaultAsync();
+
+                if (existing == null)
                 {
-                    UserId = userId,
-                    CharacterId = character.CharacterID,
-                    CustomName = dto.CustomName
-                };
-                _context.UserCharacterSelection.Add(selection);
+                    var selection = new UserCharacterSelection
+                    {
+                        UserId = userId,
+                        CharacterId = character.CharacterID,
+                        CustomName = dto.CustomName
+                    };
+                    _context.UserCharacterSelection.Add(selection);
+                }
+                else
+                {
+                    existing.CharacterId = character.CharacterID;
+                    existing.CustomName = dto.CustomName;
+                }
+
+                await _context.SaveChangesAsync();
             }
             else
             {
-                existing.CharacterId = character.CharacterID;
-                existing.CustomName = dto.CustomName;
+                // Anonymous: store minimal selection in cookies so the app can proceed
+                Response.Cookies.Append("SelectedCharacterId", character.CharacterID.ToString());
+                Response.Cookies.Append("SelectedCustomName", dto.CustomName ?? string.Empty);
             }
-
-            await _context.SaveChangesAsync();
 
             return Ok();
         }
 
         [HttpGet]
+        [Authorize] // keep protected for user-specific retrieval
         public async Task<IActionResult> GetLatestSelection()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

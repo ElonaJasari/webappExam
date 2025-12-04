@@ -1,0 +1,77 @@
+@model IEnumerable<Bures.Models.TaskDB>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Test</title>
+    <link rel="stylesheet" href="/css/site.css" />
+    <style>
+        body {
+            background: url('/images/blackEndingScreen.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+        .test-sheet {
+            padding: 40px;
+            max-width: 800px;
+            margin: 60px auto;
+            background: rgba(0,0,0,0.8);
+            border-radius: 16px;
+            box-shadow: 0 0 40px #222;
+        }
+        .chalk-title {
+            font-size: 2.4rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 3px 3px 0 #333, 0 0 12px #fff;
+        }
+        .test-row {
+            margin-bottom: 24px;
+        }
+        .test-label {
+            font-family: 'Comic Sans MS', 'Chalkduster', cursive;
+            color: #fff;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .test-input {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 8px;
+        }
+        .submit-btn {
+            background: #4caf50;
+            color: #fff;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 32px;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="/Story/Act3TestSubmit">
+        <div class="test-sheet">
+            <div class="chalk-title">Act 3: Final Test</div>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var item = Model.ElementAt(i);
+                <div class="test-row">
+                    <label class="test-label">@item.Text (@item.Description)</label>
+                    <input type="text" name="answers[@item.TaskId]" class="test-input" autocomplete="off" />
+                </div>
+            }
+            <button type="submit" class="submit-btn">Submit Answers</button>
+        </div>
+    </form>
+</body>
+</html>

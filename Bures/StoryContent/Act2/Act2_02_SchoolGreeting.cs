@@ -22,7 +22,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Show interest: \"Sáhtán oahppat?\" (Can I learn?)",
-                        NextSceneId = 34,
+                        NextSceneId = 30,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Áilu: \"Of course! And Áila can help too!\""
@@ -43,7 +43,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Nod enthusiastically",
-                        NextSceneId = 34,
+                        NextSceneId = 30,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Great! Let's begin!"
@@ -64,7 +64,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Smile and say \"Giitu\" (Thanks)",
-                        NextSceneId = 34,
+                        NextSceneId = 30,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "You're welcome! Let's learn!"

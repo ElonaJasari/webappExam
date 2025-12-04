@@ -1,15 +1,15 @@
 namespace Bures.StoryContent.Act1;
 
-public static class Act1_04_AfterSchool
+public static class Act1_05_AfterSchool
 {
     // Continues after Act1_03 (last NextSceneId was 20)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 21 — After school, walking home with Áilu
+            //  After school, walking home with Áilu
             new {
-                SceneId = 21,
+                SceneId = 23,
                 ActCategory = 1,
                 Title = "Walking Home",
                 CharacterCode = "ID_FRIEND1",
@@ -21,21 +21,21 @@ public static class Act1_04_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Suggest going to the library to study",
-                        NextSceneId = 22,
+                        NextSceneId = 24,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Buorre idea! (Good idea!)"
                     },
                     new {
                         Text = "Ask if they want to hang out at the park",
-                        NextSceneId = 23,
+                        NextSceneId = 25,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Jus don háliidat. (If you want.)"
                     },
                     new {
-                        Text = "Say you need to go home",
-                        NextSceneId = 24,
+                        Text = "I think i will go home",
+                        NextSceneId = 26,
                         TrustChange = 0,
                         IsCorrect = false,
                         ResponseDialog = "Oaidnaleapmi iđđes! (See you tomorrow!)"
@@ -45,7 +45,7 @@ public static class Act1_04_AfterSchool
 
             // Scene 22 — Library branch
             new {
-                SceneId = 22,
+                SceneId = 24,
                 ActCategory = 1,
                 Title = "At the Library",
                 CharacterCode = "ID_FRIEND1",
@@ -57,7 +57,7 @@ public static class Act1_04_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Repeat the words carefully",
-                        NextSceneId = 25,
+                        NextSceneId = 27,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Hui buorre! (Very good!)"
