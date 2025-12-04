@@ -88,7 +88,8 @@ public static class Act3_03_PracticeBranches
                 Choices = new[] {
                     new {
                         Text = "Nod confidently: \"Jus don vealahit du\"",
-                        NextSceneId = 58,
+                        //NextSceneId = 58,
+                        NextSceneId = 61,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Teacher: \"Of course! Let's begin!\""

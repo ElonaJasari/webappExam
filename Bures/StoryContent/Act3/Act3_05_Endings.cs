@@ -7,23 +7,23 @@ public static class Act3_05_Endings
     {
         return new[]
         {
-            //Bad Ending (Trust < 50) - Scene 61
+            //Bad Ending (Trust < 50)
             new {
-                SceneId = 61,
+                SceneId = 62,
                 ActCategory = 3,
                 Title = "A Difficult Week",
                 CharacterCode = (string?)null,
                 ImageUrl = (string?)"/images/bedroom.png",
                 Content =
                     "You walk home slowly, feeling uncertain.\r\n\r\n" +
-                    "You think to yourself: \"Wow, I really practiced as much as I could have. Áilu and Áila were patient, but I didn't engage as fully as I might have.\r\n\r\n" +
-                    "On the bright side, I still learned some words and met a few friends.\r\n\r\n" +
-                    "Maybe next week, I'll try harder. Maybe I'll practice more. The journey isn't over—it's just beginning.\r\n\r\n" +
-                    "Northern Sámi is still waiting for me to embrace it fully...",
+                    "You think to yourself: \"Wow i really practiced as much as you could have. Áilu and Áila were patient, but you didn't engage as fully as you might have.\r\n\r\n" +
+                    "On the bright side i still, learned some words and met a few friends.\r\n\r\n" +
+                    "Maybe next week, you'll try harder. Maybe you'll practice more. The journey isn't over—it's just beginning.\r\n\r\n" +
+                    "Northern Sámi is still waiting for you to embrace it fully...",
                 Choices = new[] {
                     new {
                         Text = "Accept that there's still more to learn",
-                        NextSceneId = 61, // Self-loop triggers ending screen
+                        NextSceneId = 65, // Triggers ending screen
                         TrustChange = 0,
                         IsCorrect = true,
                         ResponseDialog = "You resolve to try harder next time."
@@ -31,9 +31,9 @@ public static class Act3_05_Endings
                 }
             },
 
-            // Good Ending (Trust 50-99) - Scene 62
+            // Good Ending (Trust 50-99)
             new {
-                SceneId = 62,
+                SceneId = 63,
                 ActCategory = 3,
                 Title = "A Promising Start",
                 CharacterCode = (string?)null,
@@ -50,7 +50,7 @@ public static class Act3_05_Endings
                 Choices = new[] {
                     new {
                         Text = "Feel proud of your progress",
-                        NextSceneId = 62, // Self-loop triggers ending screen
+                        NextSceneId = 65, // Triggers ending screen
                         TrustChange = 0,
                         IsCorrect = true,
                         ResponseDialog = "You're ready to continue learning!"
@@ -58,9 +58,9 @@ public static class Act3_05_Endings
                 }
             },
 
-            // True Ending (Trust 100+) - Scene 63
+            // True Ending (Trust 100+)
             new {
-                SceneId = 63,
+                SceneId = 64,
                 ActCategory = 3,
                 Title = "A True Connection",
                 CharacterCode = (string?)null,
@@ -82,7 +82,7 @@ public static class Act3_05_Endings
                 Choices = new[] {
                     new {
                         Text = "Embrace your new connection to Northern Sámi",
-                        NextSceneId = 63, // Self-loop triggers ending screen
+                        NextSceneId = 65, // Triggers ending screen
                         TrustChange = 0,
                         IsCorrect = true,
                         ResponseDialog = "You've found your path in Northern Sámi."

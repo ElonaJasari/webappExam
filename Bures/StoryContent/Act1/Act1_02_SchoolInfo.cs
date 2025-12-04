@@ -143,9 +143,10 @@ public static class Act1_02_SchoolInfo
                         IsCorrect = true,
                         ResponseDialog = "Soma beassat diehtit du! (Nice to meet you too!)"
                     }
-                } //
+                } 
             }
         };
     }
 }
+
 

@@ -1,13 +1,13 @@
 namespace Bures.StoryContent.Act2;
 
-public static class Act2_04_FamilyWordsLesson
+public static class Act2_03_FamilyWordsLesson
 {
-    
+    // Act 2: Practice branches with both friends converging at lunch (39-42)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 39 — Great Progress (from Family Words path: scenes 35/37) OR after Sentence Period (from scene 38)
+            // Scene 39 — Confident practice branch
             new {
                 SceneId = 39,
                 ActCategory = 2,
@@ -30,7 +30,7 @@ public static class Act2_04_FamilyWordsLesson
                 }
             },
 
-            // Scene 40 — Patient Learning (from Scene 36)
+            // Scene 40 — Slower practice branch
             new {
                 SceneId = 40,
                 ActCategory = 2,
@@ -53,7 +53,7 @@ public static class Act2_04_FamilyWordsLesson
                 }
             },
 
-            // Scene 41 — Lunch with both friends
+            // Scene 41 — Lunch with both friends (new scene)
             new {
                 SceneId = 41,
                 ActCategory = 2,
@@ -82,7 +82,7 @@ public static class Act2_04_FamilyWordsLesson
                 }
             },
 
-            // Scene 42 — Converge: End of day with both friends (from scenes 39, 40, or 41)
+            // Scene 42 — Converge: End of day with both friends
             new {
                 SceneId = 42,
                 ActCategory = 2,
@@ -107,28 +107,6 @@ public static class Act2_04_FamilyWordsLesson
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Both friends wave: \"Oaidnaleapmi!\""
-                    }
-                }
-            },
-
-            // Scene 43 — Final scene of Act 2, transitions to Act 3
-            new {
-                SceneId = 43,
-                ActCategory = 2,
-                Title = "Ready for Tomorrow",
-                CharacterCode = (string?)null,
-                ImageUrl = (string?)"/images/home.png",
-                Content =
-                    "You arrive home, reflecting on another day of learning.\r\n\r\n" +
-                    "You've made great progress with Northern Sámi and formed strong friendships with Áilu and Áila.\r\n\r\n" +
-                    "Tomorrow is the final day of this week's lessons...",
-                Choices = new[] {
-                    new {
-                        Text = "Rest and prepare for the final day",
-                        NextSceneId = 44,
-                        TrustChange = +1,
-                        IsCorrect = true,
-                        ResponseDialog = "You sleep well, ready for tomorrow."
                     }
                 }
             }

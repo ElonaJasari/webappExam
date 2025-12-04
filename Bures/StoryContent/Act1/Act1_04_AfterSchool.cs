@@ -1,15 +1,15 @@
 namespace Bures.StoryContent.Act1;
 
-public static class Act1_05_AfterSchool
+public static class Act1_04_AfterSchool
 {
     // Continues after Act1_03 (last NextSceneId was 20)
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 23 — After school, walking home with Áilu
+            // Scene 21 — After school, walking home with Áilu
             new {
-                SceneId = 23,
+                SceneId = 21,
                 ActCategory = 1,
                 Title = "Walking Home",
                 CharacterCode = "ID_FRIEND1",
@@ -21,21 +21,21 @@ public static class Act1_05_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Suggest going to the library to study",
-                        NextSceneId = 24,
+                        NextSceneId = 22,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Buorre idea! (Good idea!)"
                     },
                     new {
                         Text = "Ask if they want to hang out at the park",
-                        NextSceneId = 25,
+                        NextSceneId = 23,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Jus don háliidat. (If you want.)"
                     },
                     new {
-                        Text = "I think i will go home",
-                        NextSceneId = 26,
+                        Text = "Say you need to go home",
+                        NextSceneId = 24,
                         TrustChange = 0,
                         IsCorrect = false,
                         ResponseDialog = "Oaidnaleapmi iđđes! (See you tomorrow!)"
@@ -43,9 +43,9 @@ public static class Act1_05_AfterSchool
                 }
             },
 
-            // Scene 24 — Library branch
+            // Scene 22 — Library branch
             new {
-                SceneId = 24,
+                SceneId = 22,
                 ActCategory = 1,
                 Title = "At the Library",
                 CharacterCode = "ID_FRIEND1",
@@ -57,14 +57,14 @@ public static class Act1_05_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Repeat the words carefully",
-                        NextSceneId = 27,
+                        NextSceneId = 25,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Hui buorre! (Very good!)"
                     },
                     new {
                         Text = "Ask what they mean in English",
-                        NextSceneId = 27,
+                        NextSceneId = 25,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áilu explains each word patiently."
@@ -72,9 +72,9 @@ public static class Act1_05_AfterSchool
                 }
             },
 
-            // Scene 25 — Park branch
+            // Scene 23 — Park branch
             new {
-                SceneId = 25,
+                SceneId = 23,
                 ActCategory = 1,
                 Title = "At the Park",
                 CharacterCode = "ID_FRIEND1",
@@ -86,14 +86,14 @@ public static class Act1_05_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Point and repeat: 'muorra', 'beaivi', 'biegga'",
-                        NextSceneId = 27,
+                        NextSceneId = 25,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Don oahppat buoremusat! (You learn well!)"
                     },
                     new {
                         Text = "Just nod and listen",
-                        NextSceneId = 27,
+                        NextSceneId = 25,
                         TrustChange = +1,
                         IsCorrect = false,
                         ResponseDialog = "Áilu smiles and continues teaching."
@@ -101,9 +101,9 @@ public static class Act1_05_AfterSchool
                 }
             },
 
-            // Scene 26 — Going home branch
+            // Scene 24 — Going home branch
             new {
-                SceneId = 26,
+                SceneId = 24,
                 ActCategory = 1,
                 Title = "Parting Ways",
                 CharacterCode = "ID_FRIEND1",
@@ -114,7 +114,7 @@ public static class Act1_05_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Wave back: 'Oaidnaleapmi!'",
-                        NextSceneId = 27,
+                        NextSceneId = 25,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áilu grins and walks away."
@@ -122,9 +122,9 @@ public static class Act1_05_AfterSchool
                 }
             },
 
-            // Scene 27 — Converge: End of Day One
+            // Scene 25 — Converge: End of Act 1, transition to Act 2
             new {
-                SceneId = 27,
+                SceneId = 25,
                 ActCategory = 1,
                 Title = "End of Day One",
                 CharacterCode = "",
@@ -137,14 +137,13 @@ public static class Act1_05_AfterSchool
                 Choices = new[] {
                     new {
                         Text = "Rest and prepare for tomorrow",
-                        NextSceneId = 28, // Start of Act 2
+                        NextSceneId = 26, // Start of Act 2
                         TrustChange = +1,
                         IsCorrect = true,
                         ResponseDialog = "You sleep well, ready for the next day."
                     }
                 }
             }
-
         };
     }
 }
