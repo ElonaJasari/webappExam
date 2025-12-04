@@ -28,6 +28,9 @@ namespace Bures.Models
 
         public int StoryActId { get; set; }
         public StoryAct StoryAct { get; set; } = null!;
+
+        // Added for story feedback/dialog
+        public string? ResponseDialog { get; set; }
     }
 
 }

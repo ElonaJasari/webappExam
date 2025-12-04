@@ -9,6 +9,25 @@ public static class Act2_03_FamilyWordsLesson
     {
         return new[]
         {
+            // Scene 39 — iPad Sentences (NEW)
+            new {
+                SceneId = 39,
+                ActCategory = 2,
+                Title = "iPad Sentences",
+                CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
+                Content = "On your iPad, you see sentences using the words you learned. Practice reading and saying them before lunch.",
+                Choices = new[] {
+                    new {
+                        Text = "Continue to practice with friends",
+                        NextSceneId = 40, // Goes to Patient Learning
+                        TrustChange = 0,
+                        IsCorrect = true,
+                        ResponseDialog = "Ready for more practice!"
+                    }
+                }
+            },
+
             // Scene 40 — Slower practice branch (Scene 39 is iPad, so this stays at 40)
             new {
                 SceneId = 40,

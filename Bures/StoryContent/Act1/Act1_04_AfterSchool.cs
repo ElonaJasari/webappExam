@@ -9,7 +9,7 @@ public static class Act1_04_AfterSchool
         {
             // Scene 22 — After school, walking home with Áilu (shifted from 21)
             new {
-                SceneId = 22,
+                SceneId = 100,
                 ActCategory = 1,
                 Title = "Walking Home",
                 CharacterCode = "ID_FRIEND1",

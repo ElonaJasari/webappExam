@@ -228,17 +228,109 @@ public static class Act1_03_FirstLesson
                 Title = "iPad Practice",
                 CharacterCode = "ID_TEACHER",
                 ImageUrl = (string?)"/images/classroom.png",
-                    Content =
-                        "Before you leave, the teacher gives out an iPad to each student.\r\n\r\n" +
-                        "On the screen, you see today's new words and phrases.\r\n\r\n" +
-                        "Take a moment to review them and practice writing each one.",
+                Content =
+                    "Before you leave, the teacher gives out an iPad to each student.\r\n\r\n" +
+                    "On the screen, you see today's new words and phrases.\r\n\r\n" +
+                    "Take a moment to review them and practice writing each one.",
                 Choices = new[] {
                     new {
                         Text = "Review the words on the iPad",
-                        NextSceneId = 22, // Routes to Scene 22 (Act1_04_AfterSchool)
+                        NextSceneId = 100, // Skip Scene 22, go directly to walking home
                         TrustChange = +0,
                         IsCorrect = true,
                         ResponseDialog = "Buorre! (Good job reviewing!)"
+                    }
+                }
+            },
+            // Scene 22 is now a placeholder, not used in flow
+            new {
+                SceneId = 22,
+                ActCategory = 1,
+                Title = "(Unused Placeholder)",
+                CharacterCode = "",
+                ImageUrl = (string?)null,
+                Content = "(This scene is intentionally left blank.)",
+                Choices = new[] {
+                    new {
+                        Text = "Continue",
+                        NextSceneId = 100,
+                        TrustChange = 0,
+                        IsCorrect = true,
+                        ResponseDialog = "(No content)"
+                    }
+                }
+            },
+            // 100 — Walking home
+            new {
+                SceneId = 100,
+                ActCategory = 1,
+                Title = "Walking Home",
+                CharacterCode = "ID_PLAYER",
+                ImageUrl = (string?)"/images/walking_home.png",
+                Content =
+                    "As you walk home, you reflect on today's lesson.\r\n\r\n" +
+                    "You feel more confident speaking Sámi.",
+                Choices = new[] {
+                    new {
+                        Text = "Think about the new words",
+                        NextSceneId = 101,
+                        TrustChange = +1,
+                        IsCorrect = true,
+                        ResponseDialog = "Keep it up!"
+                    },
+                    new {
+                        Text = "Worry about making mistakes",
+                        NextSceneId = 102,
+                        TrustChange = -1,
+                        IsCorrect = false,
+                        ResponseDialog = "Don't worry, mistakes are part of learning."
+                    }
+                }
+            },
+            // 101 — Positive reflection
+            new {
+                SceneId = 101,
+                ActCategory = 1,
+                Title = "Feeling Accomplished",
+                CharacterCode = "ID_PLAYER",
+                ImageUrl = (string?)"/images/feeling_accomplished.png",
+                Content =
+                    "You arrive home with a sense of achievement.\r\n\r\n" +
+                    "Today's lesson was a success!",
+                Choices = new[] {
+                    new {
+                        Text = "End",
+                        NextSceneId = 0,
+                        TrustChange = 0,
+                        IsCorrect = true,
+                        ResponseDialog = "Looking forward to more learning!"
+                    }
+                }
+            },
+            // 102 — Negative reflection
+            new {
+                SceneId = 102,
+                ActCategory = 1,
+                Title = "Don't Worry",
+                CharacterCode = "ID_PLAYER",
+                ImageUrl = (string?)"/images/dont_worry.png",
+                Content =
+                    "You arrive home, still worried about speaking Sámi.\r\n\r\n" +
+                    "Remember, it's okay to make mistakes.",
+                Choices = new[] {
+                    new {
+                        Text = "Reassure yourself",
+                        NextSceneId = 101,
+                        TrustChange = +1,
+                        IsCorrect = true,
+                        ResponseDialog = "I will improve with practice."
+                    },
+                    new {
+                        Text = "Dwell on the mistakes",
+                        NextSceneId = 102,
+                        TrustChange = 0,
+                        IsCorrect = false,
+                        ResponseDialog = "It's okay, everyone makes mistakes."
                     }
                 }
             }

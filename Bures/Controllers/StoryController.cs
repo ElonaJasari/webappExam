@@ -8,12 +8,59 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bures.Controllers;
-
 //Controller for story progression with branching dialog choices.
 
-[Authorize]
-public class StoryController : Controller
-{
+    [Authorize]
+    public class StoryController : Controller
+    {
+        // ...existing code...
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FinishTest()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var progress = await _context.UserProgress
+                .Include(p => p.CurrentStoryAct)
+                .FirstOrDefaultAsync(p => p.UserID == userId);
+
+            if (progress == null)
+            {
+                return await Play(error: "Your progress was not found.");
+            }
+
+            // Calculate ending type based on trust value
+            var endingType = CalculateEnding(progress.Trust);
+            int endingSceneId;
+            if (endingType == "Bad")
+                endingSceneId = 62;
+            else if (endingType == "Good")
+                endingSceneId = 63;
+            else
+                endingSceneId = 64;
+
+            var endingScene = await _context.StoryActs
+                .Include(a => a.Choices)
+                .Include(a => a.Character)
+                .FirstOrDefaultAsync(a => a.StoryActId == endingSceneId);
+
+            if (endingScene != null)
+            {
+                progress.CurrentStoryActId = endingSceneId;
+                progress.CurrentStoryAct = endingScene;
+                progress.EndingType = endingType;
+                progress.LastUpdated = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Ending));
+            }
+            else
+            {
+                _logger.LogError("Ending scene {SceneId} not found", endingSceneId);
+                return await Play(error: "Could not load ending scene.");
+            }
+        }
     private readonly ApplicationDbContext _context;
     private readonly ILogger<StoryController> _logger;
 
@@ -187,11 +234,11 @@ public class StoryController : Controller
             int endingSceneId;
             
             if (endingType == "Bad")
-                endingSceneId = 61;
-            else if (endingType == "Good")
                 endingSceneId = 62;
-            else // True
+            else if (endingType == "Good")
                 endingSceneId = 63;
+            else // True
+                endingSceneId = 64;
             
             // Move to ending scene
             var endingScene = await _context.StoryActs
@@ -301,20 +348,15 @@ public class StoryController : Controller
     /// </summary>
     private async Task LoadContextualVocabulary(StoryPlayViewModel vm, UserProgressDB progress)
     {
-        // iPad logic commented out as requested
-        /*
         try
         {
             var currentAct = progress.CurrentStoryAct;
             if (currentAct == null) return;
 
-            // ============================================
-            // CONFIGURATION: Customize these scene IDs to change when iPad appears
-            // ============================================
-            const int ACT1_VOCABULARY_SCENE = 22;  // Scene ID where words appear in Act 1 
-            const int ACT2_VOCABULARY_SCENE = 39;  // Scene ID where sentences appear in Act 2
-            int[] ACT3_TEST_SCENES = new[] { 57, 58, 61 }; // Scene IDs where test appears in Act 3
-            // ============================================
+            // Scene IDs for vocabulary/test
+            const int ACT1_VOCABULARY_SCENE = 22;  // Show words at SceneId 100
+            const int ACT2_VOCABULARY_SCENE = 39;  // Show sentences at SceneId 39
+            int[] ACT3_TEST_SCENES = new[] { 57, 58, 61 }; // Test in Act 3
 
             // Determine act category from Description (e.g., "Act 1", "Act 2", "Act 3")
             var actDescription = currentAct.Description ?? "";
@@ -324,76 +366,50 @@ public class StoryController : Controller
                 int.TryParse(actDescription.Replace("Act ", "").Trim(), out actCategory);
             }
 
-            // Act 1: Show ONLY WORDS/Nouns AFTER Act1_03 (Scene 22)
-            // Admins add words via admin panel with Type="word" or Type="noun"
-            if (actCategory == 1)
+            // Act 1: Show 10 words/nouns at SceneId 21
+            if (actCategory == 1 && progress.CurrentStoryActId == ACT1_VOCABULARY_SCENE)
             {
-                // Show vocabulary at the configured scene
-                if (progress.CurrentStoryActId == ACT1_VOCABULARY_SCENE)
+                var words = await _context.Tasks
+                    .Where(t => t.Type.ToLower() == "word" || t.Type.ToLower() == "noun")
+                    .OrderBy(t => t.Text)
+                    .Take(10)
+                    .ToListAsync();
+                if (words.Any())
                 {
-                    // Filter: Only get words/nouns (case-insensitive matching)
-                    // These are added by admins before game start via admin panel
-                    var words = await _context.Tasks
-                        .Where(t => t.Type.ToLower() == "word" || t.Type.ToLower() == "noun")
-                        .OrderBy(t => t.Text)
-                        .ToListAsync();
-                    
-                    if (words.Any())
-                    {
-                        vm.VocabularyWords = words;
-                        vm.ShouldShowVocabulary = true;
-                        vm.VocabularyMessage = "On your iPad, there are " + words.Count() + " words you need to learn. Take a moment to review them!";
-                    }
+                    vm.VocabularyWords = words;
+                    vm.ShouldShowVocabulary = true;
+                    vm.VocabularyMessage = $"On your iPad, there are {words.Count} words you need to learn. Take a moment to review them!";
                 }
             }
-            // Act 2: Show ONLY SENTENCES AFTER Act2_02 (Scene 39)
-            // Admins add sentences via admin panel with Type="sentence" or Type="sentences"
-            else if (actCategory == 2)
+            // Act 2: Show sentences at SceneId 39
+            else if (actCategory == 2 && progress.CurrentStoryActId == ACT2_VOCABULARY_SCENE)
             {
-                // Show vocabulary at the configured scene
-                if (progress.CurrentStoryActId == ACT2_VOCABULARY_SCENE)
+                var sentences = await _context.Tasks
+                    .Where(t => t.Type.ToLower() == "sentence" || t.Type.ToLower() == "sentences")
+                    .OrderBy(t => t.Text)
+                    .ToListAsync();
+                if (sentences.Any())
                 {
-                    // Filter: Only get sentences (case-insensitive matching)
-                    // These are added by admins before game start via admin panel
-                    var sentences = await _context.Tasks
-                        .Where(t => t.Type.ToLower() == "sentence" || t.Type.ToLower() == "sentences")
-                        .OrderBy(t => t.Text)
-                        .ToListAsync();
-                    
-                    if (sentences.Any())
-                    {
-                        vm.VocabularySentences = sentences;
-                        vm.ShouldShowVocabulary = true;
-                        vm.VocabularyMessage = "On your iPad, there are " + sentences.Count() + " sentences using the words you learned. Practice them!";
-                    }
+                    vm.VocabularySentences = sentences;
+                    vm.ShouldShowVocabulary = true;
+                    vm.VocabularyMessage = $"On your iPad, there are {sentences.Count} sentences using the words you learned. Practice them!";
                 }
             }
-            // Act 3: Show TEST IN Act3_03 (Scene 57 or 58)
-            // Test includes all tasks (both words and sentences) from TaskDB
-            else if (actCategory == 3)
+            // Act 3: Show test at scenes 57, 58, or 61
+            else if (actCategory == 3 && ACT3_TEST_SCENES.Contains(progress.CurrentStoryActId))
             {
-                // Show test at the configured scenes
-                if (ACT3_TEST_SCENES.Contains(progress.CurrentStoryActId))
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var hasTakenTest = await _context.UserTaskResults
+                    .AnyAsync(r => r.UserId == userId && r.ActNumber == 3);
+                if (!hasTakenTest)
                 {
-                    // Check if user already took the test (prevent retaking)
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var hasTakenTest = await _context.UserTaskResults
-                        .AnyAsync(r => r.UserId == userId && r.ActNumber == 3);
-                    
-                    if (!hasTakenTest)
+                    var allTasks = await _context.Tasks.ToListAsync();
+                    var random = new Random();
+                    var testTasks = allTasks.OrderBy(x => random.Next()).Take(Math.Min(10, allTasks.Count)).ToList();
+                    if (testTasks.Any())
                     {
-                        // Get ALL tasks (both words AND sentences) for the test
-                        // Admins add these via admin panel before game start
-                        var allTasks = await _context.Tasks.ToListAsync();
-                        var random = new Random();
-                        // Randomly select up to 10 tasks, or all if less than 10
-                        var testTasks = allTasks.OrderBy(x => random.Next()).Take(Math.Min(10, allTasks.Count)).ToList();
-                        
-                        if (testTasks.Any())
-                        {
-                            vm.TestTasks = testTasks;
-                            vm.ShouldShowTest = true;
-                        }
+                        vm.TestTasks = testTasks;
+                        vm.ShouldShowTest = true;
                     }
                 }
             }
@@ -403,7 +419,6 @@ public class StoryController : Controller
             _logger.LogWarning(ex, "Failed to load contextual vocabulary for StoryActId {StoryActId}", progress.CurrentStoryActId);
             // Continue without vocabulary - not critical
         }
-        */
     }
 
     //
