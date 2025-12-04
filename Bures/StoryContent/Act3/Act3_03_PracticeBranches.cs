@@ -88,11 +88,38 @@ public static class Act3_03_PracticeBranches
                 Choices = new[] {
                     new {
                         Text = "Nod confidently: \"Jus don vealahit du\"",
-                        //NextSceneId = 58,
-                        NextSceneId = 62,
+                        NextSceneId = 58,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Teacher: \"Of course! Let's begin!\""
+                    }
+                }
+            },
+
+            // Scene 58 — Empty dialog instance with choices (transition to Act3_04)
+            new {
+                SceneId = 58,
+                ActCategory = 3,
+                Title = "Preparing for Test",
+                CharacterCode = "ID_TEACHER",
+                ImageUrl = (string?)"/images/classroom.png",
+                Content =
+                    "The teacher prepares the test materials.\r\n\r\n" +
+                    "Teacher: \"Now, let's see how much you've learned. Are you ready?\"",
+                Choices = new[] {
+                    new {
+                        Text = "Nod: \"Jus, mun olen\"",
+                        NextSceneId = 59,
+                        TrustChange = 0,
+                        IsCorrect = true,
+                        ResponseDialog = "Teacher: \"Perfect! Let's begin the test.\""
+                    },
+                    new {
+                        Text = "Take a deep breath: \"Jus, mun olen\"",
+                        NextSceneId = 59,
+                        TrustChange = 0,
+                        IsCorrect = true,
+                        ResponseDialog = "Teacher: \"Don't worry, you'll do great!\""
                     }
                 }
             }

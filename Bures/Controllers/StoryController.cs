@@ -17,7 +17,7 @@ namespace Bures.Controllers;
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FinishTest()
+        public async Task<IActionResult> FinishTest(Dictionary<int, string> answers)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
@@ -31,34 +31,125 @@ namespace Bures.Controllers;
                 return await Play(error: "Your progress was not found.");
             }
 
-            // Calculate ending type based on trust value
-            var endingType = CalculateEnding(progress.Trust);
-            int endingSceneId;
-            if (endingType == "Bad")
-                endingSceneId = 62;
-            else if (endingType == "Good")
-                endingSceneId = 63;
-            else
-                endingSceneId = 64;
+            // Check if user already took the test
+            var hasTakenTest = await _context.UserTaskResults
+                .AnyAsync(r => r.UserId == userId && r.ActNumber == 3);
+            
+            if (hasTakenTest)
+            {
+                return await Play(error: "You have already completed the test.");
+            }
 
-            var endingScene = await _context.StoryActs
+            // Calculate test results based on TaskDB
+            var allTasks = await _context.Tasks.ToListAsync();
+            int correct = 0;
+            int total = 0;
+
+            if (answers != null && answers.Count > 0)
+            {
+                foreach (var kvp in answers)
+                {
+                    var taskId = kvp.Key;
+                    var userAnswer = kvp.Value?.Trim().ToLower() ?? "";
+                    var task = allTasks.FirstOrDefault(t => t.TaskId == taskId);
+                    
+                    if (task != null && !string.IsNullOrEmpty(userAnswer))
+                    {
+                        total++;
+                        var correctText = task.Text.ToLower();
+                        var correctDescription = task.Description.ToLower();
+                        
+                        // Check if answer matches either the Sami text or Norwegian description
+                        bool isCorrect = (userAnswer == correctText || userAnswer == correctDescription) ||
+                                        (correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer));
+                        
+                        if (isCorrect)
+                        {
+                            correct++;
+                        }
+
+                        // Record the result
+                        _context.UserTaskResults.Add(new UserTaskResult
+                        {
+                            UserId = userId,
+                            TaskId = taskId,
+                            ActNumber = 3,
+                            IsCorrect = isCorrect
+                        });
+                    }
+                }
+            }
+
+            // Calculate percentage and trust change
+            double percent = total > 0 ? (double)correct / total * 100 : 0;
+            int trustChange = 0;
+            
+            // Trust value changes based on performance
+            if (percent < 70)
+                trustChange = -40;
+            else if (percent < 91)
+                trustChange = 10;
+            else
+                trustChange = 20;
+
+            // Apply trust change
+            progress.Trust += trustChange;
+            if (progress.Trust < MIN_TRUST) progress.Trust = MIN_TRUST;
+            if (progress.Trust > MAX_TRUST) progress.Trust = MAX_TRUST;
+
+            await _context.SaveChangesAsync();
+
+            // Store test result in TempData for display
+            TempData["TestScore"] = percent;
+            TempData["TestCorrect"] = correct;
+            TempData["TestTotal"] = total;
+            TempData["TrustChange"] = trustChange;
+
+            // Move to scene 61 (test completion scene)
+            var nextScene = await _context.StoryActs
                 .Include(a => a.Choices)
                 .Include(a => a.Character)
-                .FirstOrDefaultAsync(a => a.StoryActId == endingSceneId);
+                .FirstOrDefaultAsync(a => a.StoryActId == 61);
 
-            if (endingScene != null)
+            if (nextScene != null)
             {
-                progress.CurrentStoryActId = endingSceneId;
-                progress.CurrentStoryAct = endingScene;
-                progress.EndingType = endingType;
+                progress.CurrentStoryActId = 61;
+                progress.CurrentStoryAct = nextScene;
                 progress.LastUpdated = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Ending));
+                return RedirectToAction(nameof(Play));
             }
             else
             {
-                _logger.LogError("Ending scene {SceneId} not found", endingSceneId);
-                return await Play(error: "Could not load ending scene.");
+                // If scene 61 doesn't exist, calculate ending and go there
+                var endingType = CalculateEnding(progress.Trust);
+                int endingSceneId;
+                if (endingType == "Bad")
+                    endingSceneId = 62;
+                else if (endingType == "Good")
+                    endingSceneId = 63;
+                else
+                    endingSceneId = 64;
+
+                var endingScene = await _context.StoryActs
+                    .Include(a => a.Choices)
+                    .Include(a => a.Character)
+                    .FirstOrDefaultAsync(a => a.StoryActId == endingSceneId);
+
+                if (endingScene != null)
+                {
+                    progress.CurrentStoryActId = endingSceneId;
+                    progress.CurrentStoryAct = endingScene;
+                    progress.EndingType = endingType;
+                    progress.LastUpdated = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Ending));
+                }
+                else
+                {
+                    _logger.LogError("Ending scene {SceneId} not found", endingSceneId);
+                    return await Play(error: "Could not load ending scene.");
+                }
             }
         }
     private readonly ApplicationDbContext _context;
@@ -354,9 +445,10 @@ namespace Bures.Controllers;
             if (currentAct == null) return;
 
             // Scene IDs for vocabulary/test
-            const int ACT1_VOCABULARY_SCENE = 22;  // Show words at SceneId 100
+            const int ACT1_VOCABULARY_SCENE = 22;  // Show words at SceneId 22
             const int ACT2_VOCABULARY_SCENE = 39;  // Show sentences at SceneId 39
-            int[] ACT3_TEST_SCENES = new[] { 57, 58, 61 }; // Test in Act 3
+            const int ACT2_SENTENCES_SCENE = 43;   // Show sentences at SceneId 43 (like Act1 scene 21 for words)
+            const int ACT3_TEST_SCENE = 60; // Test in Act 3 at scene 60
 
             // Determine act category from Description (e.g., "Act 1", "Act 2", "Act 3")
             var actDescription = currentAct.Description ?? "";
@@ -395,8 +487,23 @@ namespace Bures.Controllers;
                     vm.VocabularyMessage = $"On your iPad, there are {sentences.Count} sentences using the words you learned. Practice them!";
                 }
             }
-            // Act 3: Show test at scenes 57, 58, or 61
-            else if (actCategory == 3 && ACT3_TEST_SCENES.Contains(progress.CurrentStoryActId))
+            // Act 2: Show sentences at SceneId 43 (like Act1 scene 21 shows words)
+            else if (actCategory == 2 && progress.CurrentStoryActId == ACT2_SENTENCES_SCENE)
+            {
+                var sentences = await _context.Tasks
+                    .Where(t => t.Type.ToLower() == "sentence" || t.Type.ToLower() == "sentences")
+                    .OrderBy(t => t.Text)
+                    .Take(10)
+                    .ToListAsync();
+                if (sentences.Any())
+                {
+                    vm.VocabularySentences = sentences;
+                    vm.ShouldShowVocabulary = true;
+                    vm.VocabularyMessage = $"On your iPad, there are {sentences.Count} sentences using the words you learned. Take a moment to review them and practice reading each sentence out loud.";
+                }
+            }
+            // Act 3: Show test at scene 60
+            else if (actCategory == 3 && progress.CurrentStoryActId == ACT3_TEST_SCENE)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var hasTakenTest = await _context.UserTaskResults
