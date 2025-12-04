@@ -301,6 +301,8 @@ public class StoryController : Controller
     /// </summary>
     private async Task LoadContextualVocabulary(StoryPlayViewModel vm, UserProgressDB progress)
     {
+        // iPad logic commented out as requested
+        /*
         try
         {
             var currentAct = progress.CurrentStoryAct;
@@ -309,7 +311,7 @@ public class StoryController : Controller
             // ============================================
             // CONFIGURATION: Customize these scene IDs to change when iPad appears
             // ============================================
-            const int ACT1_VOCABULARY_SCENE = 21;  // Scene ID where words appear in Act 1 (iPad-only scene)
+            const int ACT1_VOCABULARY_SCENE = 22;  // Scene ID where words appear in Act 1 
             const int ACT2_VOCABULARY_SCENE = 39;  // Scene ID where sentences appear in Act 2
             int[] ACT3_TEST_SCENES = new[] { 57, 58, 61 }; // Scene IDs where test appears in Act 3
             // ============================================
@@ -401,6 +403,7 @@ public class StoryController : Controller
             _logger.LogWarning(ex, "Failed to load contextual vocabulary for StoryActId {StoryActId}", progress.CurrentStoryActId);
             // Continue without vocabulary - not critical
         }
+        */
     }
 
     //
@@ -573,8 +576,8 @@ public class StoryController : Controller
             var correctDescription = task.Description.ToLower();
             
             // Check if answer matches either the Sami text or Norwegian description
-            if (userAnswer == correctText || userAnswer == correctDescription || 
-                correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer))
+            if ((userAnswer == correctText || userAnswer == correctDescription) ||
+                (!string.IsNullOrEmpty(userAnswer) && (correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer))))
             {
                 correct++;
             }
@@ -585,8 +588,8 @@ public class StoryController : Controller
                 UserId = userId,
                 TaskId = task.TaskId,
                 ActNumber = 3,
-                IsCorrect = userAnswer == correctText || userAnswer == correctDescription ||
-                           correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer)
+                IsCorrect = (userAnswer == correctText || userAnswer == correctDescription) ||
+                           (!string.IsNullOrEmpty(userAnswer) && (correctText.Contains(userAnswer) || correctDescription.Contains(userAnswer)))
             });
         }
 
@@ -629,7 +632,7 @@ public class StoryController : Controller
             // Check answer: either Text or Description matches
             var userAnswer = answers[task.TaskId]?.Trim().ToLower();
             var correctAnswer = (task.Text + "," + task.Description).ToLower();
-            if (correctAnswer.Contains(userAnswer)) correct++;
+            if (!string.IsNullOrEmpty(userAnswer) && correctAnswer.Contains(userAnswer)) correct++;
         }
         int total = answers.Count;
         double percent = total > 0 ? (double)correct / total * 100 : 0;

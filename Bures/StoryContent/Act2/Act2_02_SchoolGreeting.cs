@@ -171,7 +171,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Practice confidently with both friends",
-                        NextSceneId = 39, // iPad vocabulary scene
+                        NextSceneId = 40, // iPad vocabulary scene
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Hui buorre! (Very good!)\""

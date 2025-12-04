@@ -24,7 +24,7 @@ public static class Act2_03_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Thank both friends: \"Giitu, Áilu ja Áila!\"",
-                        NextSceneId = 42,
+                        NextSceneId = 41,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Ipmelattá! (You're welcome!) Let's eat!\""
