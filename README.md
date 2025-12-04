@@ -12,7 +12,7 @@ A web-based interactive game for Sámi language learning
 
 This project uses:
   - .NET SDK 9.10
-  - Node.js 22.11 or newer
+
 
   To run:
   - Firstly look where in the folder you are, you can use the command "ls" in the terminal.
