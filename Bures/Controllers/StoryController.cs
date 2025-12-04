@@ -174,19 +174,19 @@ public class StoryController : Controller
         if (progress.Trust < MIN_TRUST) progress.Trust = MIN_TRUST;
         if (progress.Trust > MAX_TRUST) progress.Trust = MAX_TRUST;
 
-        // Check if we're coming from scene 57 - route to appropriate ending scene
-        if (progress.CurrentStoryActId == 57 && nextActId == 62)
+        // Check if we're coming from scene 60 (convergence scene) - route to appropriate ending scene
+        if (progress.CurrentStoryActId == 60 && nextActId == 60)
         {
             // Calculate ending based on trust (after applying trust change)
             var endingType = CalculateEnding(progress.Trust);
             int endingSceneId;
             
             if (endingType == "Bad")
-                endingSceneId = 62;
+                endingSceneId = 61;
             else if (endingType == "Good")
-                endingSceneId = 63;
+                endingSceneId = 62;
             else // True
-                endingSceneId = 64;
+                endingSceneId = 63;
             
             // Move to ending scene
             var endingScene = await _context.StoryActs
@@ -206,8 +206,8 @@ public class StoryController : Controller
                 return await Play(error: "Could not load ending scene.");
             }
         }
-        // Check if we're at an ending scene (62, 63, 64) - redirect to ending view
-        else if (progress.CurrentStoryActId >= 62 && progress.CurrentStoryActId <= 64)
+        // Check if we're at an ending scene (61, 62, 63) - redirect to ending view
+        else if (progress.CurrentStoryActId >= 61 && progress.CurrentStoryActId <= 63)
         {
             // Player has completed the ending scene, show ending view
             if (string.IsNullOrEmpty(progress.EndingType))
