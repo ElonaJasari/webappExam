@@ -313,15 +313,12 @@ public class StoryController : Controller
                 int.TryParse(actDescription.Replace("Act ", "").Trim(), out actCategory);
             }
 
-            // Act 1: Show ONLY WORDS/Nouns at specific scenes
+            // Act 1: Show ONLY WORDS/Nouns AFTER Act1_03 (Scene 21)
             // Admins add words via admin panel with Type="word" or Type="noun"
-            // CUSTOMIZE: Add the StoryActIds where you want vocabulary to appear in Act 1
             if (actCategory == 1)
             {
-                // Add your specific StoryActIds here where vocabulary should appear
-                var vocabularySceneIds = new[] { 6, 5 }; // Customize these IDs
-                
-                if (vocabularySceneIds.Contains(progress.CurrentStoryActId))
+                // Show vocabulary after Act1_03 ends (Scene 21 is the next scene after Act1_03)
+                if (progress.CurrentStoryActId == 21)
                 {
                     // Filter: Only get words/nouns (case-insensitive matching)
                     // These are added by admins before game start via admin panel
@@ -338,15 +335,12 @@ public class StoryController : Controller
                     }
                 }
             }
-            // Act 2: Show ONLY SENTENCES at specific scenes
+            // Act 2: Show ONLY SENTENCES AFTER Act2_02 (Scene 39)
             // Admins add sentences via admin panel with Type="sentence" or Type="sentences"
-            // CUSTOMIZE: Add the StoryActIds where you want sentences to appear in Act 2
             else if (actCategory == 2)
             {
-                // Add your specific StoryActIds here where sentences should appear
-                var sentenceSceneIds = new[] { 42, 43 }; // Customize these IDs
-                
-                if (sentenceSceneIds.Contains(progress.CurrentStoryActId))
+                // Show vocabulary after Act2_02 ends (Scene 39 is the next scene after Act2_02)
+                if (progress.CurrentStoryActId == 39)
                 {
                     // Filter: Only get sentences (case-insensitive matching)
                     // These are added by admins before game start via admin panel
@@ -363,14 +357,12 @@ public class StoryController : Controller
                     }
                 }
             }
-            // Act 3: Show TEST with BOTH words and sentences
+            // Act 3: Show TEST IN Act3_03 (Scene 57 or 58)
             // Test includes all tasks (both words and sentences) from TaskDB
-            // CUSTOMIZE: Add the StoryActId where the test should appear (before ending)
             else if (actCategory == 3)
             {
-                // Add your specific StoryActId where the test should appear
-                // This should be the scene right before the ending (scene 60 in your case)
-                var testSceneIds = new[] { 60, 59, 58 }; // Customize these IDs - typically scene 60 before ending
+                // Show test in Act3_03 (Scene 57 is the convergence scene, or 58/61 after it)
+                var testSceneIds = new[] { 57, 58, 61 }; // Act3_03 scenes
                 
                 if (testSceneIds.Contains(progress.CurrentStoryActId))
                 {
