@@ -20,6 +20,7 @@ body {
 .container {
   max-width: 1400px;
   padding: 40px 20px;
+  margin: 0 auto;
 }
 
 .header {
@@ -45,7 +46,9 @@ body {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 35px;
-  margin-bottom: 50px;
+  margin: 0 auto 50px;
+  max-width: 1200px;
+  justify-items: center;
 }
 
 .character-card {
@@ -60,6 +63,8 @@ body {
   cursor: pointer;
   animation: fadeInUp 0.5s ease-out;
   animation-fill-mode: both;
+  width: 100%;
+  max-width: 220px;
 }
 
 .character-card::before {
@@ -121,6 +126,7 @@ body {
 .character-info {
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .character-name {
@@ -393,6 +399,9 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .play-button:hover {
