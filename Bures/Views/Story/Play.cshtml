@@ -22,13 +22,11 @@
     {
         <link rel="preload" as="image" href="@Model.CurrentAct.ImageUrl" />
     }
-    @* Remove tablet.png preload if not used *@
     @if (Model.CurrentAct.Character != null && !string.IsNullOrEmpty(Model.CurrentAct.Character.ImageUrl))
     {
         <link rel="preload" as="image" href="@Model.CurrentAct.Character.ImageUrl" />
     }
-    @* Background Image - Skip if image doesn't exist or is tablet.png *@
-    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl) && !Model.CurrentAct.ImageUrl.Contains("tablet.png"))
+    @if (!string.IsNullOrEmpty(Model.CurrentAct.ImageUrl))
     {
         <div class="scene-background">
             <img src="@Model.CurrentAct.ImageUrl" alt="Scene" loading="eager" onerror="this.style.display='none';" />
@@ -273,10 +271,10 @@
                 </div>
                 <div class="ipad-content">
                     @{
-                        var score = (double)TempData["TestScore"];
-                        var correct = (int)TempData["TestCorrect"];
-                        var total = (int)TempData["TestTotal"];
-                        var trustChange = (int)TempData["TrustChange"];
+                        var score = TempData["TestScore"] as double? ?? 0.0;
+                        var correct = TempData["TestCorrect"] as int? ?? 0;
+                        var total = TempData["TestTotal"] as int? ?? 0;
+                        var trustChange = TempData["TrustChange"] as int? ?? 0;
                     }
                     <div class="test-result">
                         <h2 class="test-score">@score.ToString("F1")%</h2>
