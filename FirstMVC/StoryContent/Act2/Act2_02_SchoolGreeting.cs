@@ -1,4 +1,4 @@
-namespace Bures.StoryContent.Act2;
+namespace FirstMVC.StoryContent.Act2;
 
 public static class Act2_02_SchoolGreeting
 {
@@ -211,3 +211,4 @@ public static class Act2_02_SchoolGreeting
         };
     }
 }
+
