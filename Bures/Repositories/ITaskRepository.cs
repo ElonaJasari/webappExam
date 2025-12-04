@@ -2,10 +2,7 @@ using Bures.Models;
 
 namespace Bures.Repositories
 {
-    /// <summary>
     /// Interface for TaskDB repository operations.
-    /// Provides Data Access Layer abstraction for test tasks.
-    /// </summary>
     public interface ITaskRepository
     {
         Task<IEnumerable<TaskDB>> GetAllAsync();

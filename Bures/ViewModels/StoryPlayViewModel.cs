@@ -23,6 +23,16 @@ namespace Bures.ViewModels
         // For form submission
         [Display(Name = "Selected Choice")]
         public int? SelectedChoiceId { get; set; }
+        
+        // Vocabulary system - appears contextually at specific story moments
+        public IEnumerable<TaskDB> VocabularyWords { get; set; } = Enumerable.Empty<TaskDB>();
+        public IEnumerable<TaskDB> VocabularySentences { get; set; } = Enumerable.Empty<TaskDB>();
+        public bool ShouldShowVocabulary { get; set; }
+        public string VocabularyMessage { get; set; } = string.Empty;
+        
+        // Act 3 test integration
+        public bool ShouldShowTest { get; set; }
+        public IEnumerable<TaskDB> TestTasks { get; set; } = Enumerable.Empty<TaskDB>();
 
         // Display helpers
         public bool HasCharacter => Character != null;

@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Ending";
+    var endingType = (string?)ViewData["EndingType"] ?? "Unknown";
+    var trust = (int?)ViewData["Trust"] ?? 0;
+}
+
+<div class="story-ending">
+    <h1>@endingType Ending</h1>
+    <p class="trust-value">Your final trust value: <strong>@trust</strong></p>
+
+    @if (endingType == "Bad")
+    {
+        <div class="ending-content bad-ending">
+            <h2>A Difficult Week</h2>
+            <p>You've completed your first week of Northern Sámi lessons, but it was challenging.</p>
+            <p>While you learned some words and met Áilu and Áila, you didn't engage as fully as you could have. Language learning takes practice, and sometimes it's hard to find the confidence to speak.</p>
+            <p><strong>Don't give up!</strong> Every journey starts with small steps. Northern Sámi is still waiting for you to embrace it. Maybe next week, with more practice and confidence, you'll find your voice.</p>
+            <p class="ending-message">Remember: 'bures' (hello), 'giitu' (thanks), and every word you learned is progress. The path forward is still open.</p>
+        </div>
+    }
+    else if (endingType == "Good")
+    {
+        <div class="ending-content good-ending">
+            <h2>A Promising Start</h2>
+            <p>Congratulations! You've made excellent progress in your first week of Northern Sámi lessons.</p>
+            <p>You've formed friendships with Áilu and Áila, learned greetings, introductions, family words, and food vocabulary. You've had real conversations in Northern Sámi and built confidence every day.</p>
+            <p>You're not fluent yet, but you're on the right path. Northern Sámi is becoming part of your life, one word at a time. Your friends are excited to keep practicing with you, and the teacher has noticed your dedication.</p>
+            <p class="ending-message">The journey continues, and you're excited to see where it leads. Keep practicing, keep learning, and keep building those connections!</p>
+        </div>
+    }
+    else if (endingType == "True")
+    {
+        <div class="ending-content true-ending">
+            <h2>A True Connection</h2>
+            <p>Incredible! You've achieved something remarkable in your first week of Northern Sámi lessons.</p>
+            <p>You've not only mastered the basics—greetings, introductions, family words, and food vocabulary—but you've formed deep friendships with Áilu and Áila. You've had fluent conversations entirely in Northern Sámi, helped other students, and become a role model in the class.</p>
+            <p>More importantly, you've discovered something profound: Northern Sámi isn't just a language you're learning. It's a connection to culture, to people, to a way of life. You've found your voice in Northern Sámi and your place in this community.</p>
+            <p>You're not just learning words—you're becoming part of something greater. Northern Sámi has opened its heart to you, and you've opened yours to it.</p>
+            <p class="ending-message">The journey ahead is bright, and you're ready to walk it with confidence, friendship, and a true love for the language. <strong>Hui buorre! (Very good!)</strong></p>
+        </div>
+    }
+
+    <div class="mt-4 ending-actions">
+        <a asp-action="ResetAndStart" asp-controller="Story" class="btn btn-primary">Replay from Act 1</a>
+        <a asp-action="ContinuePage" asp-controller="Home" class="btn btn-secondary ms-2">Back to Menu</a>
+    </div>
+</div>
+
+
