@@ -156,7 +156,7 @@ public static class Act2_02_SchoolGreeting
                 }
             },
 
-            // Scene 38 — Converge: Family words practice with both friends (stays at 38, routes to iPad scene 39)
+            // Scene 38 — Converge: Family words practice with both friends (routes to iPad scene 39)
             new {
                 SceneId = 38,
                 ActCategory = 2,
@@ -171,14 +171,14 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Practice confidently with both friends",
-                        NextSceneId = 40, // iPad vocabulary scene
+                        NextSceneId = 39, // Now goes to iPad sentences scene
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Hui buorre! (Very good!)\""
                     },
                     new {
                         Text = "Ask them to slow down",
-                        NextSceneId = 40, // Routes to Scene 40 (slower practice branch)
+                        NextSceneId = 39, // Now also goes to iPad sentences scene
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Of course! We'll go slower.\""
