@@ -84,7 +84,8 @@ public static class Act2_02_SchoolGreeting
                     "Áilu: \"Áila, dát lea...\" (Áila, this is...)\r\n\r\n" +
                     "Áila looks up and smiles warmly.\r\n\r\n" +
                     "Áila: \"Bures! Mun namma lea Áila. Soma beassat diehtit du!\" (Hello! My name is Áila. Nice to meet you!)\r\n\r\n" +
-                    "She speaks with a gentle, encouraging tone.",
+                    "She speaks with a gentle, encouraging tone.\r\n\r\n" +
+                    "The teacher stands up: \"Today we have two learning activities. You can practice family words with your friends, or join the sentence learning session at the blackboard.\"",
                 Choices = new[] {
                     new {
                         Text = "Answer: \"Bures! Mun namma lea... Soma beassat diehtit du!\"",
@@ -106,6 +107,13 @@ public static class Act2_02_SchoolGreeting
                         TrustChange = +1,
                         IsCorrect = false,
                         ResponseDialog = "Áila: \"Don sáhtát ságastit Sámegillii goas don háliidat! (You can speak Sámi whenever you want!)\""
+                    },
+                    new {
+                        Text = "Ask to join the sentence learning session",
+                        NextSceneId = 38,
+                        TrustChange = +2,
+                        IsCorrect = true,
+                        ResponseDialog = "Teacher: \"Good choice! Let's practice sentences together!\""
                     }
                 }
             },
@@ -125,7 +133,7 @@ public static class Act2_02_SchoolGreeting
                 Choices = new[] {
                     new {
                         Text = "Repeat each word carefully with Áilu and Áila",
-                        NextSceneId = 38,
+                        NextSceneId = 39,
                         TrustChange = +5,
                         IsCorrect = true,
                         ResponseDialog = "Both friends smile: \"Perfect!\""
@@ -144,11 +152,12 @@ public static class Act2_02_SchoolGreeting
                     "Áila and Áilu both give you encouraging smiles.\r\n\r\n" +
                     "Áila: \"Ii leat váttis! (No worries!) We're all learning. Let's practice together!\"\r\n\r\n" +
                     "Áilu: \"Jus don vealahit du! (If you help me!) We'll help each other!\"\r\n\r\n" +
-                    "The teacher begins the lesson: \"Today we learn family words...\"",
+                    "The teacher begins the lesson: \"Today we learn family words...\"\r\n\r\n" +
+                    "You, Áilu, and Áila practice together. Áilu: \"Say: 'eahket' (mother)...\" Áila: \"Then 'áhčči' (father)...\"",
                 Choices = new[] {
                     new {
-                        Text = "Nod gratefully and listen to the lesson",
-                        NextSceneId = 38,
+                        Text = "Practice with both friends",
+                        NextSceneId = 40,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "You feel supported by your new friends."
@@ -167,44 +176,15 @@ public static class Act2_02_SchoolGreeting
                     "Áila smiles understandingly.\r\n\r\n" +
                     "Áila: \"Don sáhtát ságastit goas don háliidat. (You can speak whenever you want.) No pressure!\"\r\n\r\n" +
                     "Áilu: \"We'll practice together. It's more fun with friends!\"\r\n\r\n" +
-                    "The teacher starts: \"Family words: 'eahket', 'áhčči', 'oappát', 'viellja'...\"",
+                    "The teacher starts: \"Family words: 'eahket', 'áhčči', 'oappát', 'viellja'...\"\r\n\r\n" +
+                    "You try repeating the words quietly with Áilu and Áila helping you.",
                 Choices = new[] {
                     new {
-                        Text = "Try repeating the words quietly",
-                        NextSceneId = 38,
+                        Text = "Continue practicing",
+                        NextSceneId = 39,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Good! You're trying!\""
-                    }
-                }
-            },
-
-            // Scene 38 — Converge: Family words practice with both friends
-            new {
-                SceneId = 38,
-                ActCategory = 2,
-                Title = "Family Words Practice",
-                CharacterCode = "ID_FRIEND1",
-                ImageUrl = (string?)"/images/classroom.png",
-                Content =
-                    "You, Áilu, and Áila practice together.\r\n\r\n" +
-                    "Áilu: \"Say: 'eahket' (mother)...\"\r\n\r\n" +
-                    "Áila: \"Then 'áhčči' (father)...\"\r\n\r\n" +
-                    "You practice the words, and both friends help you with pronunciation.",
-                Choices = new[] {
-                    new {
-                        Text = "Practice confidently with both friends",
-                        NextSceneId = 39,
-                        TrustChange = +4,
-                        IsCorrect = true,
-                        ResponseDialog = "Both: \"Hui buorre! (Very good!)\""
-                    },
-                    new {
-                        Text = "Ask them to slow down",
-                        NextSceneId = 40,
-                        TrustChange = +2,
-                        IsCorrect = true,
-                        ResponseDialog = "Áila: \"Of course! We'll go slower.\""
                     }
                 }
             }

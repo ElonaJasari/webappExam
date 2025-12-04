@@ -2,14 +2,13 @@ namespace Bures.StoryContent.Act2;
 
 public static class Act2_04_FamilyWordsLesson
 {
-    // Act 2: Practice branches with both friends converging at lunch (39-42)
+    
     public static IEnumerable<dynamic> GetScenes()
     {
         return new[]
         {
-            // Scene 39 — Confident practice branch
             new {
-                SceneId = 39,
+                SceneId = 40,
                 ActCategory = 2,
                 Title = "Great Progress",
                 CharacterCode = "ID_FRIEND1",
@@ -22,7 +21,7 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Say: \"Giitu! Let's go to lunch!\"",
-                        NextSceneId = 42,
+                        NextSceneId = 43,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Both friends: \"Jus don háliidat! (If you want!)\""
@@ -32,7 +31,7 @@ public static class Act2_04_FamilyWordsLesson
 
             // Scene 40 — Slower practice branch
             new {
-                SceneId = 40,
+                SceneId = 41,
                 ActCategory = 2,
                 Title = "Patient Learning",
                 CharacterCode = "ID_FRIEND2",
@@ -45,7 +44,7 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Thank both friends: \"Giitu, Áilu ja Áila!\"",
-                        NextSceneId = 42,
+                        NextSceneId = 43,
                         TrustChange = +3,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Ipmelattá! (You're welcome!) Let's eat!\""
@@ -55,7 +54,7 @@ public static class Act2_04_FamilyWordsLesson
 
             // Scene 41 — Lunch with both friends (new scene)
             new {
-                SceneId = 41,
+                SceneId = 42,
                 ActCategory = 2,
                 Title = "Lunch with Friends",
                 CharacterCode = "ID_FRIEND2",
@@ -67,14 +66,14 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Answer: \"Mun borran láibbi ja vuostá\" (I'm eating bread and cheese)",
-                        NextSceneId = 42,
+                        NextSceneId = 43,
                         TrustChange = +5,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Oho! Don hállat buoremusat! (Wow! You speak so well!)\""
                     },
                     new {
                         Text = "Try but mix some English",
-                        NextSceneId = 42,
+                        NextSceneId = 43,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Áila: \"Good try! Keep practicing!\""
@@ -84,7 +83,7 @@ public static class Act2_04_FamilyWordsLesson
 
             // Scene 42 — Converge: End of day with both friends
             new {
-                SceneId = 42,
+                SceneId = 43,
                 ActCategory = 2,
                 Title = "End of Day Two",
                 CharacterCode = "ID_FRIEND1",
@@ -96,14 +95,14 @@ public static class Act2_04_FamilyWordsLesson
                 Choices = new[] {
                     new {
                         Text = "Say: \"Jus don háliidat! Giitu!\" (If you want! Thanks!)",
-                        NextSceneId = 43,
+                        NextSceneId = 44,
                         TrustChange = +4,
                         IsCorrect = true,
                         ResponseDialog = "Both: \"Oaidnaleapmi iđđes! (See you tomorrow!)\""
                     },
                     new {
                         Text = "Nod and wave goodbye",
-                        NextSceneId = 43,
+                        NextSceneId = 44,
                         TrustChange = +2,
                         IsCorrect = true,
                         ResponseDialog = "Both friends wave: \"Oaidnaleapmi!\""
